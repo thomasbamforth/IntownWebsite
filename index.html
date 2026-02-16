@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InTown - Know When Your Friends Are Nearby</title>
+  <meta name="description" content="InTown helps you see which friends are nearby, plan events together, and stay connected with your community. Download the app today.">
+  <meta name="keywords" content="InTown, social app, local friends, nearby friends, community, events, social networking">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="nav-logo">
+        <img src="assets/logo.svg" alt="InTown Logo" class="nav-logo-img">
+        <span class="nav-logo-text">InTown</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#download" class="nav-cta">Download</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-glow"></div>
+    <div class="container hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Know When Your <span class="text-accent">Friends</span> Are In Town
+        </h1>
+        <p class="hero-subtitle">
+          See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.
+        </p>
+        <div class="hero-buttons">
+          <a href="#download" class="btn btn-primary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            App Store
+          </a>
+          <a href="#download" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
+            Google Play
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number">10K+</span>
+            <span class="stat-label">Active Users</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number">50K+</span>
+            <span class="stat-label">Events Created</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number">100+</span>
+            <span class="stat-label">Cities</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-phone">
+        <div class="phone-mockup">
+          <div class="phone-screen">
+            <!-- Simplified map screen recreation -->
+            <div class="mock-status-bar">
+              <span>9:41</span>
+              <span class="mock-icons">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z"/></svg>
+              </span>
+            </div>
+            <div class="mock-map">
+              <div class="mock-map-bg"></div>
+              <div class="mock-radius-circle"></div>
+              <div class="mock-pin mock-pin-1"></div>
+              <div class="mock-pin mock-pin-2"></div>
+              <div class="mock-pin mock-pin-3"></div>
+              <div class="mock-center-pin"></div>
+            </div>
+            <div class="mock-bottom-bar">
+              <div class="mock-tab active">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span>Map</span>
+              </div>
+              <div class="mock-tab">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+                <span>Calendar</span>
+              </div>
+              <div class="mock-tab">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+                <span>Inbox</span>
+              </div>
+              <div class="mock-tab">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>Profile</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Everything You Need to <span class="text-accent">Stay Connected</span></h2>
+        <p class="section-subtitle">InTown makes it effortless to know when friends are nearby and turn spontaneous moments into real connections.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Live Friend Map</h3>
+          <p class="feature-desc">See which friends are within your radius on an interactive map. Set your range and instantly know who's nearby.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+              <circle cx="12" cy="16" r="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Events & Hangouts</h3>
+          <p class="feature-desc">Create events, invite friends, and see who's going. From watch parties to road trips, planning is simple.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              <line x1="8" y1="9" x2="16" y2="9"/>
+              <line x1="8" y1="13" x2="13" y2="13"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Instant Messaging</h3>
+          <p class="feature-desc">Chat with friends one-on-one or in groups. Coordinate plans in real time without leaving the app.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+              <line x1="18" y1="8" x2="23" y2="8"/>
+              <line x1="20.5" y1="5.5" x2="20.5" y2="10.5"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Grow Your Circle</h3>
+          <p class="feature-desc">Invite friends, build your community, and track your trips. The more friends InTown, the better it gets.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Get Started in <span class="text-accent">3 Steps</span></h2>
+        <p class="section-subtitle">Start connecting with friends in your area in minutes.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step" data-animate>
+          <div class="step-number">1</div>
+          <h3 class="step-title">Download & Sign Up</h3>
+          <p class="step-desc">Get InTown from the App Store or Google Play. Create your profile in under a minute.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step" data-animate>
+          <div class="step-number">2</div>
+          <h3 class="step-title">Add Your Friends</h3>
+          <p class="step-desc">Invite friends from your contacts or share your invite link. Build your InTown circle.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step" data-animate>
+          <div class="step-number">3</div>
+          <h3 class="step-title">See Who's Nearby</h3>
+          <p class="step-desc">Open the map, set your radius, and instantly see which friends are in town. Plan a hangout!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof / Testimonial -->
+  <section class="social-proof">
+    <div class="container">
+      <div class="testimonial-card" data-animate>
+        <svg class="quote-icon" viewBox="0 0 24 24" fill="currentColor" opacity="0.2"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+        <p class="testimonial-text">"InTown completely changed how I hang out with friends. I used to miss people visiting my city all the time. Now I never miss a chance to meet up."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar"></div>
+          <div>
+            <p class="author-name">Happy InTown User</p>
+            <p class="author-location">Chapel Hill, NC</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download CTA -->
+  <section class="download-cta" id="download">
+    <div class="container">
+      <div class="cta-content" data-animate>
+        <h2 class="cta-title">Ready to See Who's <span class="text-accent">InTown</span>?</h2>
+        <p class="cta-subtitle">Download the app for free and start connecting with your friends today.</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-primary btn-large">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            Download for iOS
+          </a>
+          <a href="#" class="btn btn-secondary btn-large">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
+            Download for Android
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <img src="assets/logo.svg" alt="InTown Logo" class="nav-logo-img">
+            <span class="nav-logo-text">InTown</span>
+          </a>
+          <p class="footer-tagline">Know when your friends are nearby.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#download">Download</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="mailto:contact@intownsocial.com">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 InTown Social. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
