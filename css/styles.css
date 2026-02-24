@@ -911,13 +911,10 @@ ul {
 .use-cases-grid {
   display: flex;
   overflow-x: auto;
-  gap: 0;
+  gap: 50%;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .use-cases-grid::-webkit-scrollbar {
