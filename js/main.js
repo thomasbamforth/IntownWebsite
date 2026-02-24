@@ -218,15 +218,16 @@
     var isHovering = false;
     var scrollDebounce = null;
 
-    function cardWidth() {
-      var card = grid.querySelector('.use-case-card');
-      return card ? card.offsetWidth : grid.clientWidth;
+    function getCards() {
+      return Array.from(grid.querySelectorAll('.use-case-card'));
     }
 
     function goTo(index) {
       index = ((index % total) + total) % total;
       currentIndex = index;
-      grid.scrollTo({ left: cardWidth() * index, behavior: 'smooth' });
+      var cards = getCards();
+      var target = cards[index] ? cards[index].offsetLeft : 0;
+      grid.scrollTo({ left: target, behavior: 'smooth' });
       dots.forEach(function (dot, i) {
         dot.classList.toggle('active', i === index);
       });
@@ -278,7 +279,14 @@
 
     // Sync dots on scroll and restart auto after manual scrolling stops
     grid.addEventListener('scroll', function () {
-      var idx = Math.round(grid.scrollLeft / cardWidth());
+      var cards = getCards();
+      var scrollLeft = grid.scrollLeft;
+      var idx = 0;
+      var bestDist = Infinity;
+      cards.forEach(function (card, i) {
+        var dist = Math.abs(card.offsetLeft - scrollLeft);
+        if (dist < bestDist) { bestDist = dist; idx = i; }
+      });
       if (idx !== currentIndex) {
         currentIndex = idx;
         dots.forEach(function (dot, i) {
