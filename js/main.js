@@ -210,12 +210,13 @@
     var grid = document.querySelector('.use-cases-grid');
     if (!grid) return;
 
-    var cards = grid.querySelectorAll('.use-case-card');
     var dots = document.querySelectorAll('.use-cases-dot');
-    var total = cards.length;
+    var total = dots.length;
     var currentIndex = 0;
     var AUTO_MS = 4000;
     var autoTimer = null;
+    var isHovering = false;
+    var scrollDebounce = null;
 
     function goTo(index) {
       index = ((index % total) + total) % total;
@@ -246,9 +247,15 @@
       });
     });
 
-    // Pause on hover
-    grid.addEventListener('mouseenter', stopAuto);
-    grid.addEventListener('mouseleave', startAuto);
+    // Pause only while mouse is physically over the carousel
+    grid.addEventListener('mouseenter', function () {
+      isHovering = true;
+      stopAuto();
+    });
+    grid.addEventListener('mouseleave', function () {
+      isHovering = false;
+      startAuto();
+    });
 
     // Touch swipe
     var touchStartX = 0;
@@ -264,7 +271,7 @@
       startAuto();
     }, { passive: true });
 
-    // Sync dots when user manually scrolls
+    // Sync dots on scroll and restart auto after manual scrolling stops
     grid.addEventListener('scroll', function () {
       var idx = Math.round(grid.scrollLeft / grid.clientWidth);
       if (idx !== currentIndex) {
@@ -272,6 +279,10 @@
         dots.forEach(function (dot, i) {
           dot.classList.toggle('active', i === idx);
         });
+      }
+      if (!isHovering) {
+        clearTimeout(scrollDebounce);
+        scrollDebounce = setTimeout(startAuto, 600);
       }
     }, { passive: true });
 

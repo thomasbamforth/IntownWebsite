@@ -925,12 +925,12 @@ ul {
   background: var(--navy-mid);
   border: 1px solid rgba(74, 144, 217, 0.15);
   border-radius: 20px;
-  padding: 60px 10%;
+  padding: 64px 80px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
-  gap: 20px;
+  text-align: left;
+  gap: 56px;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
@@ -981,10 +981,10 @@ ul {
 }
 
 .use-case-icon {
-  width: 36px;
-  height: 36px;
+  width: 72px;
+  height: 72px;
   background: rgba(74, 144, 217, 0.12);
-  border-radius: 10px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -993,8 +993,8 @@ ul {
 }
 
 .use-case-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 36px;
+  height: 36px;
 }
 
 .use-case-content {
@@ -1550,7 +1550,7 @@ ul {
 
   /* Use Cases */
   .use-cases { padding: 80px 0; }
-  .use-case-card { flex: 0 0 100%; padding: 32px 6%; }
+  .use-case-card { flex: 0 0 100%; flex-direction: column; text-align: center; align-items: center; gap: 24px; padding: 36px 7%; }
 
   /* Steps */
   .how-it-works { padding: 80px 0; }
