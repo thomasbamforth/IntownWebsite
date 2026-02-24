@@ -934,7 +934,7 @@ ul {
   transition: var(--transition);
   position: relative;
   overflow: hidden;
-  flex: 0 0 100%;
+  flex: 0 0 50%;
   scroll-snap-align: start;
   box-sizing: border-box;
 }
