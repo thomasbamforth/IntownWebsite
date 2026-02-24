@@ -110,6 +110,7 @@ ul {
 .nav-logo-img {
   width: 36px;
   height: auto;
+  filter: brightness(0) invert(1);
 }
 
 .nav-logo-text {
@@ -872,15 +873,12 @@ ul {
 
 /* --- Privacy caption --- */
 .phone-privacy-caption {
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   color: var(--gray-500);
   text-align: center;
-  max-width: 240px;
+  max-width: 260px;
   line-height: 1.5;
-  padding: 6px 12px;
-  border: 1px solid rgba(74,144,217,0.12);
-  border-radius: 8px;
-  background: rgba(74,144,217,0.04);
+  opacity: 0.7;
 }
 
 /* --- Section Styles --- */
@@ -911,22 +909,42 @@ ul {
 }
 
 .use-cases-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding-bottom: 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 144, 217, 0.25) transparent;
+}
+
+.use-cases-grid::-webkit-scrollbar {
+  height: 4px;
+}
+
+.use-cases-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.use-cases-grid::-webkit-scrollbar-thumb {
+  background: rgba(74, 144, 217, 0.25);
+  border-radius: 2px;
 }
 
 .use-case-card {
   background: var(--navy-mid);
   border: 1px solid rgba(74, 144, 217, 0.1);
   border-radius: 20px;
-  padding: 32px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  flex: 0 0 280px;
+  scroll-snap-align: start;
 }
 
 .use-case-card::before {
@@ -952,10 +970,10 @@ ul {
 }
 
 .use-case-icon {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   background: rgba(74, 144, 217, 0.12);
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -964,8 +982,8 @@ ul {
 }
 
 .use-case-icon svg {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
 }
 
 .use-case-content {
@@ -1458,7 +1476,7 @@ ul {
 @media (max-width: 1024px) {
   .hero-title { font-size: 2.8rem; }
   .hero-container { gap: 40px; }
-  .use-cases-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  /* use-cases-grid is horizontal scroll — no grid override needed */
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
   .blog-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1521,8 +1539,7 @@ ul {
 
   /* Use Cases */
   .use-cases { padding: 80px 0; }
-  .use-cases-grid { grid-template-columns: 1fr; }
-  .use-case-card { padding: 24px; }
+  .use-case-card { flex: 0 0 260px; padding: 24px; }
 
   /* Steps */
   .how-it-works { padding: 80px 0; }
