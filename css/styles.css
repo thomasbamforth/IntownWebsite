@@ -109,7 +109,8 @@ ul {
 
 .nav-logo-img {
   height: 36px;
-  width: auto;
+  width: 21px;
+  object-fit: contain;
 }
 
 .nav-logo-text {
