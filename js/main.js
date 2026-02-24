@@ -205,6 +205,90 @@
     startAuto();
   })();
 
+  // --- Use Cases Carousel ---
+  (function initUseCasesCarousel() {
+    var grid = document.querySelector('.use-cases-grid');
+    if (!grid) return;
+
+    var dots = document.querySelectorAll('.use-cases-dot');
+    var total = dots.length;
+    var currentIndex = 0;
+    var AUTO_MS = 4000;
+    var autoTimer = null;
+    var isHovering = false;
+    var scrollDebounce = null;
+
+    function goTo(index) {
+      index = ((index % total) + total) % total;
+      currentIndex = index;
+      grid.scrollTo({ left: grid.clientWidth * index, behavior: 'smooth' });
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    function startAuto() {
+      stopAuto();
+      autoTimer = setInterval(function () {
+        goTo(currentIndex + 1);
+      }, AUTO_MS);
+    }
+
+    function stopAuto() {
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    // Dot click handlers
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        var idx = parseInt(dot.getAttribute('data-index'), 10);
+        goTo(idx);
+        startAuto();
+      });
+    });
+
+    // Pause only while mouse is physically over the carousel
+    grid.addEventListener('mouseenter', function () {
+      isHovering = true;
+      stopAuto();
+    });
+    grid.addEventListener('mouseleave', function () {
+      isHovering = false;
+      startAuto();
+    });
+
+    // Touch swipe
+    var touchStartX = 0;
+    grid.addEventListener('touchstart', function (e) {
+      touchStartX = e.touches[0].clientX;
+      stopAuto();
+    }, { passive: true });
+    grid.addEventListener('touchend', function (e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) {
+        goTo(diff > 0 ? currentIndex + 1 : currentIndex - 1);
+      }
+      startAuto();
+    }, { passive: true });
+
+    // Sync dots on scroll and restart auto after manual scrolling stops
+    grid.addEventListener('scroll', function () {
+      var idx = Math.round(grid.scrollLeft / grid.clientWidth);
+      if (idx !== currentIndex) {
+        currentIndex = idx;
+        dots.forEach(function (dot, i) {
+          dot.classList.toggle('active', i === idx);
+        });
+      }
+      if (!isHovering) {
+        clearTimeout(scrollDebounce);
+        scrollDebounce = setTimeout(startAuto, 600);
+      }
+    }, { passive: true });
+
+    startAuto();
+  })();
+
   // --- Show Figma use-case images if they loaded successfully ---
   document.querySelectorAll('.use-case-img').forEach(function (img) {
     img.addEventListener('load', function () {

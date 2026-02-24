@@ -911,40 +911,32 @@ ul {
 .use-cases-grid {
   display: flex;
   overflow-x: auto;
-  gap: 20px;
-  padding-bottom: 16px;
+  gap: 0;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(74, 144, 217, 0.25) transparent;
+  scrollbar-width: none;
 }
 
 .use-cases-grid::-webkit-scrollbar {
-  height: 4px;
-}
-
-.use-cases-grid::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.use-cases-grid::-webkit-scrollbar-thumb {
-  background: rgba(74, 144, 217, 0.25);
-  border-radius: 2px;
+  display: none;
 }
 
 .use-case-card {
   background: var(--navy-mid);
-  border: 1px solid rgba(74, 144, 217, 0.1);
+  border: 1px solid rgba(74, 144, 217, 0.15);
   border-radius: 20px;
-  padding: 28px;
+  padding: 64px 80px;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  gap: 56px;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
-  flex: 0 0 280px;
+  flex: 0 0 100%;
   scroll-snap-align: start;
+  box-sizing: border-box;
 }
 
 .use-case-card::before {
@@ -954,26 +946,45 @@ ul {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--accent-blue), transparent);
-  opacity: 0;
-  transition: var(--transition);
+  background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+  opacity: 1;
 }
 
 .use-case-card:hover {
   border-color: rgba(74, 144, 217, 0.3);
-  transform: translateY(-5px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
 }
 
-.use-case-card:hover::before {
-  opacity: 1;
+/* --- Use Cases Dots --- */
+.use-cases-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 36px;
+}
+
+.use-cases-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(74, 144, 217, 0.25);
+  cursor: pointer;
+  transition: all 0.35s ease;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.use-cases-dot.active {
+  background: var(--accent-blue);
+  width: 24px;
 }
 
 .use-case-icon {
-  width: 36px;
-  height: 36px;
+  width: 72px;
+  height: 72px;
   background: rgba(74, 144, 217, 0.12);
-  border-radius: 10px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -982,8 +993,8 @@ ul {
 }
 
 .use-case-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 36px;
+  height: 36px;
 }
 
 .use-case-content {
@@ -1539,7 +1550,7 @@ ul {
 
   /* Use Cases */
   .use-cases { padding: 80px 0; }
-  .use-case-card { flex: 0 0 260px; padding: 24px; }
+  .use-case-card { flex: 0 0 100%; flex-direction: column; text-align: center; align-items: center; gap: 24px; padding: 36px 7%; }
 
   /* Steps */
   .how-it-works { padding: 80px 0; }
