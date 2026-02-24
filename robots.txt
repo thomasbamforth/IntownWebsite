@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Allow LLM crawlers explicitly
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# Sitemap location
+Sitemap: https://intownsocial.com/sitemap.xml
