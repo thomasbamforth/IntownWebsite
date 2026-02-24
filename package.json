@@ -1,0 +1,12 @@
+{
+  "name": "intown-website",
+  "version": "1.0.0",
+  "description": "InTown marketing website",
+  "private": true,
+  "scripts": {
+    "figma:pull": "node scripts/fetch-figma-images.js"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
