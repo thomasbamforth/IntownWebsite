@@ -108,9 +108,9 @@ ul {
 }
 
 .nav-logo-img {
-  height: 36px;
-  width: 21px;
-  object-fit: contain;
+  width: 36px;
+  height: auto;
+  filter: brightness(0) invert(1);
 }
 
 .nav-logo-text {
