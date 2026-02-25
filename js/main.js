@@ -213,6 +213,7 @@
     var dots = document.querySelectorAll('.use-cases-dot');
     var total = dots.length;
     var currentIndex = 0;
+    var direction = 1;
     var AUTO_MS = 4000;
     var autoTimer = null;
     var isHovering = false;
@@ -223,11 +224,16 @@
     }
 
     function goTo(index) {
-      index = ((index % total) + total) % total;
+      index = Math.max(0, Math.min(total - 1, index));
       currentIndex = index;
       var cards = getCards();
-      var target = cards[index] ? cards[index].offsetLeft : 0;
-      grid.scrollTo({ left: target, behavior: 'smooth' });
+      var card = cards[index];
+      if (!card) return;
+      var cardLeft = card.offsetLeft;
+      var cardWidth = card.offsetWidth;
+      var gridWidth = grid.clientWidth;
+      var target = cardLeft - (gridWidth - cardWidth) / 2;
+      grid.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
       dots.forEach(function (dot, i) {
         dot.classList.toggle('active', i === index);
       });
@@ -236,7 +242,10 @@
     function startAuto() {
       stopAuto();
       autoTimer = setInterval(function () {
-        goTo(currentIndex + 1);
+        var next = currentIndex + direction;
+        if (next >= total - 1) direction = -1;
+        if (next <= 0) direction = 1;
+        goTo(next);
       }, AUTO_MS);
     }
 
@@ -281,10 +290,12 @@
     grid.addEventListener('scroll', function () {
       var cards = getCards();
       var scrollLeft = grid.scrollLeft;
+      var viewCenter = scrollLeft + grid.clientWidth / 2;
       var idx = 0;
       var bestDist = Infinity;
       cards.forEach(function (card, i) {
-        var dist = Math.abs(card.offsetLeft - scrollLeft);
+        var cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        var dist = Math.abs(cardCenter - viewCenter);
         if (dist < bestDist) { bestDist = dist; idx = i; }
       });
       if (idx !== currentIndex) {
