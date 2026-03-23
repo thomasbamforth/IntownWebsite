@@ -1226,6 +1226,13 @@ ul {
   margin-top: 12px;
 }
 
+.footer-fine-print {
+  color: var(--gray-500);
+  font-size: 0.75rem;
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
 .footer-links h4 {
   font-size: 0.9rem;
   font-weight: 700;
