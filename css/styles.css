@@ -1230,6 +1230,7 @@ ul {
   color: var(--gray-500);
   font-size: 0.75rem;
   margin-top: 2px;
+  margin-left: 46px;
   opacity: 0.7;
 }
 
