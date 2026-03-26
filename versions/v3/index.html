@@ -3,322 +3,1143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InTown — Know When Your Friends Are Nearby</title>
-  <meta name="description" content="See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.">
+  <title>InTown — Never miss a nearby friend again.</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #0D0D1A;
-      --bg2: #0A0A15;
-      --cyan: #00C6FF;
-      --pink: #FF6B9D;
-      --purple: #8B5CF6;
-      --grad: linear-gradient(135deg, #00C6FF, #8B5CF6);
-      --grad2: linear-gradient(135deg, #8B5CF6, #FF6B9D);
-      --white: #FFFFFF;
-      --muted: #7A7A9D;
-      --card: rgba(255,255,255,0.03);
-      --border: rgba(255,255,255,0.07);
-      --font: 'Inter', -apple-system, sans-serif;
+      --navy:    #060E1A;
+      --navy2:   #0B1A2E;
+      --navy3:   #0F2440;
+      --navy4:   #152D4A;
+      --blue:    #4A90D9;
+      --blue-lt: #7BB3E8;
+      --blue-x:  #2E6BB0;
+      --white:   #FFFFFF;
+      --gray:    #8899AA;
+      --gray-lt: #B8CAD8;
+      --border:  rgba(74,144,217,0.18);
+      --card-bg: #0C1E34;
     }
 
-    html { scroll-behavior: smooth; }
-    body { font-family: var(--font); background: var(--bg); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; line-height: 1.6; }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-    img { max-width: 100%; display: block; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
-
-    /* BACKGROUND MESH */
-    .mesh { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-    .mesh-blob { position: absolute; border-radius: 50%; filter: blur(100px); }
-    .mb1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,198,255,0.12), transparent 60%); top: -200px; right: -200px; animation: drift1 12s ease-in-out infinite alternate; }
-    .mb2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 60%); bottom: -100px; left: -100px; animation: drift2 10s ease-in-out infinite alternate; }
-    .mb3 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,107,157,0.1), transparent 60%); top: 40%; left: 30%; animation: drift1 14s ease-in-out infinite alternate-reverse; }
-    @keyframes drift1 { from{transform:translate(0,0)} to{transform:translate(30px,-30px)} }
-    @keyframes drift2 { from{transform:translate(0,0)} to{transform:translate(-20px,20px)} }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
 
     /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 0; transition: all 0.3s; }
-    nav.scrolled { background: rgba(13,13,26,0.92); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); padding: 14px 0; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; }
-    .nav-logo img { width: 28px; height: 28px; }
-    .nav-logo span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .nav-links { display: flex; align-items: center; gap: 28px; }
-    .nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--muted); transition: color 0.2s; }
-    .nav-links a:hover { color: var(--white); }
-    .nav-cta { position: relative; color: var(--white) !important; background: linear-gradient(135deg, #00C6FF22, #8B5CF622); border: 1px solid rgba(0,198,255,0.35); padding: 9px 20px; border-radius: 8px; font-weight: 700 !important; transition: border-color 0.2s !important; }
-    .nav-cta:hover { border-color: rgba(0,198,255,0.7) !important; }
-    .nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
-    .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; }
+    nav {
+      position: fixed;
+      top: 16px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      width: calc(100% - 48px);
+      max-width: 1100px;
+      padding: 0 24px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(11,26,46,0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
 
-    /* HERO */
-    .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 140px 0 100px; overflow: hidden; }
-    .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-    .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); margin-bottom: 20px; }
-    .hero-eyebrow::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--cyan); }
-    .hero-eyebrow::after { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--cyan); }
-    .hero h1 { font-size: clamp(2.5rem, 5.5vw, 4.2rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1.0; margin-bottom: 22px; }
-    .hero h1 .grad-text { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 460px; margin-bottom: 36px; line-height: 1.75; }
-    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
-    .btn-grad { display: inline-flex; align-items: center; gap: 9px; background: var(--grad); color: var(--white); padding: 14px 26px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; transition: opacity 0.2s, transform 0.2s; box-shadow: 0 0 30px rgba(0,198,255,0.25); }
-    .btn-grad:hover { opacity: 0.88; transform: translateY(-2px); }
-    .btn-border { display: inline-flex; align-items: center; gap: 9px; background: transparent; color: var(--white); padding: 14px 26px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s; }
-    .btn-border:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
-    .btn-icon { width: 18px; height: 18px; }
-    .hero-stats { display: flex; gap: 36px; }
-    .stat-num { font-size: 1.8rem; font-weight: 900; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.03em; }
-    .stat-label { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
-    .stat-sep { width: 1px; background: var(--border); }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo img { width: 24px; }
+    .logo-name { font-size: 16px; font-weight: 800; color: var(--white); }
 
-    /* PHONE MOCKUP V3 */
-    .phone-outer { display: flex; justify-content: center; position: relative; }
-    .phone-outer::before { content: ''; position: absolute; top: -20px; bottom: -20px; left: -20px; right: -20px; background: radial-gradient(circle at center, rgba(0,198,255,0.1), transparent 70%); border-radius: 50%; }
-    .phone { width: 265px; background: #0D1020; border-radius: 42px; border: 1px solid rgba(0,198,255,0.25); box-shadow: 0 0 0 6px rgba(0,198,255,0.04), 0 40px 80px rgba(0,0,0,0.7); overflow: hidden; position: relative; z-index: 1; }
-    .phone-notch { height: 28px; background: #0D1020; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 6px; }
-    .notch-pill { width: 80px; height: 12px; background: #1a1a2e; border-radius: 10px; }
-    .phone-status { display: flex; justify-content: space-between; padding: 6px 18px; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
-    .phone-map { height: 195px; background: linear-gradient(160deg, #0a1628, #0d2040, #0e1a35); position: relative; overflow: hidden; }
-    .pm-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,198,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.05) 1px, transparent 1px); background-size: 28px 28px; }
-    .pm-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 110px; height: 110px; border: 1.5px solid rgba(0,198,255,0.35); border-radius: 50%; }
-    .pm-ring2 { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 60px; height: 60px; border: 1px solid rgba(0,198,255,0.15); border-radius: 50%; }
-    .pm-dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 10px; height: 10px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 20px var(--cyan); }
-    .pm-pin { position: absolute; padding: 3px 8px; border-radius: 10px; font-size: 0.58rem; font-weight: 700; white-space: nowrap; }
-    .pm-pin::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border: 4px solid transparent; }
-    .pin-a { background: var(--cyan); color: #0D0D1A; top: 22%; left: 18%; }
-    .pin-a::after { border-top-color: var(--cyan); }
-    .pin-b { background: var(--purple); top: 50%; right: 14%; }
-    .pin-b::after { border-top-color: var(--purple); }
-    .pin-c { background: var(--pink); bottom: 20%; left: 38%; }
-    .pin-c::after { border-top-color: var(--pink); }
-    .phone-sheet { padding: 14px 16px; background: rgba(13,16,32,0.95); }
-    .ps-title { font-size: 0.82rem; font-weight: 800; margin-bottom: 12px; display: flex; justify-content: space-between; }
-    .ps-title span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 0.72rem; }
-    .ps-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-    .ps-row:last-child { border-bottom: none; }
-    .ps-av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; flex-shrink: 0; }
-    .ps-info { flex: 1; }
-    .ps-name { font-size: 0.72rem; font-weight: 700; }
-    .ps-dist { font-size: 0.62rem; color: var(--muted); }
-    .ps-badge { font-size: 0.58rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
-    .phone-nav { display: flex; justify-content: space-around; padding: 10px 14px 16px; border-top: 1px solid var(--border); }
-    .pn-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.52rem; color: var(--muted); }
-    .pn-item.active { color: var(--cyan); }
-    .pn-item svg { width: 18px; height: 18px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray);
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.07); }
 
-    /* SECTIONS */
-    section { padding: 100px 0; }
-    .sec-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; display: block; }
-    .sec-title { font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 14px; line-height: 1.1; }
-    .sec-title .grad-text { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .sec-sub { color: var(--muted); font-size: 1rem; max-width: 540px; line-height: 1.75; }
-    .sec-header { margin-bottom: 56px; }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    /* FEATURES */
-    .features-bg { background: linear-gradient(180deg, var(--bg) 0%, #0A0A17 100%); }
-    .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .feat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 26px; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
-    .feat-card:hover { border-color: rgba(0,198,255,0.25); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-    .feat-icon-wrap { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, rgba(0,198,255,0.15), rgba(139,92,246,0.15)); border: 1px solid rgba(0,198,255,0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-    .feat-icon-wrap svg { width: 20px; height: 20px; color: var(--cyan); }
-    .feat-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
-    .feat-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
-    .feat-tag { display: inline-block; font-size: 0.7rem; font-weight: 600; color: var(--cyan); background: rgba(0,198,255,0.08); border: 1px solid rgba(0,198,255,0.15); padding: 3px 10px; border-radius: 20px; }
+    .nav-dl {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      padding: 8px 18px;
+      background: var(--white);
+      border-radius: 10px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .nav-dl:hover { opacity: 0.9; transform: translateY(-1px); }
 
-    /* STEPS */
-    .steps-bg { position: relative; overflow: hidden; }
-    .steps-bg::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,92,246,0.07), transparent); }
-    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; position: relative; z-index: 1; }
-    .step { text-align: center; }
-    .step-num { font-size: 4rem; font-weight: 900; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 16px; letter-spacing: -0.05em; }
-    .step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
-    .step-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+    /* HERO — full viewport, centered content + two side panels */
+    .hero {
+      min-height: 100vh;
+      padding: 110px 40px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-    /* TESTIMONIAL */
-    .testimonial-bg { background: linear-gradient(135deg, rgba(0,198,255,0.04), rgba(139,92,246,0.06)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .testimonial-inner { max-width: 700px; margin: 0 auto; text-align: center; }
-    .big-quote { font-size: 6rem; line-height: 0.6; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: Georgia, serif; display: block; margin-bottom: 20px; }
-    .quote-body { font-size: clamp(1.1rem, 2.2vw, 1.4rem); font-weight: 500; line-height: 1.7; color: rgba(255,255,255,0.9); margin-bottom: 28px; }
-    .quote-auth { display: flex; align-items: center; justify-content: center; gap: 14px; }
-    .qa-av { width: 48px; height: 48px; border-radius: 50%; background: var(--grad); }
-    .qa-name { font-weight: 700; font-size: 0.9rem; }
-    .qa-loc { font-size: 0.8rem; color: var(--muted); }
+    /* Radial glow */
+    .hero-glow {
+      position: absolute;
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse at center, rgba(74,144,217,0.14) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      pointer-events: none;
+    }
+
+    /* Animated rings */
+    .hero-rings {
+      position: absolute;
+      width: 600px; height: 600px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(74,144,217,0.08);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: expand 6s ease-out infinite;
+    }
+
+    .ring:nth-child(1) { width: 200px; height: 200px; animation-delay: 0s; }
+    .ring:nth-child(2) { width: 340px; height: 340px; animation-delay: 1.5s; }
+    .ring:nth-child(3) { width: 480px; height: 480px; animation-delay: 3s; }
+    .ring:nth-child(4) { width: 620px; height: 620px; animation-delay: 4.5s; }
+
+    @keyframes expand {
+      0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.95); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 720px; }
+
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(74,144,217,0.12);
+      border: 1px solid rgba(74,144,217,0.25);
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-bottom: 32px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue-lt);
+      letter-spacing: 0.3px;
+    }
+
+    .hero-chip-dot {
+      width: 6px; height: 6px;
+      background: #4CAF50;
+      border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    h1 {
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -2.5px;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+
+    h1 .accent { color: var(--blue); }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--gray-lt);
+      line-height: 1.7;
+      margin-bottom: 44px;
+      font-weight: 500;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .btn-a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-primary-v3 {
+      background: var(--white);
+      color: #000;
+      box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+    }
+
+    .btn-secondary-v3 {
+      background: var(--navy3);
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .btn-a:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+
+    .btn-a svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .btn-a-text { display: flex; flex-direction: column; }
+    .btn-a-text .s { font-size: 10px; font-weight: 500; opacity: 0.6; }
+    .btn-a-text .b { font-size: 15px; font-weight: 800; }
+
+    .hero-social-proof {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .hsp-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hsp-num { font-size: 22px; font-weight: 900; color: var(--white); letter-spacing: -0.5px; }
+    .hsp-label { font-size: 12px; color: var(--gray); font-weight: 500; }
+
+    .hsp-div { width: 1px; height: 32px; background: var(--border); }
+
+    /* PHONE SHOWCASE */
+    .showcase {
+      padding: 80px 40px;
+      background: var(--navy2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(74,144,217,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .showcase-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .showcase-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+
+    .showcase-title {
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      text-align: center;
+      margin-bottom: 60px;
+      max-width: 600px;
+    }
+
+    /* Three phones side by side */
+    .phones-row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 20px;
+      perspective: 1000px;
+    }
+
+    .phn {
+      border-radius: 32px;
+      border: 1.5px solid rgba(74,144,217,0.25);
+      background: var(--card-bg);
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+      flex-shrink: 0;
+    }
+
+    .phn-center {
+      width: 240px; height: 500px;
+      animation: floatC 5s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .phn-left, .phn-right {
+      width: 200px; height: 420px;
+      opacity: 0.7;
+    }
+
+    .phn-left { transform: rotate(-5deg) translateY(30px); animation: floatL 5s ease-in-out infinite; animation-delay: 0.3s; }
+    .phn-right { transform: rotate(5deg) translateY(30px); animation: floatR 5s ease-in-out infinite; animation-delay: 0.7s; }
+
+    @keyframes floatC {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+    @keyframes floatL {
+      0%, 100% { transform: rotate(-5deg) translateY(30px); }
+      50% { transform: rotate(-5deg) translateY(16px); }
+    }
+    @keyframes floatR {
+      0%, 100% { transform: rotate(5deg) translateY(30px); }
+      50% { transform: rotate(5deg) translateY(16px); }
+    }
+
+    .phn-notch {
+      background: #000;
+      width: 80px; height: 22px;
+      border-radius: 0 0 14px 14px;
+      margin: 0 auto;
+    }
+
+    .phn-body { padding: 6px; }
+
+    .phn-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 8px 6px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .phn-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .phn-title { font-size: 13px; font-weight: 700; }
+    .phn-subtitle { font-size: 8px; color: var(--gray); margin-top: 1px; }
+
+    .phn-icon-btn {
+      width: 22px; height: 22px;
+      background: var(--navy3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    /* Map section in phone */
+    .phn-map {
+      background: #0D1F35;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phn-map::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,144,217,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,144,217,0.07) 1px, transparent 1px);
+      background-size: 22px 22px;
+    }
+
+    .phn-map::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,144,217,0.15) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(74,144,217,0.15) 2px, transparent 2px);
+      background-size: 66px 66px;
+    }
+
+    .m-you {
+      position: absolute;
+      width: 12px; height: 12px;
+      background: var(--blue);
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 4px rgba(74,144,217,0.2);
+      z-index: 5;
+    }
+
+    .m-pin {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 5;
+    }
+
+    .m-av {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .m-tri {
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      margin-top: -1px;
+    }
+
+    .m-lbl {
+      background: rgba(6,14,26,0.9);
+      border-radius: 3px;
+      padding: 1px 4px;
+      font-size: 7px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--white);
+    }
+
+    .phn-card {
+      margin: 6px;
+      background: rgba(74,144,217,0.12);
+      border: 1px solid rgba(74,144,217,0.22);
+      border-radius: 8px;
+      padding: 7px 9px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .phn-card-ic {
+      width: 24px; height: 24px;
+      background: var(--blue);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .phn-card-t { font-size: 9px; font-weight: 600; color: var(--white); }
+    .phn-card-s { font-size: 8px; color: var(--blue-lt); margin-top: 1px; }
+
+    .phn-rows { padding: 4px 0; }
+
+    .phn-r-h {
+      font-size: 8px; font-weight: 700; letter-spacing: 0.8px;
+      text-transform: uppercase; color: var(--gray);
+      padding: 0 8px 4px;
+    }
+
+    .phn-r {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+    }
+
+    .phn-r-av {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .phn-r-name { font-size: 10px; font-weight: 600; color: var(--white); flex: 1; }
+    .phn-r-d { font-size: 9px; color: var(--gray); }
+    .phn-r-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+    /* EVENT screen */
+    .phn-event-header {
+      background: linear-gradient(135deg, var(--blue-x), var(--blue));
+      padding: 14px 10px 10px;
+    }
+    .phn-ev-tag { font-size: 8px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+    .phn-ev-title { font-size: 14px; font-weight: 800; color: var(--white); }
+    .phn-ev-sub { font-size: 9px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+    .phn-ev-list { padding: 8px; }
+    .phn-ev-item {
+      background: var(--navy3);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 8px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .phn-ev-av {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .phn-ev-name { font-size: 10px; font-weight: 600; color: var(--white); }
+    .phn-ev-d { font-size: 9px; color: var(--gray); margin-top: 1px; }
+
+    .phn-ev-action {
+      margin-left: auto;
+      background: var(--blue);
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    /* FEATURE STRIP */
+    .strip {
+      padding: 100px 40px;
+      background: var(--navy);
+    }
+
+    .strip-inner { max-width: 1100px; margin: 0 auto; }
+
+    .strip-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .strip-head h2 {
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+    }
+
+    .strip-head p {
+      font-size: 16px;
+      color: var(--gray-lt);
+      max-width: 340px;
+      line-height: 1.65;
+    }
+
+    .strip-items {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .strip-item {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .strip-item:hover {
+      background: var(--navy3);
+      border-color: rgba(74,144,217,0.4);
+      transform: translateY(-4px);
+    }
+
+    .strip-ic {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(74,144,217,0.1);
+      border: 1px solid rgba(74,144,217,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .strip-title { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 8px; letter-spacing: -0.3px; }
+    .strip-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+    /* PRIVACY */
+    .priv {
+      padding: 100px 40px;
+      background: var(--navy2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .priv::before {
+      content: '';
+      position: absolute;
+      right: -200px; top: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(74,144,217,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .priv-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .priv-left h2 {
+      font-size: clamp(36px, 4.5vw, 58px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+
+    .priv-left p {
+      font-size: 17px;
+      color: var(--gray-lt);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .priv-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-lt);
+      margin-bottom: 20px;
+    }
+
+    .priv-tag::before {
+      content: '';
+      width: 16px; height: 2px;
+      background: var(--blue);
+    }
+
+    .priv-stats {
+      display: flex;
+      gap: 32px;
+    }
+
+    .priv-stat { }
+    .priv-stat-num { font-size: 28px; font-weight: 900; color: var(--white); letter-spacing: -1px; }
+    .priv-stat-label { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+    .priv-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .priv-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .priv-card-icon { font-size: 24px; margin-bottom: 12px; }
+    .priv-card-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+    .priv-card-desc { font-size: 12px; color: var(--gray); line-height: 1.55; }
 
     /* DOWNLOAD */
-    .dl-section { position: relative; overflow: hidden; }
-    .dl-inner { position: relative; z-index: 1; text-align: center; background: linear-gradient(135deg, rgba(0,198,255,0.08), rgba(139,92,246,0.1), rgba(255,107,157,0.06)); border: 1px solid rgba(0,198,255,0.15); border-radius: 24px; padding: 80px 48px; }
-    .dl-inner::before { content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,198,255,0.1), transparent 60%); pointer-events: none; }
-    .dl-inner h2 { font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 12px; position: relative; }
-    .dl-inner h2 .grad-text { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .dl-inner p { color: var(--muted); font-size: 1.05rem; margin-bottom: 36px; position: relative; }
-    .dl-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .dl-section {
+      padding: 120px 40px;
+      text-align: center;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dl-section::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1000px; height: 400px;
+      background: radial-gradient(ellipse at bottom, rgba(74,144,217,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .dl-section h2 {
+      font-size: clamp(44px, 6vw, 78px);
+      font-weight: 900;
+      letter-spacing: -2.5px;
+      line-height: 1.0;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dl-accent { color: var(--blue); }
+
+    .dl-section p {
+      font-size: 18px;
+      color: var(--gray-lt);
+      max-width: 420px;
+      margin: 0 auto 44px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dl-btns {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dl-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .dl-ios { background: var(--white); color: #000; }
+    .dl-and { background: var(--navy3); color: var(--white); border: 1px solid var(--border); }
+    .dl-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+    .dl-btn svg { width: 20px; height: 20px; }
+    .dl-btn-t { display: flex; flex-direction: column; }
+    .dl-btn-t .s { font-size: 10px; opacity: 0.55; font-weight: 500; }
+    .dl-btn-t .b { font-size: 15px; font-weight: 800; }
 
     /* FOOTER */
-    footer { border-top: 1px solid var(--border); padding: 56px 0 28px; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-    .f-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; margin-bottom: 10px; }
-    .f-logo img { width: 26px; height: 26px; }
-    .f-logo span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .f-fine { font-size: 0.75rem; color: var(--muted); margin-bottom: 5px; }
-    .f-tag { font-size: 0.85rem; color: var(--muted); }
-    .footer-col h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
-    .footer-col li { margin-bottom: 10px; }
-    .footer-col a { font-size: 0.875rem; color: rgba(255,255,255,0.45); transition: color 0.2s; }
-    .footer-col a:hover { color: var(--white); }
-    .footer-bottom { border-top: 1px solid var(--border); padding-top: 22px; font-size: 0.8rem; color: var(--muted); }
+    footer {
+      background: var(--navy2);
+      border-top: 1px solid var(--border);
+      padding: 44px 40px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .f-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .f-brand img { width: 22px; }
+    .f-brand span { font-size: 15px; font-weight: 800; color: var(--white); }
+
+    .f-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .f-links a { text-decoration: none; font-size: 13px; color: var(--gray); transition: color 0.2s; }
+    .f-links a:hover { color: var(--white); }
+
+    .f-copy { font-size: 12px; color: var(--gray); }
 
     @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 48px; }
-      .hero p { margin: 0 auto 36px; }
-      .hero-ctas { justify-content: center; }
-      .hero-stats { justify-content: center; }
-      .feat-grid { grid-template-columns: repeat(2, 1fr); }
-      .steps-grid { grid-template-columns: 1fr; gap: 24px; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 600px) {
+      nav { width: calc(100% - 24px); padding: 0 16px; }
       .nav-links { display: none; }
-      .nav-toggle { display: flex; }
-      .feat-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .dl-inner { padding: 48px 24px; }
+      .hero { padding: 90px 24px 60px; }
+      .showcase { padding: 60px 24px; }
+      .phones-row { gap: 10px; }
+      .phn-center { width: 200px; height: 420px; }
+      .phn-left, .phn-right { display: none; }
+      .strip { padding: 70px 24px; }
+      .strip-items { grid-template-columns: 1fr 1fr; }
+      .priv { padding: 70px 24px; }
+      .priv-inner { grid-template-columns: 1fr; gap: 40px; }
+      .priv-right { grid-template-columns: 1fr 1fr; }
+      .dl-section { padding: 80px 24px; }
+      footer { padding: 32px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 600px) {
+      .strip-items { grid-template-columns: 1fr; }
+      .priv-right { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<nav id="nav">
-  <div class="container nav-inner">
-    <a href="#" class="nav-logo"><img src="../../assets/logo.svg" alt="InTown"><span>InTown</span></a>
-    <ul class="nav-links">
-      <li><a href="#features">Use Cases</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#">Blog</a></li>
-      <li><a href="#download" class="nav-cta">Download</a></li>
-    </ul>
-    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+<!-- NAV -->
+<nav>
+  <a href="../../" class="logo">
+    <img src="../../assets/logo.svg" alt="InTown">
+    <span class="logo-name">InTown</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#privacy">Privacy</a></li>
+    <li><a href="../../blog/">Blog</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#download" class="nav-dl">Download Free</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="mesh"><div class="mesh-blob mb1"></div><div class="mesh-blob mb2"></div><div class="mesh-blob mb3"></div></div>
-  <div class="container hero-inner">
-    <div>
-      <div class="hero-eyebrow">Location Aware Social</div>
-      <h1>Know When Your <span class="grad-text">Friends</span> Are In Town</h1>
-      <p>See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.</p>
-      <div class="hero-ctas">
-        <a href="#download" class="btn-grad">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-          App Store
-        </a>
-        <a href="#download" class="btn-border">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
-          Google Play
-        </a>
+  <div class="hero-glow"></div>
+  <div class="hero-rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-chip">
+      <div class="hero-chip-dot"></div>
+      Live on iOS &amp; Android
+    </div>
+
+    <h1>Never miss a<br><span class="accent">nearby</span> friend<br>again.</h1>
+
+    <p class="hero-sub">InTown notifies you when friends are close — so spontaneous hangouts actually happen. No planning required.</p>
+
+    <div class="hero-btns">
+      <a href="#download" class="btn-a btn-primary-v3">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        <div class="btn-a-text">
+          <span class="s">Download on the</span>
+          <span class="b">App Store</span>
+        </div>
+      </a>
+      <a href="#download" class="btn-a btn-secondary-v3">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
+        </svg>
+        <div class="btn-a-text">
+          <span class="s">Get it on</span>
+          <span class="b">Google Play</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="hero-social-proof">
+      <div class="hsp-item">
+        <div class="hsp-num">10K+</div>
+        <div class="hsp-label">Users</div>
       </div>
-      <div class="hero-stats">
-        <div><div class="stat-num">10K+</div><div class="stat-label">Active Users</div></div>
-        <div class="stat-sep"></div>
-        <div><div class="stat-num">50K+</div><div class="stat-label">Events Created</div></div>
-        <div class="stat-sep"></div>
-        <div><div class="stat-num">100+</div><div class="stat-label">Cities</div></div>
+      <div class="hsp-div"></div>
+      <div class="hsp-item">
+        <div class="hsp-num">100+</div>
+        <div class="hsp-label">Cities</div>
+      </div>
+      <div class="hsp-div"></div>
+      <div class="hsp-item">
+        <div class="hsp-num">Free</div>
+        <div class="hsp-label">Always</div>
       </div>
     </div>
-    <div class="phone-outer">
-      <div class="phone">
-        <div class="phone-notch"><div class="notch-pill"></div></div>
-        <div class="phone-status"><span>9:41</span><span>●●● ▾</span></div>
-        <div class="phone-map">
-          <div class="pm-grid"></div>
-          <div class="pm-ring2"></div>
-          <div class="pm-ring"></div>
-          <div class="pm-dot"></div>
-          <div class="pm-pin pin-a">Jake</div>
-          <div class="pm-pin pin-b">Maya</div>
-          <div class="pm-pin pin-c">Sam</div>
+  </div>
+</section>
+
+<!-- PHONE SHOWCASE -->
+<section class="showcase">
+  <div class="showcase-inner">
+    <div class="showcase-label">See It In Action</div>
+    <h2 class="showcase-title">Three screens.<br>One idea: connect.</h2>
+
+    <div class="phones-row">
+      <!-- Left phone: friend list -->
+      <div class="phn phn-left">
+        <div class="phn-notch"></div>
+        <div class="phn-body">
+          <div class="phn-topbar"><span>9:41</span><span>●●● 🔋</span></div>
+          <div class="phn-header">
+            <div>
+              <div class="phn-title">InTown</div>
+              <div class="phn-subtitle">4 friends nearby</div>
+            </div>
+            <div class="phn-icon-btn">🔔</div>
+          </div>
+          <div style="height:130px;" class="phn-map">
+            <div class="m-you" style="top:62px; left:82px;"></div>
+            <div class="m-pin" style="top:15px; left:22px;">
+              <div class="m-av" style="background:#2563EB; color:#fff;">J</div>
+              <div class="m-tri" style="border-top:6px solid #2563EB; border-left:4px solid transparent; border-right:4px solid transparent;"></div>
+              <div class="m-lbl">Jake</div>
+            </div>
+            <div class="m-pin" style="top:30px; right:14px;">
+              <div class="m-av" style="background:#7C3AED; color:#fff;">M</div>
+              <div class="m-tri" style="border-top:6px solid #7C3AED; border-left:4px solid transparent; border-right:4px solid transparent;"></div>
+              <div class="m-lbl">Maya</div>
+            </div>
+          </div>
+          <div class="phn-rows">
+            <div class="phn-r-h">Nearby</div>
+            <div class="phn-r">
+              <div class="phn-r-av" style="background:#2563EB; color:#fff;">J</div>
+              <div class="phn-r-name">Jake</div>
+              <div class="phn-r-d">0.3mi</div>
+              <div class="phn-r-dot" style="background:#4CAF50;"></div>
+            </div>
+            <div class="phn-r">
+              <div class="phn-r-av" style="background:#7C3AED; color:#fff;">M</div>
+              <div class="phn-r-name">Maya</div>
+              <div class="phn-r-d">0.8mi</div>
+              <div class="phn-r-dot" style="background:#4CAF50;"></div>
+            </div>
+            <div class="phn-r">
+              <div class="phn-r-av" style="background:#059669; color:#fff;">S</div>
+              <div class="phn-r-name">Sam</div>
+              <div class="phn-r-d">1.2mi</div>
+              <div class="phn-r-dot" style="background:#F59E0B;"></div>
+            </div>
+          </div>
         </div>
-        <div class="phone-sheet">
-          <div class="ps-title">InTown (3) <span>All Friends →</span></div>
-          <div class="ps-row">
-            <div class="ps-av" style="background:linear-gradient(135deg,#00C6FF,#8B5CF6)">JK</div>
-            <div class="ps-info"><div class="ps-name">Jake</div><div class="ps-dist">0.3 miles away</div></div>
-            <div class="ps-badge" style="background:rgba(0,198,255,0.12);color:#00C6FF">Active</div>
+      </div>
+
+      <!-- Center phone: notification + map -->
+      <div class="phn phn-center">
+        <div class="phn-notch"></div>
+        <div class="phn-body">
+          <div class="phn-topbar"><span>9:41</span><span>●●● 🔋</span></div>
+          <div class="phn-header">
+            <div>
+              <div class="phn-title">InTown</div>
+              <div class="phn-subtitle">See who's around</div>
+            </div>
+            <div class="phn-icon-btn">👤</div>
           </div>
-          <div class="ps-row">
-            <div class="ps-av" style="background:linear-gradient(135deg,#8B5CF6,#FF6B9D)">MY</div>
-            <div class="ps-info"><div class="ps-name">Maya</div><div class="ps-dist">1.2 miles away</div></div>
-            <div class="ps-badge" style="background:rgba(139,92,246,0.12);color:#8B5CF6">Nearby</div>
+          <div style="height:180px;" class="phn-map">
+            <div class="m-you" style="top:85px; left:100px;"></div>
+            <div class="m-pin" style="top:20px; left:30px;">
+              <div class="m-av" style="background:#2563EB; color:#fff;">J</div>
+              <div class="m-tri" style="border-top:6px solid #2563EB; border-left:4px solid transparent; border-right:4px solid transparent;"></div>
+              <div class="m-lbl">Jake · 0.3mi</div>
+            </div>
+            <div class="m-pin" style="top:45px; right:18px;">
+              <div class="m-av" style="background:#7C3AED; color:#fff;">M</div>
+              <div class="m-tri" style="border-top:6px solid #7C3AED; border-left:4px solid transparent; border-right:4px solid transparent;"></div>
+              <div class="m-lbl">Maya · 0.8mi</div>
+            </div>
+            <div class="m-pin" style="bottom:14px; left:55px;">
+              <div class="m-av" style="background:#059669; color:#fff;">S</div>
+              <div class="m-tri" style="border-top:6px solid #059669; border-left:4px solid transparent; border-right:4px solid transparent;"></div>
+              <div class="m-lbl">Sam · 1.1mi</div>
+            </div>
           </div>
-          <div class="ps-row">
-            <div class="ps-av" style="background:linear-gradient(135deg,#FF6B9D,#F59E0B)">SM</div>
-            <div class="ps-info"><div class="ps-name">Sam</div><div class="ps-dist">2.1 miles away</div></div>
-            <div class="ps-badge" style="background:rgba(255,107,157,0.12);color:#FF6B9D">InTown</div>
+          <div class="phn-card">
+            <div class="phn-card-ic">📍</div>
+            <div>
+              <div class="phn-card-t">Jake is nearby!</div>
+              <div class="phn-card-s">0.3 miles away · Tap to say hey</div>
+            </div>
+          </div>
+          <div class="phn-rows">
+            <div class="phn-r-h">Nearby Right Now</div>
+            <div class="phn-r">
+              <div class="phn-r-av" style="background:#2563EB; color:#fff;">J</div>
+              <div class="phn-r-name">Jake</div>
+              <div class="phn-r-d">0.3mi</div>
+              <div class="phn-r-dot" style="background:#4CAF50;"></div>
+            </div>
+            <div class="phn-r">
+              <div class="phn-r-av" style="background:#7C3AED; color:#fff;">M</div>
+              <div class="phn-r-name">Maya</div>
+              <div class="phn-r-d">0.8mi</div>
+              <div class="phn-r-dot" style="background:#4CAF50;"></div>
+            </div>
+            <div class="phn-r">
+              <div class="phn-r-av" style="background:#059669; color:#fff;">S</div>
+              <div class="phn-r-name">Sam</div>
+              <div class="phn-r-d">1.1mi</div>
+              <div class="phn-r-dot" style="background:#4CAF50;"></div>
+            </div>
+            <div class="phn-r">
+              <div class="phn-r-av" style="background:#D97706; color:#fff;">A</div>
+              <div class="phn-r-name">Alex</div>
+              <div class="phn-r-d">2.4mi</div>
+              <div class="phn-r-dot" style="background:#6B7280;"></div>
+            </div>
           </div>
         </div>
-        <div class="phone-nav">
-          <div class="pn-item active"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg><span>Map</span></div>
-          <div class="pn-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg><span>Calendar</span></div>
-          <div class="pn-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span>Inbox</span></div>
-          <div class="pn-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Profile</span></div>
+      </div>
+
+      <!-- Right phone: events/plans -->
+      <div class="phn phn-right">
+        <div class="phn-notch"></div>
+        <div class="phn-body">
+          <div class="phn-topbar"><span>9:41</span><span>●●● 🔋</span></div>
+          <div class="phn-event-header">
+            <div class="phn-ev-tag">📅 Tonight</div>
+            <div class="phn-ev-title">Spontaneous Hangout</div>
+            <div class="phn-ev-sub">3 friends are available nearby</div>
+          </div>
+          <div class="phn-ev-list">
+            <div class="phn-ev-item">
+              <div class="phn-ev-av" style="background:#2563EB; color:#fff;">J</div>
+              <div>
+                <div class="phn-ev-name">Jake M.</div>
+                <div class="phn-ev-d">0.3 miles · available</div>
+              </div>
+              <div class="phn-ev-action">Ping</div>
+            </div>
+            <div class="phn-ev-item">
+              <div class="phn-ev-av" style="background:#7C3AED; color:#fff;">M</div>
+              <div>
+                <div class="phn-ev-name">Maya R.</div>
+                <div class="phn-ev-d">0.8 miles · available</div>
+              </div>
+              <div class="phn-ev-action">Ping</div>
+            </div>
+            <div class="phn-ev-item">
+              <div class="phn-ev-av" style="background:#059669; color:#fff;">S</div>
+              <div>
+                <div class="phn-ev-name">Sam K.</div>
+                <div class="phn-ev-d">1.1 miles · available</div>
+              </div>
+              <div class="phn-ev-action">Ping</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features-bg" id="features">
-  <div class="container">
-    <div class="sec-header">
-      <span class="sec-label">Use Cases</span>
-      <h2 class="sec-title">Real Moments, <span class="grad-text">Real Connections</span></h2>
-      <p class="sec-sub">InTown shines in the moments that matter — when a friend is closer than you think.</p>
+<!-- FEATURE STRIP -->
+<section class="strip" id="features">
+  <div class="strip-inner">
+    <div class="strip-head">
+      <h2>Built around<br>real moments.</h2>
+      <p>Every feature exists to reduce friction between "I wonder if anyone's around" and actually hanging out.</p>
     </div>
-    <div class="feat-grid">
-      <div class="feat-card"><div class="feat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="feat-title">College Reunion, Zero Planning</div><div class="feat-desc">InTown notifies you the moment your friend enters your radius — before they even text.</div><span class="feat-tag">Auto-detect</span></div>
-      <div class="feat-card"><div class="feat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="feat-title">Spontaneous Friday Night</div><div class="feat-desc">Plans fell through. InTown shows three friends within a mile right now. One tap and the night is saved.</div><span class="feat-tag">Real-time</span></div>
-      <div class="feat-card"><div class="feat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div><div class="feat-title">Lost at a Festival</div><div class="feat-desc">See which friends are within 500 feet. A shared live map beats 20 texts when signal's weak.</div><span class="feat-tag">Live Map</span></div>
-      <div class="feat-card"><div class="feat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div class="feat-title">Conference Networking</div><div class="feat-desc">See mutual connections in the same building. Turn a badge swap into a real coffee chat.</div><span class="feat-tag">Proximity</span></div>
-      <div class="feat-card"><div class="feat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="feat-title">Road Trip Convoy</div><div class="feat-desc">InTown's live map keeps every car in the convoy without a single group-text update.</div><span class="feat-tag">Tracking</span></div>
-      <div class="feat-card"><div class="feat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="feat-title">New City, Hidden Connections</div><div class="feat-desc">See which friends are locals — or also visiting — and ready to be your guide.</div><span class="feat-tag">Discovery</span></div>
+
+    <div class="strip-items">
+      <div class="strip-item">
+        <div class="strip-ic">🗺️</div>
+        <div class="strip-title">Live friend map</div>
+        <div class="strip-desc">See who's nearby in real time. Updated continuously, not "recently seen."</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-ic">🔔</div>
+        <div class="strip-title">Instant alerts</div>
+        <div class="strip-desc">Get notified the moment a friend enters your area. Zero effort required.</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-ic">👻</div>
+        <div class="strip-title">Ghost mode</div>
+        <div class="strip-desc">Disappear instantly. Nobody is notified. Perfect for when you need a break.</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-ic">📏</div>
+        <div class="strip-title">Custom radius</div>
+        <div class="strip-desc">You decide what "nearby" means — from half a mile to across town.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="steps-bg" id="how-it-works">
-  <div class="container">
-    <div class="sec-header" style="text-align:center">
-      <span class="sec-label">Simple</span>
-      <h2 class="sec-title">Get Started in <span class="grad-text">3 Steps</span></h2>
-      <p class="sec-sub" style="margin:0 auto">Start connecting with friends in minutes.</p>
-    </div>
-    <div class="steps-grid">
-      <div class="step"><div class="step-num">01</div><div class="step-title">Download &amp; Sign Up</div><p class="step-desc">Get InTown from the App Store or Google Play. Create your profile in under a minute.</p></div>
-      <div class="step"><div class="step-num">02</div><div class="step-title">Add Your Friends</div><p class="step-desc">Invite friends from your contacts or share your invite link. Build your InTown circle.</p></div>
-      <div class="step"><div class="step-num">03</div><div class="step-title">See Who's Nearby</div><p class="step-desc">Open the map, set your radius, and instantly see which friends are in town.</p></div>
-    </div>
-  </div>
-</section>
+<!-- PRIVACY -->
+<section class="priv" id="privacy">
+  <div class="priv-inner">
+    <div class="priv-left">
+      <div class="priv-tag">Your Privacy</div>
+      <h2>Location sharing<br>done right.</h2>
+      <p>We built InTown with privacy as a core feature, not a legal afterthought. You have complete control, always.</p>
 
-<!-- TESTIMONIAL -->
-<section class="testimonial-bg">
-  <div class="container">
-    <div class="testimonial-inner">
-      <span class="big-quote">"</span>
-      <p class="quote-body">InTown completely changed how I hang out with friends. I used to miss people visiting my city all the time. Now I never miss a chance to meet up.</p>
-      <div class="quote-auth">
-        <div class="qa-av"></div>
-        <div><div class="qa-name">Happy InTown User</div><div class="qa-loc">Chapel Hill, NC</div></div>
+      <div class="priv-stats">
+        <div class="priv-stat">
+          <div class="priv-stat-num">0</div>
+          <div class="priv-stat-label">Location history stored</div>
+        </div>
+        <div class="priv-stat">
+          <div class="priv-stat-num">0</div>
+          <div class="priv-stat-label">Third parties with your data</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="priv-right">
+      <div class="priv-card">
+        <div class="priv-card-icon">🎯</div>
+        <div class="priv-card-title">Approximate only</div>
+        <div class="priv-card-desc">Friends see a radius, never your exact address or GPS coordinates.</div>
+      </div>
+      <div class="priv-card">
+        <div class="priv-card-icon">👥</div>
+        <div class="priv-card-title">Mutual friends only</div>
+        <div class="priv-card-desc">You must both accept to see each other. No one-sided tracking.</div>
+      </div>
+      <div class="priv-card">
+        <div class="priv-card-icon">⚡</div>
+        <div class="priv-card-title">One tap off</div>
+        <div class="priv-card-desc">Pause sharing instantly, with no notification sent to anyone.</div>
+      </div>
+      <div class="priv-card">
+        <div class="priv-card-icon">🛡️</div>
+        <div class="priv-card-title">No data selling</div>
+        <div class="priv-card-desc">We don't monetize your data. No ads, no brokers, no exceptions.</div>
       </div>
     </div>
   </div>
@@ -326,44 +1147,46 @@
 
 <!-- DOWNLOAD -->
 <section class="dl-section" id="download">
-  <div class="container">
-    <div class="dl-inner">
-      <h2>Ready to See Who's <span class="grad-text">InTown</span>?</h2>
-      <p>Download the app for free and start connecting with your friends today.</p>
-      <div class="dl-btns">
-        <a href="#" class="btn-grad" style="font-size:1rem;padding:15px 28px">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-          Download for iOS
-        </a>
-        <a href="#" class="btn-border" style="font-size:1rem;padding:15px 28px">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
-          Download for Android
-        </a>
+  <h2>Your crew is<br><span class="dl-accent">out there.</span></h2>
+  <p>Find them. Download InTown free today on iOS and Android.</p>
+
+  <div class="dl-btns">
+    <a href="#" class="dl-btn dl-ios">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      <div class="dl-btn-t">
+        <span class="s">Download on the</span>
+        <span class="b">App Store</span>
       </div>
-    </div>
+    </a>
+    <a href="#" class="dl-btn dl-and">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
+      </svg>
+      <div class="dl-btn-t">
+        <span class="s">Get it on</span>
+        <span class="b">Google Play</span>
+      </div>
+    </a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <a href="#" class="f-logo"><img src="../../assets/logo.svg" alt="InTown"><span>InTown</span></a>
-        <p class="f-fine">A Sangforth Technologies, LLC app</p>
-        <p class="f-tag">Know when your friends are nearby.</p>
-      </div>
-      <div class="footer-col"><h4>Product</h4><ul><li><a href="#features">Use Cases</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#download">Download</a></li></ul></div>
-      <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="../../privacy.html">Privacy Policy</a></li><li><a href="../../terms.html">Terms of Service</a></li></ul></div>
-      <div class="footer-col"><h4>Resources</h4><ul><li><a href="../../blog/">Blog</a></li><li><a href="#">Instagram</a></li><li><a href="#">Twitter</a></li><li><a href="../../contact.html">Contact Us</a></li></ul></div>
+  <div class="footer-inner">
+    <a href="../../" class="f-brand">
+      <img src="../../assets/logo.svg" alt="InTown">
+      <span>InTown</span>
+    </a>
+    <div class="f-links">
+      <a href="../../privacy.html">Privacy Policy</a>
+      <a href="../../terms.html">Terms of Service</a>
+      <a href="../../blog/">Blog</a>
+      <a href="../../contact.html">Contact</a>
     </div>
-    <div class="footer-bottom">&copy; 2026 Sangforth Technologies LLC. All rights reserved.</div>
+    <p class="f-copy">© 2025 InTown · A Sangforth Technologies, LLC app</p>
   </div>
 </footer>
 
-<script>
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
-</script>
 </body>
 </html>

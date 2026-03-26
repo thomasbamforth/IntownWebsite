@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InTown — Know When Your Friends Are Nearby</title>
-  <meta name="description" content="See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.">
+  <title>InTown — Your friends are closer than you think</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,346 +12,1141 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #050B14;
-      --bg2: #080F1C;
-      --blue: #4F8EF7;
-      --purple: #8B5CF6;
-      --cyan: #38BDF8;
-      --white: #FFFFFF;
-      --muted: #8899BB;
-      --card-bg: rgba(255,255,255,0.04);
-      --card-border: rgba(255,255,255,0.08);
-      --glow-blue: rgba(79,142,247,0.25);
-      --glow-purple: rgba(139,92,246,0.2);
-      --font: 'Inter', -apple-system, sans-serif;
-      --ease: cubic-bezier(0.4,0,0.2,1);
+      --bg:       #060E1A;
+      --bg2:      #0B1A2E;
+      --bg3:      #0F2440;
+      --bg4:      #152D4A;
+      --blue:     #4A90D9;
+      --blue-lt:  #7BB3E8;
+      --blue-dim: rgba(74,144,217,0.15);
+      --blue-glow:rgba(74,144,217,0.25);
+      --white:    #FFFFFF;
+      --gray:     #8899AA;
+      --gray-lt:  #B0BEC5;
+      --border:   rgba(74,144,217,0.18);
     }
 
-    html { scroll-behavior: smooth; }
-    body { font-family: var(--font); background: var(--bg); color: var(--white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-    img { max-width: 100%; display: block; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
-    /* Ambient orbs */
-    .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
-    .orb-1 { width: 600px; height: 600px; background: var(--glow-blue); top: -200px; right: -100px; }
-    .orb-2 { width: 400px; height: 400px; background: var(--glow-purple); top: 200px; left: -150px; }
-    .orb-3 { width: 500px; height: 500px; background: var(--glow-blue); bottom: -100px; right: 100px; opacity: 0.5; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+    }
 
     /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 0; transition: all 0.3s var(--ease); }
-    nav.scrolled { background: rgba(5,11,20,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--card-border); padding: 14px 0; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(6,14,26,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
     .nav-logo img { width: 28px; height: 28px; }
-    .nav-links { display: flex; align-items: center; gap: 32px; }
-    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--muted); transition: color 0.2s; }
+
+    .nav-logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--gray-lt);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
     .nav-links a:hover { color: var(--white); }
-    .nav-cta { background: var(--blue); color: var(--white) !important; padding: 9px 20px; border-radius: 8px; font-weight: 600 !important; transition: opacity 0.2s !important; }
-    .nav-cta:hover { opacity: 0.85; }
-    .nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
-    .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; }
+
+    .nav-dl {
+      background: var(--blue);
+      color: var(--white) !important;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      font-size: 14px;
+      transition: background 0.2s, transform 0.1s !important;
+    }
+
+    .nav-dl:hover { background: var(--blue-lt) !important; transform: translateY(-1px); }
 
     /* HERO */
-    .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px; overflow: hidden; }
-    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
-    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.25); color: var(--blue); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 24px; }
-    .hero-tag span { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-    .hero h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
-    .grad { background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 480px; margin-bottom: 36px; line-height: 1.7; }
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
-    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: var(--white); padding: 13px 24px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 30px rgba(79,142,247,0.35); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(79,142,247,0.45); }
-    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--white); padding: 13px 24px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; transition: border-color 0.2s, background 0.2s; backdrop-filter: blur(10px); }
-    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); }
-    .btn-icon { width: 18px; height: 18px; }
-    .stats { display: flex; gap: 32px; }
-    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
-    .stat-lbl { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
-    .stat-div { width: 1px; background: var(--card-border); }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -100px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(74,144,217,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -150px; left: -50px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(74,144,217,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-left { max-width: 540px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-dim);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 14px;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero-badge span {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue-lt);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(40px, 5vw, 62px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+      color: var(--white);
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--gray-lt);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .badges {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .badge-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--white);
+      color: #000;
+      text-decoration: none;
+      padding: 11px 20px;
+      border-radius: 10px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .badge-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+
+    .badge-btn svg { width: 22px; height: 22px; }
+
+    .badge-btn-text { display: flex; flex-direction: column; }
+    .badge-btn-text .line1 { font-size: 10px; font-weight: 500; opacity: 0.7; line-height: 1; }
+    .badge-btn-text .line2 { font-size: 15px; font-weight: 700; line-height: 1.2; }
+
+    .hero-stats {
+      display: flex;
+      gap: 36px;
+    }
+
+    .stat-item {}
+    .stat-num {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--gray);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .stat-div {
+      width: 1px;
+      background: var(--border);
+      align-self: stretch;
+    }
 
     /* PHONE MOCKUP */
-    .phone-wrap { display: flex; justify-content: center; position: relative; }
-    .phone { width: 270px; background: #0D1526; border-radius: 40px; border: 1px solid rgba(79,142,247,0.25); box-shadow: 0 0 80px rgba(79,142,247,0.2), 0 40px 80px rgba(0,0,0,0.6); overflow: hidden; position: relative; }
-    .phone::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 90px; height: 28px; background: #0D1526; border-radius: 0 0 18px 18px; z-index: 10; }
-    .phone-status { display: flex; justify-content: space-between; padding: 36px 18px 10px; font-size: 0.7rem; color: var(--muted); }
-    .phone-map { height: 220px; background: linear-gradient(135deg, #0A2040, #0F2D54, #112848); position: relative; overflow: hidden; }
-    .map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(79,142,247,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(79,142,247,0.06) 1px, transparent 1px); background-size: 30px 30px; }
-    .map-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 130px; height: 130px; border: 1.5px solid rgba(79,142,247,0.4); border-radius: 50%; box-shadow: inset 0 0 40px rgba(79,142,247,0.08); }
-    .map-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 12px; height: 12px; background: var(--blue); border-radius: 50%; box-shadow: 0 0 16px var(--blue); }
-    .map-pin { position: absolute; background: var(--purple); color: var(--white); font-size: 0.55rem; font-weight: 700; padding: 3px 7px; border-radius: 10px; white-space: nowrap; }
-    .map-pin::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border: 4px solid transparent; border-top-color: var(--purple); }
-    .pin-1 { top: 28%; left: 22%; }
-    .pin-2 { top: 40%; right: 18%; }
-    .pin-3 { bottom: 25%; left: 40%; }
-    .phone-sheet { background: #0D1526; padding: 16px; border-top: 1px solid var(--card-border); }
-    .sheet-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-    .sheet-title span { color: var(--blue); font-size: 0.75rem; font-weight: 600; }
-    .friend-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-    .friend-row:last-child { border-bottom: none; }
-    .friend-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; }
-    .av-blue { background: linear-gradient(135deg, #4F8EF7, #38BDF8); }
-    .av-purple { background: linear-gradient(135deg, #8B5CF6, #C084FC); }
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .phone-wrap {
+      position: relative;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(-4deg); }
+      50% { transform: translateY(-16px) rotate(-4deg); }
+    }
+
+    .phone {
+      width: 270px;
+      height: 560px;
+      background: #0A1628;
+      border-radius: 44px;
+      border: 2px solid rgba(74,144,217,0.3);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 40px 100px rgba(0,0,0,0.6),
+        0 0 60px rgba(74,144,217,0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Notch */
+    .phone-notch {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 100px; height: 30px;
+      background: #060E1A;
+      border-radius: 0 0 20px 20px;
+      z-index: 10;
+    }
+
+    /* Status bar */
+    .phone-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 20px 4px;
+      margin-top: 30px;
+    }
+
+    .phone-status-time {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .phone-status-icons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .phone-status-icons span {
+      font-size: 10px;
+      color: var(--white);
+    }
+
+    /* App header */
+    .phone-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .phone-app-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .phone-header-icon {
+      width: 28px; height: 28px;
+      background: var(--blue-dim);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Map area */
+    .phone-map {
+      height: 200px;
+      background: #0D1F35;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grid lines to simulate map */
+    .phone-map::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,144,217,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,144,217,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* Streets */
+    .phone-map::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,144,217,0.18) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(74,144,217,0.18) 2px, transparent 2px);
+      background-size: 84px 84px;
+    }
+
+    .friend-pin {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .pin-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 2.5px solid var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .pin-triangle {
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid var(--white);
+      margin-top: -2px;
+    }
+
+    .pin-name {
+      background: rgba(6,14,26,0.85);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--white);
+      white-space: nowrap;
+    }
+
+    /* You marker */
+    .you-marker {
+      position: absolute;
+      width: 16px; height: 16px;
+      background: var(--blue);
+      border-radius: 50%;
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 6px rgba(74,144,217,0.2);
+    }
+
+    /* Friends list */
+    .phone-list {
+      padding: 10px 0;
+    }
+
+    .phone-list-header {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 0 16px 8px;
+    }
+
+    .friend-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+    }
+
+    .friend-row:hover { background: rgba(255,255,255,0.03); }
+
+    .friend-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
     .friend-info { flex: 1; }
-    .friend-name { font-size: 0.75rem; font-weight: 600; }
-    .friend-dist { font-size: 0.65rem; color: var(--muted); }
-    .phone-nav { display: flex; justify-content: space-around; padding: 10px 16px 14px; border-top: 1px solid var(--card-border); }
-    .pnav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.55rem; color: var(--muted); }
-    .pnav-item.active { color: var(--blue); }
-    .pnav-icon { width: 18px; height: 18px; }
+    .friend-name { font-size: 13px; font-weight: 600; color: var(--white); }
+    .friend-dist { font-size: 11px; color: var(--gray); margin-top: 1px; }
 
-    /* SECTION COMMON */
-    section { padding: 96px 0; position: relative; }
-    .section-tag { display: inline-block; background: rgba(79,142,247,0.1); color: var(--blue); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; margin-bottom: 14px; }
-    .section-title { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; }
-    .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 580px; }
-    .section-header { margin-bottom: 56px; }
+    .friend-status {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4CAF50;
+      flex-shrink: 0;
+    }
 
-    /* FEATURES */
-    .features { background: var(--bg2); }
-    .features::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(79,142,247,0.06), transparent); }
-    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .feat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; transition: border-color 0.3s, transform 0.3s; backdrop-filter: blur(10px); }
-    .feat-card:hover { border-color: rgba(79,142,247,0.3); transform: translateY(-4px); }
-    .feat-icon { width: 44px; height: 44px; background: rgba(79,142,247,0.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--blue); }
-    .feat-icon svg { width: 22px; height: 22px; }
-    .feat-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-    .feat-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
-    .feat-why { font-size: 0.78rem; color: rgba(79,142,247,0.8); }
-    .feat-why strong { color: var(--blue); }
+    /* Notification card */
+    .phone-notif {
+      margin: 0 12px 10px;
+      background: linear-gradient(135deg, rgba(74,144,217,0.15), rgba(74,144,217,0.05));
+      border: 1px solid rgba(74,144,217,0.25);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    /* STEPS */
-    .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; }
-    .steps-row::before { content: ''; position: absolute; top: 36px; left: 16.6%; right: 16.6%; height: 1px; background: linear-gradient(90deg, transparent, var(--blue), var(--purple), transparent); }
-    .step { text-align: center; padding: 0 24px; position: relative; }
-    .step-num { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; margin: 0 auto 20px; box-shadow: 0 0 30px rgba(79,142,247,0.35); }
-    .step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
-    .step-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+    .notif-icon {
+      width: 32px; height: 32px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+    }
 
-    /* TESTIMONIAL */
-    .testimonial { background: var(--bg2); }
-    .testimonial-inner { max-width: 720px; margin: 0 auto; text-align: center; }
-    .quote-mark { font-size: 5rem; line-height: 0.5; color: var(--blue); opacity: 0.3; font-family: Georgia, serif; display: block; margin-bottom: 24px; }
-    .quote-text { font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 500; line-height: 1.7; color: var(--white); margin-bottom: 28px; }
-    .quote-author { display: flex; align-items: center; justify-content: center; gap: 14px; }
-    .author-av { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); }
-    .author-name { font-weight: 700; font-size: 0.9rem; }
-    .author-loc { font-size: 0.8rem; color: var(--muted); }
+    .notif-text .notif-title { font-size: 11px; font-weight: 600; color: var(--white); }
+    .notif-text .notif-sub { font-size: 10px; color: var(--blue-lt); margin-top: 1px; }
+
+    /* Glow behind phone */
+    .phone-glow {
+      position: absolute;
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(74,144,217,0.18) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 100px 48px;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 3.5vw, 46px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+
+    .section-sub {
+      font-size: 18px;
+      color: var(--gray-lt);
+      line-height: 1.65;
+      max-width: 520px;
+    }
+
+    /* USE CASES */
+    .usecases { background: var(--bg); }
+
+    .uc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 56px;
+    }
+
+    .uc-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .uc-card:hover {
+      border-color: rgba(74,144,217,0.45);
+      transform: translateY(-4px);
+    }
+
+    .uc-emoji {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .uc-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .uc-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* HOW IT WORKS */
+    .howitworks { background: var(--bg2); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 64px;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: calc(33.33% - 0px);
+      right: calc(33.33% - 0px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-lt), var(--blue));
+      opacity: 0.3;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 32px;
+    }
+
+    .step-num {
+      width: 56px; height: 56px;
+      background: var(--bg3);
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    /* PRIVACY */
+    .privacy {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .privacy-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .privacy-items {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 36px;
+    }
+
+    .privacy-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .privacy-icon {
+      width: 40px; height: 40px;
+      background: var(--blue-dim);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    .privacy-item-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .privacy-item-desc {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    .privacy-right {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+    }
+
+    .privacy-right h3 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .privacy-right p {
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .privacy-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--bg3);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .toggle {
+      width: 40px; height: 22px;
+      background: var(--blue);
+      border-radius: 11px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px; right: 3px;
+      width: 16px; height: 16px;
+      background: var(--white);
+      border-radius: 50%;
+    }
+
+    .toggle.off {
+      background: var(--bg4);
+    }
+
+    .toggle.off::after {
+      right: auto;
+      left: 3px;
+    }
 
     /* DOWNLOAD CTA */
-    .download { overflow: hidden; }
-    .download-inner { background: linear-gradient(135deg, rgba(79,142,247,0.12), rgba(139,92,246,0.1)); border: 1px solid rgba(79,142,247,0.2); border-radius: 24px; padding: 72px 48px; text-align: center; position: relative; overflow: hidden; }
-    .download-inner::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(79,142,247,0.15), transparent 70%); }
-    .download-inner h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; letter-spacing: -0.03em; margin-bottom: 14px; position: relative; }
-    .download-inner p { color: var(--muted); font-size: 1.05rem; margin-bottom: 36px; position: relative; }
-    .download-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .download {
+      background: var(--bg2);
+      text-align: center;
+      padding: 120px 48px;
+    }
+
+    .download h2 {
+      font-size: clamp(36px, 4vw, 58px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+
+    .download p {
+      font-size: 18px;
+      color: var(--gray-lt);
+      max-width: 440px;
+      margin: 0 auto 40px;
+      line-height: 1.65;
+    }
+
+    .dl-badges {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
     /* FOOTER */
-    footer { border-top: 1px solid var(--card-border); padding: 56px 0 32px; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-    .footer-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 10px; }
-    .footer-logo img { width: 26px; height: 26px; }
-    .footer-fine { font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
-    .footer-tagline { font-size: 0.85rem; color: var(--muted); }
-    .footer-col h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-    .footer-col li { margin-bottom: 10px; }
-    .footer-col a { font-size: 0.875rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
-    .footer-col a:hover { color: var(--white); }
-    .footer-bottom { border-top: 1px solid var(--card-border); padding-top: 24px; font-size: 0.8rem; color: var(--muted); }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .hero-grid { grid-template-columns: 1fr; text-align: center; }
-      .hero p { margin: 0 auto 36px; }
-      .hero-btns { justify-content: center; }
-      .stats { justify-content: center; }
-      .phone-wrap { order: -1; }
-      .features-grid { grid-template-columns: repeat(2, 1fr); }
-      .steps-row { grid-template-columns: 1fr; gap: 32px; }
-      .steps-row::before { display: none; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 48px;
     }
-    @media (max-width: 600px) {
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .footer-brand img { width: 24px; }
+
+    .footer-brand-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      font-size: 13px;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
       .nav-links { display: none; }
-      .nav-toggle { display: flex; }
-      .features-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .download-inner { padding: 48px 24px; }
+      .hero { padding: 100px 24px 60px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 60px; }
+      .hero-right { order: -1; }
+      section { padding: 70px 24px; }
+      .uc-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .step { padding: 0; text-align: left; flex-direction: row; gap: 20px; }
+      .step-num { flex-shrink: 0; }
+      .privacy-inner { grid-template-columns: 1fr; }
+      .download { padding: 80px 24px; }
+      footer { padding: 32px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-<nav id="nav">
-  <div class="container nav-inner">
-    <a href="#" class="nav-logo">
-      <img src="../../assets/logo.svg" alt="InTown">
-      <span>InTown</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#features">Use Cases</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#" >Blog</a></li>
-      <li><a href="#download" class="nav-cta">Download</a></li>
-    </ul>
-    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
+<!-- NAV -->
+<nav>
+  <a href="../../" class="nav-logo">
+    <img src="../../assets/logo.svg" alt="InTown">
+    <span class="nav-logo-text">InTown</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#usecases">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#privacy">Privacy</a></li>
+    <li><a href="#download" class="nav-dl">Download App</a></li>
+  </ul>
 </nav>
 
 <!-- HERO -->
-<section class="hero" id="hero">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="container hero-grid">
-    <div>
-      <div class="hero-tag"><span></span> Live • Location Aware</div>
-      <h1>Know When Your <span class="grad">Friends</span> Are In Town</h1>
-      <p>See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.</p>
-      <div class="hero-btns">
-        <a href="#download" class="btn-primary">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-          App Store
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span>Now Available on iOS &amp; Android</span>
+      </div>
+
+      <h1>Your friends are<br><em>closer than</em><br>you think.</h1>
+
+      <p class="hero-sub">InTown shows you which friends are nearby right now — so you can turn a boring Tuesday into something worth remembering.</p>
+
+      <div class="badges">
+        <!-- App Store -->
+        <a href="#download" class="badge-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          <div class="badge-btn-text">
+            <span class="line1">Download on the</span>
+            <span class="line2">App Store</span>
+          </div>
         </a>
-        <a href="#download" class="btn-secondary">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
-          Google Play
+        <!-- Google Play -->
+        <a href="#download" class="badge-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
+          </svg>
+          <div class="badge-btn-text">
+            <span class="line1">Get it on</span>
+            <span class="line2">Google Play</span>
+          </div>
         </a>
       </div>
-      <div class="stats">
-        <div><div class="stat-num">10K+</div><div class="stat-lbl">Active Users</div></div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">10K+</div>
+          <div class="stat-label">Active Users</div>
+        </div>
         <div class="stat-div"></div>
-        <div><div class="stat-num">50K+</div><div class="stat-lbl">Events Created</div></div>
+        <div class="stat-item">
+          <div class="stat-num">100+</div>
+          <div class="stat-label">Cities</div>
+        </div>
         <div class="stat-div"></div>
-        <div><div class="stat-num">100+</div><div class="stat-lbl">Cities</div></div>
+        <div class="stat-item">
+          <div class="stat-num">4.8★</div>
+          <div class="stat-label">App Rating</div>
+        </div>
       </div>
     </div>
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="phone-status"><span>9:41</span><span>●●●</span></div>
-        <div class="phone-map">
-          <div class="map-grid"></div>
-          <div class="map-circle"></div>
-          <div class="map-center"></div>
-          <div class="map-pin pin-1">Jake</div>
-          <div class="map-pin pin-2">Maya</div>
-          <div class="map-pin pin-3">Sam</div>
-        </div>
-        <div class="phone-sheet">
-          <div class="sheet-title">InTown (3) <span>All Friends</span></div>
-          <div class="friend-row">
-            <div class="friend-avatar av-blue">JK</div>
-            <div class="friend-info"><div class="friend-name">Jake</div><div class="friend-dist">0.3 miles away</div></div>
+
+    <div class="hero-right">
+      <div class="phone-glow"></div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+
+          <!-- Status bar -->
+          <div class="phone-status">
+            <span class="phone-status-time">9:41</span>
+            <div class="phone-status-icons">
+              <span>●●●</span>
+              <span>WiFi</span>
+              <span>🔋</span>
+            </div>
           </div>
-          <div class="friend-row">
-            <div class="friend-avatar av-purple">MY</div>
-            <div class="friend-info"><div class="friend-name">Maya</div><div class="friend-dist">1.2 miles away</div></div>
+
+          <!-- App header -->
+          <div class="phone-header">
+            <span class="phone-app-title">InTown</span>
+            <div class="phone-header-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#4A90D9">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
           </div>
-          <div class="friend-row">
-            <div class="friend-avatar" style="background:linear-gradient(135deg,#38BDF8,#4F8EF7)">SM</div>
-            <div class="friend-info"><div class="friend-name">Sam</div><div class="friend-dist">2.1 miles away</div></div>
+
+          <!-- Map -->
+          <div class="phone-map">
+            <!-- You -->
+            <div class="you-marker" style="top:95px; left:125px;"></div>
+
+            <!-- Jake -->
+            <div class="friend-pin" style="top:30px; left:42px;">
+              <div class="pin-avatar" style="background:#2563EB;">J</div>
+              <div class="pin-triangle" style="border-top-color:#2563EB;"></div>
+              <div class="pin-name">Jake · 0.3mi</div>
+            </div>
+
+            <!-- Maya -->
+            <div class="friend-pin" style="top:55px; right:24px;">
+              <div class="pin-avatar" style="background:#7C3AED;">M</div>
+              <div class="pin-triangle" style="border-top-color:#7C3AED;"></div>
+              <div class="pin-name">Maya · 0.7mi</div>
+            </div>
+
+            <!-- Sam -->
+            <div class="friend-pin" style="bottom:16px; left:64px;">
+              <div class="pin-avatar" style="background:#059669;">S</div>
+              <div class="pin-triangle" style="border-top-color:#059669;"></div>
+              <div class="pin-name">Sam · 1.2mi</div>
+            </div>
           </div>
-        </div>
-        <div class="phone-nav">
-          <div class="pnav-item active"><svg class="pnav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span>Map</span></div>
-          <div class="pnav-item"><svg class="pnav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg><span>Calendar</span></div>
-          <div class="pnav-item"><svg class="pnav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg><span>Inbox</span></div>
-          <div class="pnav-item"><svg class="pnav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Profile</span></div>
+
+          <!-- Notification -->
+          <div class="phone-notif">
+            <div class="notif-icon">📍</div>
+            <div class="notif-text">
+              <div class="notif-title">Jake is nearby!</div>
+              <div class="notif-sub">0.3 miles away · Tap to say hey</div>
+            </div>
+          </div>
+
+          <!-- Friends list -->
+          <div class="phone-list">
+            <div class="phone-list-header">Nearby Friends</div>
+
+            <div class="friend-row">
+              <div class="friend-avatar" style="background:#2563EB;">J</div>
+              <div class="friend-info">
+                <div class="friend-name">Jake</div>
+                <div class="friend-dist">0.3 miles away</div>
+              </div>
+              <div class="friend-status"></div>
+            </div>
+
+            <div class="friend-row">
+              <div class="friend-avatar" style="background:#7C3AED;">M</div>
+              <div class="friend-info">
+                <div class="friend-name">Maya</div>
+                <div class="friend-dist">0.7 miles away</div>
+              </div>
+              <div class="friend-status"></div>
+            </div>
+
+            <div class="friend-row">
+              <div class="friend-avatar" style="background:#059669;">S</div>
+              <div class="friend-info">
+                <div class="friend-name">Sam</div>
+                <div class="friend-dist">1.2 miles away</div>
+              </div>
+              <div class="friend-status" style="background:#F59E0B;"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Use Cases</div>
-      <h2 class="section-title">Real Moments, <span class="grad">Real Connections</span></h2>
-      <p class="section-sub">InTown shines in the moments that matter — when a friend is closer than you think and all you need is a nudge.</p>
-    </div>
-    <div class="features-grid">
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <div class="feat-title">College Reunion, Zero Planning</div>
-        <div class="feat-desc">Your college roommate's flight just landed. InTown notifies you the moment they enter your radius — before they even text.</div>
-        <div class="feat-why"><strong>Why it works:</strong> Radius detection fires automatically, no coordination needed.</div>
+<!-- USE CASES -->
+<section class="usecases" id="usecases">
+  <div class="section-inner">
+    <div class="section-label">Use Cases</div>
+    <h2 class="section-title">Made for real moments,<br>not scheduled ones.</h2>
+    <p class="section-sub">The best plans are the ones you didn't make. InTown is built for spontaneous connections.</p>
+
+    <div class="uc-grid">
+      <div class="uc-card">
+        <div class="uc-emoji">🎪</div>
+        <div class="uc-title">Lost at a festival?</div>
+        <div class="uc-desc">No more "I'm near the stage" texts. See exactly how close your crew is and find each other in seconds.</div>
       </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <div class="feat-title">Spontaneous Friday Night</div>
-        <div class="feat-desc">Plans fell through. InTown shows three friends within a mile right now. One tap and the night is saved.</div>
-        <div class="feat-why"><strong>Why it works:</strong> Knowing who's close turns "maybe later" into "meet me in 10."</div>
+      <div class="uc-card">
+        <div class="uc-emoji">🎓</div>
+        <div class="uc-title">College campus, zero planning</div>
+        <div class="uc-desc">Spot a friend between classes, grab lunch spontaneously. Campus life the way it's supposed to work.</div>
       </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
-        <div class="feat-title">Lost at a Festival</div>
-        <div class="feat-desc">You split up at a music festival. Instead of frantic calls, open the map and see exactly which friends are within 500 feet.</div>
-        <div class="feat-why"><strong>Why it works:</strong> A shared live map beats 20 texts when the signal's weak.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-        <div class="feat-title">Conference Networking</div>
-        <div class="feat-desc">At a multi-day conference, see which mutual connections are in the same building. Turn a badge swap into a real coffee chat.</div>
-        <div class="feat-why"><strong>Why it works:</strong> Proximity makes warm outreach feel natural, not forced.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <div class="feat-title">Road Trip Convoy</div>
-        <div class="feat-desc">Your friend caravan is crossing three states. InTown's live map keeps every car in the convoy without a single group-text update.</div>
-        <div class="feat-why"><strong>Why it works:</strong> One glance replaces 50 "where are you?" messages.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-        <div class="feat-title">New City, Hidden Connections</div>
-        <div class="feat-desc">Visiting a city for the first time? InTown shows which of your friends are locals — or also visiting — and ready to be your guide.</div>
-        <div class="feat-why"><strong>Why it works:</strong> Turns any trip into a social opportunity hidden in plain sight.</div>
+      <div class="uc-card">
+        <div class="uc-emoji">🌃</div>
+        <div class="uc-title">Friday night, no plans</div>
+        <div class="uc-desc">Open the app and see who's out. Turn a night in into a night out just because someone's around.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section id="how-it-works">
-  <div class="container">
-    <div class="section-header" style="text-align:center">
-      <div class="section-tag">Simple</div>
-      <h2 class="section-title">Get Started in <span class="grad">3 Steps</span></h2>
-      <p class="section-sub" style="margin:0 auto">Start connecting with friends in your area in minutes.</p>
-    </div>
-    <div class="steps-row">
+<section class="howitworks" id="how">
+  <div class="section-inner">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Three steps to<br>never missing out.</h2>
+    <p class="section-sub">Getting started takes less than two minutes.</p>
+
+    <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <div class="step-title">Download &amp; Sign Up</div>
-        <p class="step-desc">Get InTown from the App Store or Google Play. Create your profile in under a minute.</p>
+        <div>
+          <div class="step-title">Download &amp; sign up</div>
+          <div class="step-desc">Create an account in seconds. No long forms, no unnecessary permissions upfront.</div>
+        </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <div class="step-title">Add Your Friends</div>
-        <p class="step-desc">Invite friends from your contacts or share your invite link. Build your InTown circle.</p>
+        <div>
+          <div class="step-title">Add your friends</div>
+          <div class="step-desc">Invite friends from your contacts. They appear on your map only when both of you are sharing.</div>
+        </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <div class="step-title">See Who's Nearby</div>
-        <p class="step-desc">Open the map, set your radius, and instantly see which friends are in town. Plan a hangout!</p>
+        <div>
+          <div class="step-title">See who's nearby</div>
+          <div class="step-desc">Get a notification the moment a friend is close. Say hey, grab coffee, make a memory.</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIAL -->
-<section class="testimonial">
-  <div class="container">
-    <div class="testimonial-inner">
-      <span class="quote-mark">"</span>
-      <p class="quote-text">InTown completely changed how I hang out with friends. I used to miss people visiting my city all the time. Now I never miss a chance to meet up.</p>
-      <div class="quote-author">
-        <div class="author-av"></div>
-        <div><div class="author-name">Happy InTown User</div><div class="author-loc">Chapel Hill, NC</div></div>
+<!-- PRIVACY -->
+<section class="privacy" id="privacy">
+  <div class="privacy-inner">
+    <div>
+      <div class="section-label">Your Privacy</div>
+      <h2 class="section-title">You're always<br>in control.</h2>
+      <p class="section-sub" style="margin-top:16px;">Location sharing is entirely on your terms. Turn it off anytime, choose your radius, and only share with people you trust.</p>
+
+      <div class="privacy-items">
+        <div class="privacy-item">
+          <div class="privacy-icon">🎯</div>
+          <div>
+            <div class="privacy-item-title">Approximate location only</div>
+            <div class="privacy-item-desc">Friends see a radius you control — not your exact address. Never your precise GPS.</div>
+          </div>
+        </div>
+        <div class="privacy-item">
+          <div class="privacy-icon">👥</div>
+          <div>
+            <div class="privacy-item-title">Friends only — no strangers</div>
+            <div class="privacy-item-desc">Only mutual friends can see you. Strangers can never find your location.</div>
+          </div>
+        </div>
+        <div class="privacy-item">
+          <div class="privacy-icon">⚡</div>
+          <div>
+            <div class="privacy-item-title">One tap to disappear</div>
+            <div class="privacy-item-desc">Pause sharing instantly. No one is notified. No awkward conversations needed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="privacy-right">
+      <h3>Your Location Controls</h3>
+      <p>Manage exactly who sees you and how much, right in the app.</p>
+
+      <div class="privacy-controls">
+        <div class="control-row">
+          <span>📍 Location Sharing</span>
+          <div class="toggle"></div>
+        </div>
+        <div class="control-row">
+          <span>🔔 Nearby Notifications</span>
+          <div class="toggle"></div>
+        </div>
+        <div class="control-row">
+          <span>👁️ Appear on Friends' Maps</span>
+          <div class="toggle"></div>
+        </div>
+        <div class="control-row">
+          <span>📏 Sharing Radius: 1 mile</span>
+          <div class="toggle off"></div>
+        </div>
+        <div class="control-row">
+          <span>🌙 Ghost Mode</span>
+          <div class="toggle off"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -360,45 +1154,46 @@
 
 <!-- DOWNLOAD -->
 <section class="download" id="download">
-  <div class="container">
-    <div class="download-inner">
-      <div class="orb orb-3"></div>
-      <h2>Ready to See Who's <span class="grad">InTown</span>?</h2>
-      <p>Download the app for free and start connecting with your friends today.</p>
-      <div class="download-btns">
-        <a href="#" class="btn-primary" style="font-size:1rem;padding:15px 28px">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-          Download for iOS
-        </a>
-        <a href="#" class="btn-secondary" style="font-size:1rem;padding:15px 28px">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
-          Download for Android
-        </a>
+  <h2>Ready to see<br>who's nearby?</h2>
+  <p>Join 10,000+ people already using InTown to turn proximity into connection.</p>
+
+  <div class="dl-badges">
+    <a href="#" class="badge-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      <div class="badge-btn-text">
+        <span class="line1">Download on the</span>
+        <span class="line2">App Store</span>
       </div>
-    </div>
+    </a>
+    <a href="#" class="badge-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;">
+        <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
+      </svg>
+      <div class="badge-btn-text">
+        <span class="line1">Get it on</span>
+        <span class="line2">Google Play</span>
+      </div>
+    </a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <a href="#" class="footer-logo"><img src="../../assets/logo.svg" alt="InTown"><span>InTown</span></a>
-        <p class="footer-fine">A Sangforth Technologies, LLC app</p>
-        <p class="footer-tagline">Know when your friends are nearby.</p>
-      </div>
-      <div class="footer-col"><h4>Product</h4><ul><li><a href="#features">Use Cases</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#download">Download</a></li></ul></div>
-      <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="../../privacy.html">Privacy Policy</a></li><li><a href="../../terms.html">Terms of Service</a></li></ul></div>
-      <div class="footer-col"><h4>Resources</h4><ul><li><a href="../../blog/">Blog</a></li><li><a href="#">Instagram</a></li><li><a href="#">Twitter</a></li><li><a href="../../contact.html">Contact Us</a></li></ul></div>
+  <div class="footer-inner">
+    <a href="../../" class="footer-brand">
+      <img src="../../assets/logo.svg" alt="InTown">
+      <span class="footer-brand-name">InTown</span>
+    </a>
+    <div class="footer-links">
+      <a href="../../privacy.html">Privacy Policy</a>
+      <a href="../../terms.html">Terms of Service</a>
+      <a href="../../contact.html">Contact</a>
     </div>
-    <div class="footer-bottom">&copy; 2026 Sangforth Technologies LLC. All rights reserved.</div>
+    <p class="footer-copy">© 2025 InTown. A Sangforth Technologies, LLC app.</p>
   </div>
 </footer>
 
-<script>
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
-</script>
 </body>
 </html>

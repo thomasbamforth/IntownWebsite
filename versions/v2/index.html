@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InTown — Know When Your Friends Are Nearby</title>
-  <meta name="description" content="See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.">
+  <title>InTown — See who's nearby, right now.</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,249 +12,980 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --navy: #0B1A2E;
-      --navy2: #0F2440;
-      --blue: #2563EB;
-      --blue-light: #3B82F6;
-      --blue-pale: #EFF6FF;
-      --purple: #7C3AED;
-      --white: #FFFFFF;
-      --gray-50: #F8FAFC;
-      --gray-100: #F1F5F9;
-      --gray-300: #CBD5E1;
-      --gray-500: #64748B;
-      --gray-700: #334155;
-      --gray-900: #0F172A;
-      --font: 'Inter', -apple-system, sans-serif;
+      --bg:      #060E1A;
+      --bg2:     #0B1A2E;
+      --bg3:     #0F2440;
+      --bg4:     #152D4A;
+      --blue:    #4A90D9;
+      --blue-lt: #7BB3E8;
+      --white:   #FFFFFF;
+      --gray:    #8899AA;
+      --gray-lt: #B8CAD8;
+      --border:  rgba(74,144,217,0.15);
     }
 
-    html { scroll-behavior: smooth; }
-    body { font-family: var(--font); background: var(--white); color: var(--gray-900); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-    img { max-width: 100%; display: block; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+    }
 
     /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0; background: var(--navy); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; color: var(--white); letter-spacing: -0.02em; }
-    .nav-logo img { width: 26px; height: 26px; }
-    .nav-links { display: flex; align-items: center; gap: 28px; }
-    .nav-links a { font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.65); transition: color 0.2s; }
-    .nav-links a:hover { color: var(--white); }
-    .nav-cta { background: var(--blue) !important; color: var(--white) !important; padding: 8px 18px; border-radius: 7px; font-weight: 600 !important; }
-    .nav-cta:hover { background: var(--blue-light) !important; }
-    .nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
-    .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 60px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(6,14,26,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+    .logo img { width: 26px; }
+    .logo span { font-size: 17px; font-weight: 700; color: var(--white); }
+
+    .nav-mid {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+    .nav-mid a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-mid a:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+
+    .btn-outline {
+      text-decoration: none;
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--blue); }
+
+    .btn-solid {
+      text-decoration: none;
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      background: var(--blue);
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-solid:hover { background: #5A9FE6; transform: translateY(-1px); }
 
     /* HERO */
-    .hero { background: linear-gradient(160deg, var(--navy) 0%, #1E3A5F 60%, #1a3560 100%); padding: 140px 0 80px; overflow: hidden; position: relative; }
-    .hero::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 60px; background: var(--white); clip-path: ellipse(55% 100% at 50% 100%); }
-    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 20px; }
-    .hero h1 { font-size: clamp(2.2rem, 4.5vw, 3.5rem); font-weight: 900; letter-spacing: -0.035em; line-height: 1.08; color: var(--white); margin-bottom: 20px; }
-    .hero h1 .accent { color: #60A5FA; }
-    .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.7); max-width: 460px; margin-bottom: 36px; line-height: 1.7; }
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
-    .btn-filled { display: inline-flex; align-items: center; gap: 9px; background: var(--blue); color: var(--white); padding: 13px 22px; border-radius: 9px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s, transform 0.2s; box-shadow: 0 4px 14px rgba(37,99,235,0.4); }
-    .btn-filled:hover { background: var(--blue-light); transform: translateY(-1px); }
-    .btn-outline { display: inline-flex; align-items: center; gap: 9px; background: transparent; border: 1.5px solid rgba(255,255,255,0.35); color: var(--white); padding: 13px 22px; border-radius: 9px; font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s, background 0.2s; }
-    .btn-outline:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); }
-    .btn-icon { width: 17px; height: 17px; }
-    .hero-stats { display: flex; gap: 28px; }
-    .stat-val { font-size: 1.5rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
-    .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); font-weight: 500; margin-top: 1px; }
-    .stat-sep { width: 1px; background: rgba(255,255,255,0.15); }
+    .hero {
+      padding: 140px 60px 100px;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
 
-    /* PHONE */
-    .phone-container { display: flex; justify-content: center; position: relative; }
-    .phone { width: 260px; background: var(--white); border-radius: 38px; border: 8px solid #1a2f50; box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05); overflow: hidden; }
-    .phone-status { display: flex; justify-content: space-between; padding: 14px 18px 8px; font-size: 0.65rem; font-weight: 600; color: var(--gray-900); background: var(--white); }
-    .phone-map { height: 200px; background: #E8F4E8; position: relative; overflow: hidden; }
-    .map-roads { position: absolute; inset: 0; }
-    .map-roads::before { content: ''; position: absolute; top: 45%; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.8); }
-    .map-roads::after { content: ''; position: absolute; top: 0; bottom: 0; left: 42%; width: 2px; background: rgba(255,255,255,0.8); }
-    .map-radius { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 100px; height: 100px; border: 2px solid rgba(37,99,235,0.5); border-radius: 50%; background: rgba(37,99,235,0.05); }
-    .map-dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 14px; height: 14px; background: var(--blue); border-radius: 50%; border: 2px solid var(--white); box-shadow: 0 0 12px rgba(37,99,235,0.5); }
-    .map-friend { position: absolute; background: var(--white); border-radius: 20px; padding: 3px 8px 3px 4px; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size: 0.6rem; font-weight: 600; color: var(--gray-900); }
-    .map-friend-av { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; color: white; font-weight: 700; }
-    .mf1 { top: 25%; left: 15%; }
-    .mf2 { top: 55%; right: 12%; }
-    .phone-list { background: var(--white); padding: 12px 14px; }
-    .list-header { font-size: 0.9rem; font-weight: 800; color: var(--gray-900); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-    .list-header span { color: var(--blue); font-size: 0.75rem; font-weight: 600; }
-    .list-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--gray-100); }
-    .list-row:last-child { border-bottom: none; }
-    .list-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: white; flex-shrink: 0; }
-    .list-info { flex: 1; }
-    .list-name { font-size: 0.78rem; font-weight: 700; color: var(--gray-900); }
-    .list-dist { font-size: 0.65rem; color: var(--gray-500); }
-    .list-actions { display: flex; gap: 6px; }
-    .list-actions svg { width: 18px; height: 18px; color: var(--gray-500); }
-    .phone-bottom { display: flex; justify-content: space-around; padding: 8px 12px 12px; background: var(--gray-50); border-top: 1px solid var(--gray-100); }
-    .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 0.52rem; color: var(--gray-500); font-weight: 500; }
-    .tab.active { color: var(--navy); }
-    .tab svg { width: 18px; height: 18px; }
+    /* Gradient background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 40%, rgba(74,144,217,0.11) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 15% 70%, rgba(74,144,217,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
 
-    /* SECTIONS */
-    .features-section { padding: 96px 0; background: var(--gray-50); }
-    .steps-section { padding: 96px 0; background: var(--white); }
-    .testimonial-section { padding: 80px 0; background: var(--blue-pale); }
-    .cta-section { padding: 96px 0; background: var(--navy); }
-    footer { background: var(--navy); padding: 56px 0 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+    /* Subtle dot grid */
+    .hero-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(74,144,217,0.18) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.4;
+      pointer-events: none;
+    }
 
-    .section-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
-    .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; letter-spacing: -0.03em; color: var(--gray-900); margin-bottom: 12px; }
-    .section-title .accent { color: var(--blue); }
-    .section-sub { color: var(--gray-500); font-size: 1rem; max-width: 540px; line-height: 1.7; }
-    .section-header { margin-bottom: 52px; }
+    .hero-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 60px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
 
-    /* FEATURE CARDS */
-    .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .feat-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: 14px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: box-shadow 0.25s, transform 0.25s; }
-    .feat-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); transform: translateY(-3px); }
-    .feat-icon { width: 42px; height: 42px; background: var(--blue-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--blue); margin-bottom: 14px; }
-    .feat-icon svg { width: 20px; height: 20px; }
-    .feat-title { font-size: 0.95rem; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
-    .feat-desc { font-size: 0.85rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 10px; }
-    .feat-why { font-size: 0.78rem; color: var(--blue); font-weight: 500; }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--blue-lt);
+      margin-bottom: 24px;
+    }
 
-    /* STEPS */
-    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; position: relative; }
-    .steps-grid::before { content: ''; position: absolute; top: 28px; left: 20%; right: 20%; height: 2px; background: linear-gradient(90deg, var(--blue), var(--purple)); border-radius: 2px; z-index: 0; }
-    .step { text-align: center; padding: 0 20px; }
-    .step-num { width: 56px; height: 56px; border-radius: 50%; background: var(--blue); color: var(--white); font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; position: relative; z-index: 1; box-shadow: 0 4px 20px rgba(37,99,235,0.35); }
-    .step-title { font-size: 1rem; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
-    .step-desc { font-size: 0.85rem; color: var(--gray-500); line-height: 1.65; }
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue);
+      border-radius: 2px;
+    }
 
-    /* TESTIMONIAL */
-    .testimonial-box { max-width: 680px; margin: 0 auto; text-align: center; }
-    .stars { color: #FBBF24; font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 20px; }
-    .quote { font-size: clamp(1.05rem, 2.2vw, 1.3rem); font-weight: 500; color: var(--gray-700); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
-    .testimonial-author { display: flex; align-items: center; justify-content: center; gap: 12px; }
-    .ta-av { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); }
-    .ta-name { font-weight: 700; font-size: 0.9rem; color: var(--gray-900); }
-    .ta-loc { font-size: 0.8rem; color: var(--gray-500); }
+    h1 {
+      font-size: clamp(44px, 5.5vw, 72px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+
+    h1 .hl {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-lt) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-p {
+      font-size: 19px;
+      color: var(--gray-lt);
+      line-height: 1.7;
+      margin-bottom: 44px;
+      font-weight: 400;
+      max-width: 460px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 56px;
+    }
+
+    .dl-apple, .dl-android {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      padding: 13px 22px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .dl-apple {
+      background: var(--white);
+      color: #000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .dl-android {
+      background: var(--bg3);
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .dl-apple:hover, .dl-android:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .dl-apple svg, .dl-android svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .dl-text { display: flex; flex-direction: column; }
+    .dl-text .t1 { font-size: 10px; font-weight: 500; opacity: 0.65; line-height: 1; }
+    .dl-text .t2 { font-size: 15px; font-weight: 700; line-height: 1.25; }
+
+    .hero-proof {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .proof-avatars {
+      display: flex;
+    }
+
+    .proof-av {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -8px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+    }
+
+    .proof-av:first-child { margin-left: 0; }
+
+    .proof-text { font-size: 13px; color: var(--gray-lt); font-weight: 500; }
+    .proof-text strong { color: var(--white); }
+
+    /* PHONES VISUAL */
+    .hero-phones {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 580px;
+    }
+
+    /* Main phone */
+    .ph-main {
+      position: absolute;
+      width: 255px;
+      height: 530px;
+      background: #08162A;
+      border-radius: 40px;
+      border: 1.5px solid rgba(74,144,217,0.35);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 40px 80px rgba(0,0,0,0.7),
+        0 0 80px rgba(74,144,217,0.1);
+      overflow: hidden;
+      z-index: 2;
+      left: 50%;
+      top: 50%;
+      transform: translate(-40%, -50%) rotate(-3deg);
+      animation: floatMain 5s ease-in-out infinite;
+    }
+
+    @keyframes floatMain {
+      0%, 100% { transform: translate(-40%, -50%) rotate(-3deg) translateY(0); }
+      50% { transform: translate(-40%, -50%) rotate(-3deg) translateY(-14px); }
+    }
+
+    /* Second phone (behind) */
+    .ph-back {
+      position: absolute;
+      width: 220px;
+      height: 460px;
+      background: #0B1A2E;
+      border-radius: 36px;
+      border: 1px solid rgba(74,144,217,0.15);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      overflow: hidden;
+      z-index: 1;
+      left: 50%;
+      top: 50%;
+      transform: translate(-5%, -47%) rotate(6deg);
+      animation: floatBack 5s ease-in-out infinite;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes floatBack {
+      0%, 100% { transform: translate(-5%, -47%) rotate(6deg) translateY(0); }
+      50% { transform: translate(-5%, -47%) rotate(6deg) translateY(-10px); }
+    }
+
+    /* Phone internals */
+    .ph-notch {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 90px; height: 26px;
+      background: #000;
+      border-radius: 0 0 18px 18px;
+      z-index: 10;
+    }
+
+    .ph-status {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 18px 4px;
+      margin-top: 26px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .ph-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 14px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .ph-app-name { font-size: 15px; font-weight: 700; color: var(--white); }
+    .ph-icon { font-size: 16px; }
+
+    .ph-map {
+      height: 180px;
+      background: #0D1F35;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ph-map::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,144,217,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,144,217,0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .ph-map::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(74,144,217,0.14) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(74,144,217,0.14) 2px, transparent 2px);
+      background-size: 72px 72px;
+    }
+
+    .ph-you {
+      position: absolute;
+      width: 14px; height: 14px;
+      background: var(--blue);
+      border-radius: 50%;
+      border: 2.5px solid var(--white);
+      box-shadow: 0 0 0 5px rgba(74,144,217,0.2);
+      top: 90px; left: 110px;
+      z-index: 5;
+    }
+
+    .ph-pin {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      z-index: 5;
+    }
+
+    .ph-av {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .ph-tri {
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      margin-top: -2px;
+    }
+
+    .ph-lbl {
+      background: rgba(6,14,26,0.9);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 8px;
+      font-weight: 600;
+      color: var(--white);
+      white-space: nowrap;
+    }
+
+    .ph-notif {
+      margin: 8px 10px;
+      background: linear-gradient(135deg, rgba(74,144,217,0.18), rgba(74,144,217,0.06));
+      border: 1px solid rgba(74,144,217,0.3);
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ph-notif-icon {
+      width: 28px; height: 28px;
+      background: var(--blue);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .ph-notif-t { font-size: 10px; font-weight: 600; color: var(--white); }
+    .ph-notif-s { font-size: 9px; color: var(--blue-lt); margin-top: 1px; }
+
+    .ph-list { padding: 8px 0; }
+    .ph-list-h {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
+      text-transform: uppercase; color: var(--gray);
+      padding: 0 14px 6px;
+    }
+
+    .ph-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+    }
+
+    .ph-row-av {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .ph-row-name { font-size: 11px; font-weight: 600; color: var(--white); }
+    .ph-row-dist { font-size: 10px; color: var(--gray); }
+    .ph-row-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4CAF50;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* Back phone content */
+    .ph-back-content {
+      padding: 28px 14px 14px;
+    }
+
+    .ph-back-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .ph-back-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+
+    .ph-back-card-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .ph-back-av {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .ph-back-name { font-size: 11px; font-weight: 600; color: var(--white); }
+    .ph-back-time { font-size: 9px; color: var(--gray); margin-left: auto; }
+
+    .ph-back-msg { font-size: 10px; color: var(--gray-lt); line-height: 1.4; }
+
+    /* Floating notification card */
+    .float-notif {
+      position: absolute;
+      background: var(--bg2);
+      border: 1px solid rgba(74,144,217,0.3);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+      bottom: 60px;
+      left: -20px;
+      white-space: nowrap;
+      animation: floatCard 4s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .fn-icon { font-size: 20px; }
+    .fn-text {}
+    .fn-t1 { font-size: 12px; font-weight: 700; color: var(--white); }
+    .fn-t2 { font-size: 11px; color: var(--blue-lt); }
+
+    /* FEATURES */
+    .features { padding: 100px 60px; background: var(--bg); }
+
+    .features-inner { max-width: 1160px; margin: 0 auto; }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .sec-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+    }
+
+    .sec-title {
+      font-size: clamp(32px, 4vw, 50px);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .sec-sub {
+      font-size: 17px;
+      color: var(--gray-lt);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .feat-cell {
+      background: var(--bg2);
+      padding: 44px 40px;
+      transition: background 0.25s;
+    }
+
+    .feat-cell:hover { background: var(--bg3); }
+
+    .feat-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+
+    .feat-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .feat-desc {
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    /* SOCIAL PROOF */
+    .proof-section { padding: 100px 60px; background: var(--bg2); }
+
+    .proof-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .proof-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+    }
+
+    .proof-stars { font-size: 14px; margin-bottom: 16px; color: #F59E0B; }
+
+    .proof-quote {
+      font-size: 15px;
+      color: var(--gray-lt);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .proof-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .proof-author-av {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .proof-author-name { font-size: 14px; font-weight: 600; color: var(--white); }
+    .proof-author-handle { font-size: 12px; color: var(--gray); }
+
+    /* PRIVACY BANNER */
+    .priv-banner {
+      padding: 80px 60px;
+      background: var(--bg);
+    }
+
+    .priv-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 56px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .priv-main {}
+    .priv-main .sec-label { margin-bottom: 10px; }
+    .priv-main h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 12px; }
+    .priv-main p { font-size: 15px; color: var(--gray); line-height: 1.65; }
+
+    .priv-point { display: flex; flex-direction: column; gap: 10px; }
+
+    .priv-p-item { display: flex; align-items: flex-start; gap: 12px; }
+    .priv-p-icon {
+      width: 36px; height: 36px;
+      background: rgba(74,144,217,0.12);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .priv-p-t { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+    .priv-p-d { font-size: 13px; color: var(--gray); line-height: 1.5; }
 
     /* CTA */
-    .cta-inner { text-align: center; }
-    .cta-inner h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; letter-spacing: -0.03em; color: var(--white); margin-bottom: 12px; }
-    .cta-inner h2 span { color: #60A5FA; }
-    .cta-inner p { color: rgba(255,255,255,0.6); font-size: 1.05rem; margin-bottom: 32px; }
-    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn-white { display: inline-flex; align-items: center; gap: 9px; background: var(--white); color: var(--navy); padding: 14px 26px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; transition: opacity 0.2s; }
-    .btn-white:hover { opacity: 0.9; }
-    .btn-ghost { display: inline-flex; align-items: center; gap: 9px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.25); color: var(--white); padding: 14px 26px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; }
-    .btn-ghost:hover { background: rgba(255,255,255,0.14); }
+    .cta {
+      padding: 120px 60px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(74,144,217,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta p {
+      font-size: 18px;
+      color: var(--gray-lt);
+      max-width: 440px;
+      margin: 0 auto 44px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-btns {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
 
     /* FOOTER */
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-    .footer-brand-logo { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 700; margin-bottom: 10px; }
-    .footer-brand-logo img { width: 24px; height: 24px; }
-    .footer-fine { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 5px; }
-    .footer-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
-    .footer-col h4 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
-    .footer-col li { margin-bottom: 9px; }
-    .footer-col a { font-size: 0.875rem; color: rgba(255,255,255,0.55); transition: color 0.2s; }
-    .footer-col a:hover { color: var(--white); }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 22px; font-size: 0.8rem; color: rgba(255,255,255,0.35); }
-
-    @media (max-width: 900px) {
-      .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 48px; }
-      .hero p { margin: 0 auto 36px; }
-      .hero-btns { justify-content: center; }
-      .hero-stats { justify-content: center; }
-      .feat-grid { grid-template-columns: repeat(2, 1fr); }
-      .steps-grid { grid-template-columns: 1fr; gap: 28px; }
-      .steps-grid::before { display: none; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      background: var(--bg);
     }
-    @media (max-width: 600px) {
-      .nav-links { display: none; }
-      .nav-toggle { display: flex; }
-      .feat-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
+
+    .footer-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .f-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .f-logo img { width: 22px; }
+    .f-logo span { font-size: 14px; font-weight: 700; color: var(--white); }
+
+    .f-links { display: flex; gap: 24px; }
+    .f-links a {
+      text-decoration: none;
+      font-size: 13px;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+    .f-links a:hover { color: var(--white); }
+
+    .f-copy { font-size: 12px; color: var(--gray); }
+
+    @media (max-width: 960px) {
+      nav { padding: 0 24px; }
+      .nav-mid { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-phones { height: 420px; }
+      .ph-main { width: 200px; height: 420px; }
+      .ph-back { display: none; }
+      .float-notif { display: none; }
+      .features { padding: 70px 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .proof-section { padding: 70px 24px; }
+      .proof-inner { grid-template-columns: 1fr; }
+      .priv-banner { padding: 60px 24px; }
+      .priv-inner { grid-template-columns: 1fr; padding: 32px; }
+      .cta { padding: 80px 24px; }
+      footer { padding: 32px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <div class="container nav-inner">
-    <a href="#" class="nav-logo">
-      <img src="../../assets/logo.svg" alt="InTown">
-      <span>InTown</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#features">Use Cases</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#">Blog</a></li>
-      <li><a href="#download" class="nav-cta">Download</a></li>
-    </ul>
-    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="../../" class="logo">
+    <img src="../../assets/logo.svg" alt="InTown">
+    <span>InTown</span>
+  </a>
+  <ul class="nav-mid">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#proof">Reviews</a></li>
+    <li><a href="#privacy">Privacy</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="../../blog/" class="btn-outline">Blog</a>
+    <a href="#cta" class="btn-solid">Get the App</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="container hero-grid">
-    <div>
-      <div class="hero-badge">📍 Location Aware</div>
-      <h1>Know When Your <span class="accent">Friends</span> Are In Town</h1>
-      <p>See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.</p>
-      <div class="hero-btns">
-        <a href="#download" class="btn-filled">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-          App Store
+  <div class="hero-bg"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">Friend location sharing</div>
+      <h1>See who's nearby,<br><span class="hl">right now.</span></h1>
+      <p class="hero-p">Stop wondering if your friends are out. InTown shows you who's close — so you can go from "anyone around?" to actually hanging out.</p>
+
+      <div class="hero-actions">
+        <a href="#cta" class="dl-apple">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          <div class="dl-text">
+            <span class="t1">Download on the</span>
+            <span class="t2">App Store</span>
+          </div>
         </a>
-        <a href="#download" class="btn-outline">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
-          Google Play
+        <a href="#cta" class="dl-android">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
+          </svg>
+          <div class="dl-text">
+            <span class="t1">Get it on</span>
+            <span class="t2">Google Play</span>
+          </div>
         </a>
       </div>
-      <div class="hero-stats">
-        <div><div class="stat-val">10K+</div><div class="stat-label">Active Users</div></div>
-        <div class="stat-sep"></div>
-        <div><div class="stat-val">50K+</div><div class="stat-label">Events Created</div></div>
-        <div class="stat-sep"></div>
-        <div><div class="stat-val">100+</div><div class="stat-label">Cities</div></div>
+
+      <div class="hero-proof">
+        <div class="proof-avatars">
+          <div class="proof-av" style="background:#2563EB;">J</div>
+          <div class="proof-av" style="background:#7C3AED;">M</div>
+          <div class="proof-av" style="background:#059669;">S</div>
+          <div class="proof-av" style="background:#D97706;">A</div>
+          <div class="proof-av" style="background:#DC2626;">R</div>
+        </div>
+        <p class="proof-text"><strong>10,000+</strong> people finding each other nearby</p>
       </div>
     </div>
-    <div class="phone-container">
-      <div class="phone">
-        <div class="phone-status"><span>5:26 ▸</span><span>▪▪▪ ▾ 🔋</span></div>
-        <div class="phone-map">
-          <div class="map-roads"></div>
-          <div class="map-radius"></div>
-          <div class="map-dot"></div>
-          <div class="map-friend mf1"><div class="map-friend-av" style="background:#8B5CF6">JD</div>John</div>
-          <div class="map-friend mf2"><div class="map-friend-av" style="background:#EC4899">JD</div>Jane</div>
-        </div>
-        <div class="phone-list">
-          <div class="list-header">InTown (2) <span>All Friends</span></div>
-          <div class="list-row">
-            <div class="list-av" style="background:#8B5CF6">JD</div>
-            <div class="list-info"><div class="list-name">John Doe</div><div class="list-dist">7 miles away</div></div>
-            <div class="list-actions">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+
+    <div class="hero-phones">
+      <!-- Back phone -->
+      <div class="ph-back">
+        <div class="ph-notch"></div>
+        <div class="ph-back-content">
+          <div class="ph-back-title">Recent Activity</div>
+          <div class="ph-back-card">
+            <div class="ph-back-card-top">
+              <div class="ph-back-av" style="background:#2563EB;">J</div>
+              <div class="ph-back-name">Jake</div>
+              <div class="ph-back-time">2m ago</div>
             </div>
+            <div class="ph-back-msg">"Bro I'm literally right around the corner from you"</div>
           </div>
-          <div class="list-row">
-            <div class="list-av" style="background:#EC4899">JD</div>
-            <div class="list-info"><div class="list-name">Jane Doe</div><div class="list-dist">7 miles away</div></div>
-            <div class="list-actions">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <div class="ph-back-card">
+            <div class="ph-back-card-top">
+              <div class="ph-back-av" style="background:#7C3AED;">M</div>
+              <div class="ph-back-name">Maya</div>
+              <div class="ph-back-time">15m ago</div>
             </div>
+            <div class="ph-back-msg">"Spotted you on the map, wanna grab food?"</div>
           </div>
         </div>
-        <div class="phone-bottom">
-          <div class="tab active"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>Map</div>
-          <div class="tab"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>Calendar</div>
-          <div class="tab"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>Inbox</div>
-          <div class="tab"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Profile</div>
+      </div>
+
+      <!-- Main phone -->
+      <div class="ph-main">
+        <div class="ph-notch"></div>
+        <div class="ph-status">
+          <span>9:41</span>
+          <span>●●● ◀ 🔋</span>
+        </div>
+        <div class="ph-header">
+          <span class="ph-app-name">InTown</span>
+          <span class="ph-icon">🔔</span>
+        </div>
+        <div class="ph-map">
+          <div class="ph-you"></div>
+          <div class="ph-pin" style="top:20px; left:36px;">
+            <div class="ph-av" style="background:#2563EB;">J</div>
+            <div class="ph-tri" style="border-top: 7px solid #2563EB; border-left: 5px solid transparent; border-right: 5px solid transparent; height:0; width:0; margin-top:-2px;"></div>
+            <div class="ph-lbl">Jake · 0.3mi</div>
+          </div>
+          <div class="ph-pin" style="top:50px; right:20px;">
+            <div class="ph-av" style="background:#7C3AED;">M</div>
+            <div class="ph-tri" style="border-top: 7px solid #7C3AED; border-left: 5px solid transparent; border-right: 5px solid transparent; height:0; width:0; margin-top:-2px;"></div>
+            <div class="ph-lbl">Maya · 0.8mi</div>
+          </div>
+          <div class="ph-pin" style="bottom:12px; left:50px;">
+            <div class="ph-av" style="background:#059669;">S</div>
+            <div class="ph-tri" style="border-top: 7px solid #059669; border-left: 5px solid transparent; border-right: 5px solid transparent; height:0; width:0; margin-top:-2px;"></div>
+            <div class="ph-lbl">Sam · 1.1mi</div>
+          </div>
+        </div>
+        <div class="ph-notif">
+          <div class="ph-notif-icon">📍</div>
+          <div>
+            <div class="ph-notif-t">Jake is nearby!</div>
+            <div class="ph-notif-s">0.3 miles away · Tap to say hey</div>
+          </div>
+        </div>
+        <div class="ph-list">
+          <div class="ph-list-h">Nearby Right Now</div>
+          <div class="ph-row">
+            <div class="ph-row-av" style="background:#2563EB;">J</div>
+            <div>
+              <div class="ph-row-name">Jake</div>
+              <div class="ph-row-dist">0.3 miles away</div>
+            </div>
+            <div class="ph-row-dot"></div>
+          </div>
+          <div class="ph-row">
+            <div class="ph-row-av" style="background:#7C3AED;">M</div>
+            <div>
+              <div class="ph-row-name">Maya</div>
+              <div class="ph-row-dist">0.8 miles away</div>
+            </div>
+            <div class="ph-row-dot"></div>
+          </div>
+          <div class="ph-row">
+            <div class="ph-row-av" style="background:#059669;">S</div>
+            <div>
+              <div class="ph-row-name">Sam</div>
+              <div class="ph-row-dist">1.1 miles away</div>
+            </div>
+            <div class="ph-row-dot" style="background:#F59E0B;"></div>
+          </div>
+          <div class="ph-row">
+            <div class="ph-row-av" style="background:#D97706;">A</div>
+            <div>
+              <div class="ph-row-name">Alex</div>
+              <div class="ph-row-dist">2.4 miles away</div>
+            </div>
+            <div class="ph-row-dot" style="background:#6B7280;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating card -->
+      <div class="float-notif">
+        <div class="fn-icon">🎉</div>
+        <div class="fn-text">
+          <div class="fn-t1">3 friends nearby</div>
+          <div class="fn-t2">Best Friday ever</div>
         </div>
       </div>
     </div>
@@ -263,116 +993,175 @@
 </section>
 
 <!-- FEATURES -->
-<section class="features-section" id="features">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-eyebrow">Use Cases</div>
-      <h2 class="section-title">Real Moments, <span class="accent">Real Connections</span></h2>
-      <p class="section-sub">InTown shines in the moments that matter — when a friend is closer than you think and all you need is a nudge.</p>
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <span class="sec-label">Features</span>
+      <h2 class="sec-title">Everything proximity<br>should be.</h2>
+      <p class="sec-sub">Designed to bring people together with as little friction as possible.</p>
     </div>
-    <div class="feat-grid">
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <div class="feat-title">College Reunion, Zero Planning</div>
-        <div class="feat-desc">Your college roommate's flight just landed. InTown notifies you the moment they enter your radius — before they even text.</div>
-        <div class="feat-why">✓ Radius detection fires automatically</div>
+
+    <div class="features-grid">
+      <div class="feat-cell">
+        <div class="feat-num">01</div>
+        <div class="feat-title">Real-time friend map</div>
+        <div class="feat-desc">See which friends are nearby on a live map. Not "recently seen" — actually right now, in real time.</div>
       </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <div class="feat-title">Spontaneous Friday Night</div>
-        <div class="feat-desc">Plans fell through. InTown shows three friends within a mile right now. One tap and the night is saved.</div>
-        <div class="feat-why">✓ Physical proximity changes everything</div>
+      <div class="feat-cell">
+        <div class="feat-num">02</div>
+        <div class="feat-title">Instant nearby alerts</div>
+        <div class="feat-desc">Get a notification the moment a friend enters your radius. No manual checking. It just works.</div>
       </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
-        <div class="feat-title">Lost at a Festival</div>
-        <div class="feat-desc">See exactly which friends are within 500 feet. A shared live map beats 20 texts when the signal's weak and the music's loud.</div>
-        <div class="feat-why">✓ Live map, no coordination needed</div>
+      <div class="feat-cell">
+        <div class="feat-num">03</div>
+        <div class="feat-title">You choose your radius</div>
+        <div class="feat-desc">Set sharing to half a mile, 2 miles, or anything in between. Control exactly how close "nearby" means.</div>
       </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-        <div class="feat-title">Conference Networking</div>
-        <div class="feat-desc">See which mutual connections are in the same building. Turn a badge swap into a real coffee chat.</div>
-        <div class="feat-why">✓ Proximity makes outreach feel natural</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <div class="feat-title">Road Trip Convoy</div>
-        <div class="feat-desc">Your friend caravan is crossing three states. InTown's live map keeps every car in the convoy without a single group-text.</div>
-        <div class="feat-why">✓ One glance replaces 50 messages</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-        <div class="feat-title">New City, Hidden Connections</div>
-        <div class="feat-desc">Visiting a city for the first time? See which friends are locals — or also visiting — and ready to be your guide.</div>
-        <div class="feat-why">✓ Every trip becomes a social opportunity</div>
+      <div class="feat-cell">
+        <div class="feat-num">04</div>
+        <div class="feat-title">One-tap ghost mode</div>
+        <div class="feat-desc">Need some alone time? Disappear from everyone's map instantly. No notification sent, no awkward explanations.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="steps-section" id="how-it-works">
-  <div class="container">
-    <div class="section-header" style="text-align:center">
-      <div class="section-eyebrow">Simple</div>
-      <h2 class="section-title">Get Started in <span class="accent">3 Steps</span></h2>
-      <p class="section-sub" style="margin:0 auto">Start connecting with friends in your area in minutes.</p>
+<!-- SOCIAL PROOF -->
+<section class="proof-section" id="proof">
+  <div class="proof-inner">
+    <div class="proof-card">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-quote">"This app changed how we hang out. We used to spend 20 minutes coordinating who's going where. Now I just open InTown."</p>
+      <div class="proof-author">
+        <div class="proof-author-av" style="background:#2563EB;">J</div>
+        <div>
+          <div class="proof-author-name">Jake M.</div>
+          <div class="proof-author-handle">UNC Chapel Hill</div>
+        </div>
+      </div>
     </div>
-    <div class="steps-grid">
-      <div class="step"><div class="step-num">1</div><div class="step-title">Download &amp; Sign Up</div><p class="step-desc">Get InTown from the App Store or Google Play. Create your profile in under a minute.</p></div>
-      <div class="step"><div class="step-num">2</div><div class="step-title">Add Your Friends</div><p class="step-desc">Invite friends from your contacts or share your invite link. Build your InTown circle.</p></div>
-      <div class="step"><div class="step-num">3</div><div class="step-title">See Who's Nearby</div><p class="step-desc">Open the map, set your radius, and instantly see which friends are in town. Plan a hangout!</p></div>
+    <div class="proof-card">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-quote">"Found out my three best friends were all at the same coffee shop without knowing it. That would never have happened without InTown."</p>
+      <div class="proof-author">
+        <div class="proof-author-av" style="background:#7C3AED;">S</div>
+        <div>
+          <div class="proof-author-name">Sofia R.</div>
+          <div class="proof-author-handle">NYC</div>
+        </div>
+      </div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-stars">★★★★★</div>
+      <p class="proof-quote">"Best app for festival season. My whole group uses it now — way better than the 'where are you' text chain."</p>
+      <div class="proof-author">
+        <div class="proof-author-av" style="background:#059669;">A</div>
+        <div>
+          <div class="proof-author-name">Alex T.</div>
+          <div class="proof-author-handle">Austin, TX</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIAL -->
-<section class="testimonial-section">
-  <div class="container">
-    <div class="testimonial-box">
-      <div class="stars">★★★★★</div>
-      <p class="quote">"InTown completely changed how I hang out with friends. I used to miss people visiting my city all the time. Now I never miss a chance to meet up."</p>
-      <div class="testimonial-author">
-        <div class="ta-av"></div>
-        <div><div class="ta-name">Happy InTown User</div><div class="ta-loc">Chapel Hill, NC</div></div>
+<!-- PRIVACY -->
+<section class="priv-banner" id="privacy">
+  <div class="priv-inner">
+    <div class="priv-main">
+      <span class="sec-label">Privacy First</span>
+      <h2>Your location.<br>Your rules.</h2>
+      <p>InTown is built so that you're always in control. We don't store your location history, and we never share your data with third parties.</p>
+    </div>
+    <div class="priv-point">
+      <div class="priv-p-item">
+        <div class="priv-p-icon">🎯</div>
+        <div>
+          <div class="priv-p-t">Approximate only</div>
+          <div class="priv-p-d">Friends see a radius, not your address.</div>
+        </div>
+      </div>
+      <div class="priv-p-item">
+        <div class="priv-p-icon">🔒</div>
+        <div>
+          <div class="priv-p-t">No history stored</div>
+          <div class="priv-p-d">We don't log where you've been.</div>
+        </div>
+      </div>
+      <div class="priv-p-item">
+        <div class="priv-p-icon">👁️</div>
+        <div>
+          <div class="priv-p-t">Mutual friends only</div>
+          <div class="priv-p-d">Strangers can never see you.</div>
+        </div>
+      </div>
+    </div>
+    <div class="priv-point">
+      <div class="priv-p-item">
+        <div class="priv-p-icon">⚡</div>
+        <div>
+          <div class="priv-p-t">Pause anytime</div>
+          <div class="priv-p-d">One tap to go invisible, no notification sent.</div>
+        </div>
+      </div>
+      <div class="priv-p-item">
+        <div class="priv-p-icon">🛡️</div>
+        <div>
+          <div class="priv-p-t">No third-party sharing</div>
+          <div class="priv-p-d">We don't sell your data. Ever.</div>
+        </div>
+      </div>
+      <div class="priv-p-item">
+        <div class="priv-p-icon">📏</div>
+        <div>
+          <div class="priv-p-t">Custom radius</div>
+          <div class="priv-p-d">Choose exactly how close is "nearby."</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section" id="download">
-  <div class="container cta-inner">
-    <h2>Ready to See Who's <span>InTown</span>?</h2>
-    <p>Download the app for free and start connecting with your friends today.</p>
-    <div class="cta-btns">
-      <a href="#" class="btn-white">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-        Download for iOS
-      </a>
-      <a href="#" class="btn-ghost">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
-        Download for Android
-      </a>
-    </div>
+<section class="cta" id="cta">
+  <h2>Stop texting<br>"where are you."</h2>
+  <p>Download InTown and see which friends are nearby right now — for free.</p>
+
+  <div class="cta-btns">
+    <a href="#" class="dl-apple">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      <div class="dl-text">
+        <span class="t1">Download on the</span>
+        <span class="t2">App Store</span>
+      </div>
+    </a>
+    <a href="#" class="dl-android">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;">
+        <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
+      </svg>
+      <div class="dl-text">
+        <span class="t1">Get it on</span>
+        <span class="t2">Google Play</span>
+      </div>
+    </a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand-logo"><img src="../../assets/logo.svg" alt="InTown"><span>InTown</span></div>
-        <p class="footer-fine">A Sangforth Technologies, LLC app</p>
-        <p class="footer-tagline">Know when your friends are nearby.</p>
-      </div>
-      <div class="footer-col"><h4>Product</h4><ul><li><a href="#features">Use Cases</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#download">Download</a></li></ul></div>
-      <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="../../privacy.html">Privacy Policy</a></li><li><a href="../../terms.html">Terms of Service</a></li></ul></div>
-      <div class="footer-col"><h4>Resources</h4><ul><li><a href="../../blog/">Blog</a></li><li><a href="#">Instagram</a></li><li><a href="#">Twitter</a></li><li><a href="../../contact.html">Contact Us</a></li></ul></div>
+  <div class="footer-inner">
+    <a href="../../" class="f-logo">
+      <img src="../../assets/logo.svg" alt="InTown">
+      <span>InTown</span>
+    </a>
+    <div class="f-links">
+      <a href="../../privacy.html">Privacy</a>
+      <a href="../../terms.html">Terms</a>
+      <a href="../../blog/">Blog</a>
+      <a href="../../contact.html">Contact</a>
     </div>
-    <div class="footer-bottom">&copy; 2026 Sangforth Technologies LLC. All rights reserved.</div>
+    <p class="f-copy">© 2025 InTown · A Sangforth Technologies, LLC app</p>
   </div>
 </footer>
 
