@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InTown</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--black:#0A0A0A;--white:#F5F0E8;--red:#FF2D2D;--font-head:'Space Grotesk',sans-serif;--font-mono:'Space Mono',monospace}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-head);background:var(--black);color:var(--white);overflow-x:hidden;cursor:none}
+    a{text-decoration:none;color:inherit}
+    ul{list-style:none}
+
+    /* CUSTOM CURSOR */
+    .cursor{position:fixed;width:12px;height:12px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s;mix-blend-mode:difference}
+    .cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--white);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.15s ease;mix-blend-mode:difference}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:24px 40px;display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference}
+    .nav-logo{font-size:1.1rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+    .nav-logo img{width:22px;height:22px;filter:invert(1)}
+    .nav-right{display:flex;align-items:center;gap:32px}
+    .nav-right a{font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);opacity:0.5;transition:opacity 0.2s}
+    .nav-right a:hover{opacity:1}
+    .nav-dl{opacity:1!important;border:1.5px solid var(--white);padding:8px 18px;border-radius:2px}
+
+    /* HERO */
+    .hero{min-height:100vh;display:grid;grid-template-rows:1fr auto;padding:100px 40px 40px;position:relative;border-bottom:1px solid rgba(245,240,232,0.12)}
+    .hero-top{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end}
+    .hero-label{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px}
+    .hero-h1{font-size:clamp(3.5rem,8vw,8rem);font-weight:700;letter-spacing:-0.04em;line-height:0.92;text-transform:uppercase}
+    .hero-h1 em{font-style:normal;-webkit-text-stroke:1.5px var(--white);color:transparent}
+    .hero-right{display:flex;flex-direction:column;justify-content:flex-end;gap:32px;padding-bottom:8px}
+    .hero-desc{font-size:1rem;line-height:1.75;opacity:0.65;max-width:380px;font-family:var(--font-mono);font-size:0.82rem}
+    .hero-btns{display:flex;flex-direction:column;gap:10px}
+    .hbtn{display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(245,240,232,0.2);padding:14px 20px;font-family:var(--font-mono);font-size:0.78rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;transition:all 0.2s;position:relative;overflow:hidden}
+    .hbtn::before{content:'';position:absolute;inset:0;background:var(--white);transform:translateX(-101%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1)}
+    .hbtn:hover::before{transform:translateX(0)}
+    .hbtn:hover{color:var(--black)}
+    .hbtn span{position:relative;z-index:1}
+    .hbtn-arrow{position:relative;z-index:1}
+    .hero-bottom{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(245,240,232,0.12);padding-top:24px;margin-top:24px}
+    .hero-stat{padding:16px 0}
+    .hero-stat-num{font-size:2.5rem;font-weight:700;letter-spacing:-0.04em;line-height:1}
+    .hero-stat-num span{color:var(--red)}
+    .hero-stat-label{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;opacity:0.5;margin-top:4px}
+    .hero-stat+.hero-stat{border-left:1px solid rgba(245,240,232,0.12);padding-left:24px}
+
+    /* MARQUEE */
+    .marquee-wrap{border-top:1px solid rgba(245,240,232,0.12);border-bottom:1px solid rgba(245,240,232,0.12);overflow:hidden;padding:14px 0;background:var(--red)}
+    .marquee{display:flex;white-space:nowrap;animation:marquee 18s linear infinite}
+    .marquee-inner{display:flex;gap:0}
+    .marquee span{font-family:var(--font-mono);font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0 32px;color:var(--black)}
+    .marquee span::before{content:'●';margin-right:32px}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* FEATURES — RAW LIST */
+    .features{padding:80px 40px;border-bottom:1px solid rgba(245,240,232,0.12)}
+    .feat-header{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:baseline;margin-bottom:64px}
+    .feat-h2{font-size:clamp(2rem,5vw,5rem);font-weight:700;letter-spacing:-0.04em;text-transform:uppercase;line-height:0.9}
+    .feat-intro{font-family:var(--font-mono);font-size:0.82rem;line-height:1.8;opacity:0.55;max-width:380px;align-self:end}
+    .feat-list{border-top:1px solid rgba(245,240,232,0.12)}
+    .feat-item{display:grid;grid-template-columns:64px 1fr 1fr auto;gap:24px;align-items:center;padding:24px 0;border-bottom:1px solid rgba(245,240,232,0.08);transition:all 0.2s;cursor:default}
+    .feat-item:hover{padding-left:12px}
+    .feat-item:hover .fi-num{color:var(--red)}
+    .fi-num{font-family:var(--font-mono);font-size:0.72rem;opacity:0.35;letter-spacing:0.1em}
+    .fi-title{font-size:1.1rem;font-weight:700;letter-spacing:-0.02em}
+    .fi-desc{font-family:var(--font-mono);font-size:0.75rem;opacity:0.5;line-height:1.7}
+    .fi-tag{font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:4px 10px;white-space:nowrap}
+
+    /* HOW IT WORKS */
+    .how{padding:80px 40px;display:grid;grid-template-columns:1fr 2fr;gap:80px;border-bottom:1px solid rgba(245,240,232,0.12)}
+    .how-left h2{font-size:clamp(2.5rem,5vw,5rem);font-weight:700;letter-spacing:-0.04em;text-transform:uppercase;line-height:0.9}
+    .how-left h2 em{font-style:normal;color:var(--red)}
+    .how-steps{display:flex;flex-direction:column;gap:0}
+    .how-step{display:grid;grid-template-columns:80px 1fr;gap:24px;align-items:start;padding:28px 0;border-bottom:1px solid rgba(245,240,232,0.08)}
+    .how-step:last-child{border-bottom:none}
+    .hs-num{font-size:3rem;font-weight:700;color:var(--red);letter-spacing:-0.05em;line-height:1}
+    .hs-body h3{font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px}
+    .hs-body p{font-family:var(--font-mono);font-size:0.78rem;opacity:0.55;line-height:1.75}
+
+    /* QUOTE */
+    .quote-section{padding:100px 40px;border-bottom:1px solid rgba(245,240,232,0.12);position:relative;overflow:hidden}
+    .quote-section::before{content:'"';position:absolute;top:-40px;left:20px;font-size:30rem;font-weight:700;opacity:0.03;line-height:1;pointer-events:none;color:var(--white)}
+    .quote-text{font-size:clamp(1.4rem,3.5vw,3.2rem);font-weight:700;letter-spacing:-0.03em;line-height:1.2;max-width:900px;position:relative}
+    .quote-text span{color:var(--red)}
+    .quote-author{margin-top:32px;font-family:var(--font-mono);font-size:0.75rem;opacity:0.45;letter-spacing:0.08em;text-transform:uppercase}
+
+    /* CTA */
+    .cta{padding:80px 40px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px}
+    .cta h2{font-size:clamp(2rem,6vw,6rem);font-weight:700;letter-spacing:-0.04em;text-transform:uppercase;line-height:0.9}
+    .cta h2 em{font-style:normal;-webkit-text-stroke:1.5px var(--white);color:transparent}
+    .cta-dl{display:flex;flex-direction:column;gap:12px;flex-shrink:0}
+    .cta-btn{display:flex;align-items:center;gap:16px;padding:20px 32px;font-family:var(--font-mono);font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border:1.5px solid rgba(245,240,232,0.3);transition:all 0.2s;white-space:nowrap;position:relative;overflow:hidden}
+    .cta-btn::before{content:'';position:absolute;inset:0;background:var(--red);transform:translateX(-101%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1)}
+    .cta-btn:hover::before{transform:translateX(0)}
+    .cta-btn:hover{border-color:var(--red)}
+    .cta-btn span{position:relative;z-index:1}
+
+    /* FOOTER */
+    footer{padding:40px;border-top:1px solid rgba(245,240,232,0.12);display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:40px;align-items:start}
+    .f-brand .f-logo{font-size:0.9rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .f-brand .f-logo img{width:20px;height:20px;filter:invert(1)}
+    .f-brand p{font-family:var(--font-mono);font-size:0.68rem;opacity:0.4;line-height:1.7}
+    .f-col h4{font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;opacity:0.4;margin-bottom:14px}
+    .f-col li{margin-bottom:8px}
+    .f-col a{font-size:0.82rem;opacity:0.6;transition:opacity 0.2s}
+    .f-col a:hover{opacity:1}
+    .f-copy{font-family:var(--font-mono);font-size:0.65rem;opacity:0.3;align-self:end;white-space:nowrap}
+
+    @media(max-width:900px){
+      nav{padding:20px 24px}
+      .hero{padding:90px 24px 32px}
+      .hero-top{grid-template-columns:1fr;gap:32px}
+      .hero-h1{font-size:clamp(2.8rem,12vw,5rem)}
+      .feat-header{grid-template-columns:1fr}
+      .feat-item{grid-template-columns:48px 1fr;grid-template-rows:auto auto}
+      .fi-desc{grid-column:2}
+      .fi-tag{display:none}
+      .how{grid-template-columns:1fr;gap:40px;padding:60px 24px}
+      .cta{grid-template-columns:1fr;padding:60px 24px}
+      .cta h2{font-size:clamp(2rem,10vw,4rem)}
+      footer{grid-template-columns:1fr 1fr;padding:32px 24px}
+      .f-copy{grid-column:1/-1}
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="nav-logo"><img src="../../assets/logo.svg" alt="">InTown</div>
+  <div class="nav-right">
+    <a href="#features">Work</a>
+    <a href="#how">Process</a>
+    <a href="#download" class="nav-dl">Download ↗</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-label">// Location-aware social — 2024</div>
+      <h1 class="hero-h1">Know<br>When<br>Your<br><em>Friends</em><br>Are<br>Near</h1>
+    </div>
+    <div class="hero-right">
+      <p class="hero-desc">See who's nearby, plan events together, and never miss a chance to connect with the people who matter most. Real proximity. Real connections.</p>
+      <div class="hero-btns">
+        <a href="#download" class="hbtn"><span>↳ Download for iOS</span><span class="hbtn-arrow">→</span></a>
+        <a href="#download" class="hbtn"><span>↳ Download for Android</span><span class="hbtn-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-bottom">
+    <div class="hero-stat"><div class="hero-stat-num">10<span>K+</span></div><div class="hero-stat-label">Active Users</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">50<span>K+</span></div><div class="hero-stat-label">Events Created</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">100<span>+</span></div><div class="hero-stat-label">Cities</div></div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <div class="marquee-inner">
+      <span>Know Who's Nearby</span><span>Real Connections</span><span>Location Aware</span><span>Plan Meetups</span><span>Live Map</span><span>InTown App</span><span>Know Who's Nearby</span><span>Real Connections</span><span>Location Aware</span><span>Plan Meetups</span><span>Live Map</span><span>InTown App</span><span>Know Who's Nearby</span><span>Real Connections</span><span>Location Aware</span><span>Plan Meetups</span><span>Live Map</span><span>InTown App</span><span>Know Who's Nearby</span><span>Real Connections</span><span>Location Aware</span><span>Plan Meetups</span><span>Live Map</span><span>InTown App</span>
+    </div>
+  </div>
+</div>
+
+<section class="features" id="features">
+  <div class="feat-header">
+    <h2 class="feat-h2">Use<br>Cases</h2>
+    <p class="feat-intro">InTown shines in the moments that matter — when a friend is closer than you think and all you need is a nudge to make it happen.</p>
+  </div>
+  <div class="feat-list">
+    <div class="feat-item"><div class="fi-num">01</div><div class="fi-title">College Reunion, Zero Planning</div><div class="fi-desc">Radius detection fires automatically — notified before they even text you.</div><div class="fi-tag">Auto-detect</div></div>
+    <div class="feat-item"><div class="fi-num">02</div><div class="fi-title">Spontaneous Friday Night</div><div class="fi-desc">Three friends within a mile. One tap. Night saved. No coordination needed.</div><div class="fi-tag">Real-time</div></div>
+    <div class="feat-item"><div class="fi-num">03</div><div class="fi-title">Lost at a Festival</div><div class="fi-desc">Live map shows friends within 500 feet. Better than 20 texts in weak signal.</div><div class="fi-tag">Live Map</div></div>
+    <div class="feat-item"><div class="fi-num">04</div><div class="fi-title">Conference Networking</div><div class="fi-desc">See mutual connections in the same building. Warm outreach, no awkwardness.</div><div class="fi-tag">Proximity</div></div>
+    <div class="feat-item"><div class="fi-num">05</div><div class="fi-title">Road Trip Convoy</div><div class="fi-desc">Live map replaces 50 "where are you?" messages across three states.</div><div class="fi-tag">Tracking</div></div>
+    <div class="feat-item"><div class="fi-num">06</div><div class="fi-title">New City, Hidden Connections</div><div class="fi-desc">See which friends are locals or also visiting. Every trip is an opportunity.</div><div class="fi-tag">Discovery</div></div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="how-left">
+    <h2>How<br>It<br><em>Works</em></h2>
+  </div>
+  <div class="how-steps">
+    <div class="how-step"><div class="hs-num">1</div><div class="hs-body"><h3>Download &amp; Sign Up</h3><p>Get InTown from the App Store or Google Play. Create your profile in under a minute.</p></div></div>
+    <div class="how-step"><div class="hs-num">2</div><div class="hs-body"><h3>Add Your Friends</h3><p>Invite friends from your contacts or share your invite link. Build your InTown circle.</p></div></div>
+    <div class="how-step"><div class="hs-num">3</div><div class="hs-body"><h3>See Who's Nearby</h3><p>Open the map, set your radius, and instantly see which friends are in town.</p></div></div>
+  </div>
+</section>
+
+<section class="quote-section">
+  <div class="quote-text">"InTown completely <span>changed how</span> I hang out with friends. I used to miss people visiting my city all the time. Now I <span>never miss a chance</span> to meet up."</div>
+  <div class="quote-author">— Happy InTown User &nbsp;·&nbsp; Chapel Hill, NC</div>
+</section>
+
+<section class="cta" id="download">
+  <h2>Ready<br>to See<br>Who's<br><em>InTown?</em></h2>
+  <div class="cta-dl">
+    <a href="#" class="cta-btn"><span>↳ Download for iOS</span></a>
+    <a href="#" class="cta-btn"><span>↳ Download for Android</span></a>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">
+    <div class="f-logo"><img src="../../assets/logo.svg" alt="">InTown</div>
+    <p>A Sangforth Technologies,<br>LLC app.<br>Know when your friends<br>are nearby.</p>
+  </div>
+  <div class="f-col"><h4>Product</h4><ul><li><a href="#features">Use Cases</a></li><li><a href="#how">How It Works</a></li><li><a href="#download">Download</a></li></ul></div>
+  <div class="f-col"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="../../privacy.html">Privacy</a></li><li><a href="../../terms.html">Terms</a></li></ul></div>
+  <div class="f-col"><h4>Resources</h4><ul><li><a href="../../blog/">Blog</a></li><li><a href="#">Instagram</a></li><li><a href="#">Twitter</a></li><li><a href="../../contact.html">Contact</a></li></ul></div>
+  <div class="f-copy">© 2026 Sangforth Technologies LLC</div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-6+'px';cursor.style.top=my-6+'px'});
+  function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx-20+'px';ring.style.top=ry-20+'px';requestAnimationFrame(animRing)}
+  animRing();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(3)';ring.style.transform='scale(0.5)'});el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)'})});
+</script>
+</body>
+</html>

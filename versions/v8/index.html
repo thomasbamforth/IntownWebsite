@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InTown — Organic Warm</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--cream:#FEFCF7;--warm:#F5EFE0;--dark:#1A1208;--brown:#6B4423;--terracotta:#D4622A;--sage:#4A7C59;--blue:#2A5EBB;--muted:#8A7A6A;--font-head:'DM Serif Display',serif;--font-body:'DM Sans',sans-serif}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-body);background:var(--cream);color:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+    ul{list-style:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 40px}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;background:rgba(254,252,247,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(106,68,35,0.1);padding:16px 40px;display:flex;justify-content:space-between;align-items:center}
+    .nav-logo{font-family:var(--font-head);font-size:1.3rem;display:flex;align-items:center;gap:10px;color:var(--dark)}
+    .nav-logo img{width:26px;height:26px;filter:invert(1) sepia(1) saturate(3) hue-rotate(340deg)}
+    .nav-links{display:flex;align-items:center;gap:28px}
+    .nav-links a{font-size:0.88rem;font-weight:500;color:var(--muted);transition:color 0.2s}
+    .nav-links a:hover{color:var(--dark)}
+    .nav-dl{background:var(--terracotta)!important;color:white!important;padding:9px 20px;border-radius:100px;font-weight:600!important;transition:opacity 0.2s!important}
+    .nav-dl:hover{opacity:0.85!important}
+
+    /* BLOB SVG background shapes */
+    .blob{position:absolute;pointer-events:none;opacity:0.5}
+
+    /* HERO */
+    .hero{padding:80px 40px 100px;position:relative;overflow:hidden;min-height:90vh;display:flex;align-items:center}
+    .hero-blob1{top:-100px;right:-150px;width:600px;height:600px;animation:blobmove 8s ease-in-out infinite alternate}
+    .hero-blob2{bottom:-200px;left:-100px;width:500px;height:500px;animation:blobmove 10s ease-in-out infinite alternate-reverse}
+    @keyframes blobmove{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.1) rotate(15deg)}}
+    .hero-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .hero-lede{font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--terracotta);margin-bottom:16px}
+    .hero h1{font-family:var(--font-head);font-size:clamp(2.8rem,6vw,5.5rem);line-height:1.05;letter-spacing:-0.01em;color:var(--dark);margin-bottom:24px}
+    .hero h1 em{font-style:italic;color:var(--terracotta)}
+    .hero-p{font-size:1.05rem;color:var(--muted);max-width:440px;line-height:1.8;margin-bottom:36px}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+    .btn-terra{display:inline-flex;align-items:center;gap:9px;background:var(--terracotta);color:white;padding:13px 24px;border-radius:100px;font-weight:600;font-size:0.9rem;transition:all 0.2s;box-shadow:0 4px 20px rgba(212,98,42,0.25)}
+    .btn-terra:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(212,98,42,0.35)}
+    .btn-outlined{display:inline-flex;align-items:center;gap:9px;background:transparent;color:var(--dark);padding:13px 24px;border-radius:100px;font-weight:600;font-size:0.9rem;border:1.5px solid rgba(26,18,8,0.2);transition:all 0.2s}
+    .btn-outlined:hover{border-color:var(--dark);background:rgba(26,18,8,0.04)}
+    .btn-icon{width:17px;height:17px}
+    .hero-stats{display:flex;gap:24px;flex-wrap:wrap}
+    .hstat{display:flex;align-items:baseline;gap:6px}
+    .hstat-num{font-family:var(--font-head);font-size:1.6rem;color:var(--dark)}
+    .hstat-label{font-size:0.78rem;color:var(--muted);font-weight:500}
+    .hstat-sep{width:1px;height:24px;background:rgba(26,18,8,0.12);align-self:center}
+    .hero-visual{position:relative;display:flex;justify-content:center}
+    .hero-card-stack{position:relative;width:340px;height:480px}
+    .hcard{position:absolute;border-radius:24px;padding:28px;transition:all 0.4s}
+    .hcard-back{width:300px;background:#F0E8D8;border:1px solid rgba(106,68,35,0.1);top:40px;left:50%;transform:translateX(-50%) rotate(6deg);box-shadow:0 8px 40px rgba(0,0,0,0.08)}
+    .hcard-mid{width:320px;background:white;border:1px solid rgba(106,68,35,0.08);top:20px;left:50%;transform:translateX(-50%) rotate(-3deg);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
+    .hcard-front{width:320px;background:white;border:1px solid rgba(106,68,35,0.08);top:0;left:50%;transform:translateX(-50%);box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+    .hcard-front:hover{transform:translateX(-50%) translateY(-8px)}
+    .hc-notif{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--warm);border-radius:14px;margin-bottom:16px}
+    .hc-notif-icon{width:36px;height:36px;border-radius:10px;background:var(--terracotta);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .hc-notif-icon svg{width:18px;height:18px;color:white}
+    .hc-notif-title{font-weight:700;font-size:0.88rem;color:var(--dark)}
+    .hc-notif-sub{font-size:0.75rem;color:var(--muted);margin-top:2px}
+    .hc-map{height:160px;background:linear-gradient(135deg,#D4E8C2,#B8D4A0,#9EC88A);border-radius:14px;position:relative;overflow:hidden;margin-bottom:16px}
+    .hc-map-roads{position:absolute;inset:0}
+    .hc-map-roads::before,.hc-map-roads::after{content:'';position:absolute;background:rgba(255,255,255,0.6)}
+    .hc-map-roads::before{top:50%;left:0;right:0;height:3px}
+    .hc-map-roads::after{top:0;bottom:0;left:45%;width:3px}
+    .hc-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;background:var(--terracotta);border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(212,98,42,0.4)}
+    .hc-pin{position:absolute;background:white;border-radius:20px;padding:4px 10px 4px 6px;display:flex;align-items:center;gap:5px;font-size:0.62rem;font-weight:700;color:var(--dark);box-shadow:0 2px 8px rgba(0,0,0,0.12)}
+    .hc-pin-av{width:18px;height:18px;border-radius:50%;font-size:0.5rem;font-weight:700;color:white;display:flex;align-items:center;justify-content:center}
+    .hp1{top:20%;left:10%}
+    .hp2{top:55%;right:8%}
+    .hc-footer{display:flex;justify-content:space-between;align-items:center}
+    .hc-footer-label{font-size:0.78rem;font-weight:600;color:var(--dark)}
+    .hc-badge{font-size:0.68rem;font-weight:700;background:rgba(74,124,89,0.12);color:var(--sage);padding:4px 10px;border-radius:20px}
+
+    /* FEATURES */
+    .features{padding:96px 0;background:var(--warm)}
+    .features-inner{position:relative;overflow:hidden;border-radius:32px;background:var(--cream);margin:0 40px;padding:64px}
+    .feat-top{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:56px}
+    .feat-h2{font-family:var(--font-head);font-size:clamp(2rem,4vw,3.5rem);line-height:1.1;letter-spacing:-0.01em}
+    .feat-h2 em{font-style:italic;color:var(--terracotta)}
+    .feat-intro{font-size:0.95rem;color:var(--muted);line-height:1.8;align-self:end}
+    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .feat-card{background:var(--warm);border-radius:20px;padding:28px;transition:transform 0.2s}
+    .feat-card:hover{transform:translateY(-4px)}
+    .fc-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .fc-icon svg{width:22px;height:22px}
+    .fc-title{font-family:var(--font-head);font-size:1.05rem;margin-bottom:8px}
+    .fc-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:12px}
+    .fc-why{font-size:0.78rem;font-weight:600;color:var(--terracotta)}
+
+    /* HOW IT WORKS */
+    .how{padding:96px 40px;background:var(--cream)}
+    .how-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:80px;align-items:start}
+    .how-left h2{font-family:var(--font-head);font-size:clamp(2rem,4vw,3.5rem);line-height:1.1;letter-spacing:-0.01em;margin-bottom:16px}
+    .how-left h2 em{font-style:italic;color:var(--sage)}
+    .how-left p{font-size:0.92rem;color:var(--muted);line-height:1.75}
+    .how-steps{display:flex;flex-direction:column;gap:0}
+    .hs{display:grid;grid-template-columns:56px 1fr;gap:20px;padding:28px 0;border-bottom:1px solid rgba(26,18,8,0.08);transition:all 0.2s}
+    .hs:last-child{border-bottom:none}
+    .hs:hover .hs-num{background:var(--terracotta);color:white}
+    .hs-num{width:40px;height:40px;border-radius:50%;background:var(--warm);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;color:var(--dark);transition:all 0.2s;flex-shrink:0;margin-top:2px}
+    .hs-title{font-family:var(--font-head);font-size:1.1rem;margin-bottom:6px}
+    .hs-desc{font-size:0.875rem;color:var(--muted);line-height:1.7}
+
+    /* TESTIMONIAL */
+    .testimonial{padding:80px 40px;background:var(--terracotta);position:relative;overflow:hidden}
+    .testimonial::before{content:'"';position:absolute;top:-60px;left:20px;font-family:var(--font-head);font-size:30rem;color:rgba(255,255,255,0.08);line-height:1;pointer-events:none}
+    .test-inner{max-width:800px;margin:0 auto;position:relative;z-index:1}
+    .test-quote{font-family:var(--font-head);font-size:clamp(1.4rem,3vw,2.4rem);line-height:1.3;color:white;margin-bottom:28px}
+    .test-author{display:flex;align-items:center;gap:14px}
+    .test-av{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.2)}
+    .test-name{font-weight:700;color:white;font-size:0.95rem}
+    .test-loc{font-size:0.8rem;color:rgba(255,255,255,0.65)}
+
+    /* CTA */
+    .cta-section{padding:96px 40px;background:var(--warm)}
+    .cta-inner{max-width:700px;margin:0 auto;text-align:center}
+    .cta-h{font-family:var(--font-head);font-size:clamp(2.5rem,5vw,4.5rem);line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px}
+    .cta-h em{font-style:italic;color:var(--terracotta)}
+    .cta-p{font-size:1rem;color:var(--muted);max-width:440px;margin:0 auto 36px;line-height:1.8}
+    .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+    /* FOOTER */
+    footer{background:var(--dark);padding:56px 40px 32px;color:rgba(254,252,247,0.7)}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
+    .f-logo{display:flex;align-items:center;gap:9px;font-family:var(--font-head);font-size:1.2rem;color:var(--cream);margin-bottom:10px}
+    .f-logo img{width:24px;height:24px}
+    .f-fine{font-size:0.75rem;opacity:0.45;line-height:1.7}
+    .fc h4{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:14px}
+    .fc li{margin-bottom:9px}
+    .fc a{font-size:0.875rem;opacity:0.55;transition:opacity 0.2s}
+    .fc a:hover{opacity:1}
+    .footer-bottom{border-top:1px solid rgba(254,252,247,0.08);padding-top:22px;font-size:0.75rem;opacity:0.3}
+
+    @media(max-width:900px){
+      nav{padding:14px 24px}
+      .nav-links{display:none}
+      .hero{padding:80px 24px 60px}
+      .hero-inner{grid-template-columns:1fr;gap:48px}
+      .hero-card-stack{display:none}
+      .features-inner{margin:0 24px;padding:40px 24px}
+      .feat-top{grid-template-columns:1fr}
+      .feat-grid{grid-template-columns:1fr 1fr}
+      .how{padding:72px 24px}
+      .how-inner{grid-template-columns:1fr;gap:48px}
+      .cta-section{padding:72px 24px}
+      footer{padding:48px 24px 28px}
+      .footer-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:600px){
+      .feat-grid{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><img src="../../assets/logo.svg" alt="">InTown</div>
+  <div class="nav-links">
+    <a href="#features">Use Cases</a>
+    <a href="#how">How It Works</a>
+    <a href="#">Blog</a>
+    <a href="#download" class="nav-dl">Download</a>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <svg class="blob hero-blob1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="#F0E0C8" d="M47.5,-67.2C60.5,-58.1,69.4,-43.5,73.1,-27.8C76.8,-12.1,75.3,4.7,68.8,18.8C62.4,32.9,51,44.3,38.1,54.8C25.1,65.3,10.5,74.8,-4.5,79.7C-19.4,84.6,-34.7,84.9,-45.9,76.5C-57.1,68.1,-64.2,51,-68.1,33.8C-72,16.6,-72.8,-0.7,-67.4,-15.5C-62,-30.3,-50.5,-42.7,-37.8,-52C-25.1,-61.2,-11.2,-67.4,3.5,-72.1C18.2,-76.8,34.4,-76.3,47.5,-67.2Z" transform="translate(100 100)" /></svg>
+  <svg class="blob hero-blob2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="#D4E8C8" d="M44.3,-58.5C55.6,-50.6,61.3,-35.4,65.2,-19.7C69.2,-4,71.5,12.1,66.8,25.5C62,38.9,50.3,49.6,37.1,57.6C23.9,65.6,9.3,70.8,-5.8,70.8C-20.8,70.7,-36.4,65.3,-47.5,55.3C-58.7,45.2,-65.5,30.5,-67.6,15.1C-69.7,-0.3,-67.2,-16.4,-60.3,-29.8C-53.4,-43.2,-42.2,-53.9,-29.5,-61.3C-16.7,-68.7,-2.5,-72.7,10.7,-70.5C23.8,-68.3,33,-66.4,44.3,-58.5Z" transform="translate(100 100)" /></svg>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-lede">Location-Aware Social</div>
+      <h1>Know When Your <em>Friends</em> Are In Town</h1>
+      <p class="hero-p">See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.</p>
+      <div class="hero-btns">
+        <a href="#download" class="btn-terra">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+          App Store
+        </a>
+        <a href="#download" class="btn-outlined">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
+          Google Play
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-num">10K+</div><div class="hstat-label">Active Users</div></div>
+        <div class="hstat-sep"></div>
+        <div class="hstat"><div class="hstat-num">50K+</div><div class="hstat-label">Events</div></div>
+        <div class="hstat-sep"></div>
+        <div class="hstat"><div class="hstat-num">100+</div><div class="hstat-label">Cities</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="hcard hcard-back"></div>
+        <div class="hcard hcard-mid"></div>
+        <div class="hcard hcard-front">
+          <div class="hc-notif">
+            <div class="hc-notif-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></div>
+            <div><div class="hc-notif-title">Jake is nearby!</div><div class="hc-notif-sub">0.3 miles away · Tap to message</div></div>
+          </div>
+          <div class="hc-map">
+            <div class="hc-map-roads"></div>
+            <div class="hc-dot"></div>
+            <div class="hc-pin hp1"><div class="hc-pin-av" style="background:#D4622A">JK</div>Jake</div>
+            <div class="hc-pin hp2"><div class="hc-pin-av" style="background:#4A7C59">MY</div>Maya</div>
+          </div>
+          <div class="hc-footer">
+            <div class="hc-footer-label">InTown (2) nearby</div>
+            <div class="hc-badge">All Active</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="feat-top">
+      <h2 class="feat-h2">Real Moments,<br><em>Real Connections</em></h2>
+      <p class="feat-intro">InTown shines when a friend is closer than you think and all you need is a nudge to make it happen. Here's when people love it most.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="fc-icon" style="background:rgba(212,98,42,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#D4622A" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="fc-title">College Reunion, Zero Planning</div>
+        <div class="fc-desc">Your college roommate's flight just landed. InTown notifies you before they even text.</div>
+        <div class="fc-why">→ Radius detection fires automatically</div>
+      </div>
+      <div class="feat-card">
+        <div class="fc-icon" style="background:rgba(74,124,89,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7C59" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="fc-title">Spontaneous Friday Night</div>
+        <div class="fc-desc">Plans fell through. Three friends within a mile. One tap and the night is saved.</div>
+        <div class="fc-why" style="color:#4A7C59">→ Physical proximity changes everything</div>
+      </div>
+      <div class="feat-card">
+        <div class="fc-icon" style="background:rgba(42,94,187,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A5EBB" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+        <div class="fc-title">Lost at a Festival</div>
+        <div class="fc-desc">Live map shows friends within 500 feet. Better than 20 texts in weak signal.</div>
+        <div class="fc-why" style="color:#2A5EBB">→ Live map, no words needed</div>
+      </div>
+      <div class="feat-card">
+        <div class="fc-icon" style="background:rgba(107,68,35,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#6B4423" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="fc-title">Conference Networking</div>
+        <div class="fc-desc">See mutual connections in the same building. Warm outreach, no awkwardness.</div>
+        <div class="fc-why" style="color:#6B4423">→ Proximity makes it natural</div>
+      </div>
+      <div class="feat-card">
+        <div class="fc-icon" style="background:rgba(212,98,42,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#D4622A" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="fc-title">Road Trip Convoy</div>
+        <div class="fc-desc">Live map keeps every car in the convoy without a single group-text.</div>
+        <div class="fc-why">→ One glance, no messages needed</div>
+      </div>
+      <div class="feat-card">
+        <div class="fc-icon" style="background:rgba(74,124,89,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7C59" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="fc-title">New City, Hidden Connections</div>
+        <div class="fc-desc">See which friends are locals or also visiting. Every trip is an opportunity.</div>
+        <div class="fc-why" style="color:#4A7C59">→ Turn any trip social</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-left">
+      <h2>Simple by<br><em>Design</em></h2>
+      <p>Get started in minutes. Three steps and you're connected to every friend in your radius.</p>
+    </div>
+    <div class="how-steps">
+      <div class="hs"><div class="hs-num">1</div><div><div class="hs-title">Download &amp; Sign Up</div><p class="hs-desc">Get InTown from the App Store or Google Play. Create your profile in under a minute.</p></div></div>
+      <div class="hs"><div class="hs-num">2</div><div><div class="hs-title">Add Your Friends</div><p class="hs-desc">Invite friends from contacts or share your invite link. Build your InTown circle.</p></div></div>
+      <div class="hs"><div class="hs-num">3</div><div><div class="hs-title">See Who's Nearby</div><p class="hs-desc">Open the map, set your radius, and instantly see which friends are in town.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonial">
+  <div class="test-inner">
+    <div class="test-quote">"InTown completely changed how I hang out with friends. I used to miss people visiting my city all the time. Now I never miss a chance to meet up."</div>
+    <div class="test-author"><div class="test-av"></div><div><div class="test-name">Happy InTown User</div><div class="test-loc">Chapel Hill, NC</div></div></div>
+  </div>
+</section>
+
+<section class="cta-section" id="download">
+  <div class="cta-inner">
+    <h2 class="cta-h">Ready to See<br>Who's <em>InTown?</em></h2>
+    <p class="cta-p">Download the app for free and start connecting with your friends today.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-terra" style="font-size:1rem;padding:15px 28px">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        Download for iOS
+      </a>
+      <a href="#" class="btn-outlined" style="font-size:1rem;padding:15px 28px">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
+        Download for Android
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="f-logo"><img src="../../assets/logo.svg" alt="">InTown</div>
+      <p class="f-fine">A Sangforth Technologies, LLC app<br>Know when your friends are nearby.</p>
+    </div>
+    <div class="fc"><h4>Product</h4><ul><li><a href="#features">Use Cases</a></li><li><a href="#how">How It Works</a></li><li><a href="#download">Download</a></li></ul></div>
+    <div class="fc"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="../../privacy.html">Privacy Policy</a></li><li><a href="../../terms.html">Terms</a></li></ul></div>
+    <div class="fc"><h4>Resources</h4><ul><li><a href="../../blog/">Blog</a></li><li><a href="#">Instagram</a></li><li><a href="#">Twitter</a></li><li><a href="../../contact.html">Contact</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">© 2026 Sangforth Technologies LLC. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

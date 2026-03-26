@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InTown — Synthwave</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#0D0015;--mg:#1A0030;--cyan:#00FFFF;--pink:#FF00AA;--yellow:#FFE600;--font-head:'Orbitron',sans-serif;--font-mono:'Share Tech Mono',monospace}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-mono);background:var(--bg);color:var(--cyan);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+    ul{list-style:none}
+    .container{max-width:1100px;margin:0 auto;padding:0 32px}
+
+    /* SCANLINES */
+    body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:9998}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,255,255,0.15);background:rgba(13,0,21,0.9);backdrop-filter:blur(10px)}
+    .nav-logo{font-family:var(--font-head);font-size:1.1rem;font-weight:900;letter-spacing:0.1em;color:var(--cyan);text-shadow:0 0 20px var(--cyan);display:flex;align-items:center;gap:10px}
+    .nav-logo img{width:24px;height:24px;filter:drop-shadow(0 0 6px #00FFFF)}
+    .nav-links{display:flex;gap:28px;align-items:center}
+    .nav-links a{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,255,255,0.5);transition:all 0.2s}
+    .nav-links a:hover{color:var(--cyan);text-shadow:0 0 10px var(--cyan)}
+    .nav-dl{color:var(--pink)!important;border:1px solid var(--pink);padding:8px 16px;text-shadow:0 0 10px var(--pink)!important;box-shadow:0 0 10px rgba(255,0,170,0.2);transition:all 0.2s!important}
+    .nav-dl:hover{background:rgba(255,0,170,0.1)!important;box-shadow:0 0 20px rgba(255,0,170,0.4)!important}
+
+    /* GRID FLOOR */
+    .grid-floor{position:absolute;bottom:0;left:0;right:0;height:45%;overflow:hidden;perspective:400px}
+    .grid-plane{width:100%;height:100%;background-image:linear-gradient(rgba(255,0,170,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,170,0.5) 1px,transparent 1px);background-size:60px 60px;transform:rotateX(75deg);transform-origin:top;animation:gridscroll 4s linear infinite;background-position:center 0}
+    @keyframes gridscroll{from{background-position:center 0}to{background-position:center 60px}}
+    .grid-fade{position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(transparent,var(--bg))}
+
+    /* HERO */
+    .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:120px 32px 80px}
+    .hero-glow-1{position:absolute;top:-100px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,255,255,0.12),transparent 70%);pointer-events:none}
+    .hero-glow-2{position:absolute;top:100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(255,0,170,0.12),transparent 70%);pointer-events:none}
+    .hero-tag{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--pink);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .hero-tag::before,.hero-tag::after{content:'';display:block;height:1px;width:32px;background:var(--pink);box-shadow:0 0 6px var(--pink)}
+    .hero-container{position:relative;z-index:2;max-width:900px}
+    .hero h1{font-family:var(--font-head);font-size:clamp(2rem,7vw,6.5rem);font-weight:900;line-height:1;letter-spacing:0.02em;text-transform:uppercase;margin-bottom:8px}
+    .hero h1 .line1{color:var(--cyan);text-shadow:0 0 30px var(--cyan),0 0 60px rgba(0,255,255,0.4)}
+    .hero h1 .line2{color:var(--pink);text-shadow:0 0 30px var(--pink),0 0 60px rgba(255,0,170,0.4);display:block;margin-left:clamp(20px,5vw,80px)}
+    .hero h1 .line3{color:var(--yellow);text-shadow:0 0 30px var(--yellow),0 0 60px rgba(255,230,0,0.4);display:block;font-size:0.5em;letter-spacing:0.3em;margin-top:4px}
+    .hero-sub{font-size:0.85rem;color:rgba(0,255,255,0.55);max-width:500px;margin:24px 0 36px;line-height:1.8;letter-spacing:0.03em}
+    .hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:56px}
+    .hbtn{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;font-family:var(--font-head);font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;position:relative;overflow:hidden;transition:all 0.3s}
+    .hbtn-cyan{border:1px solid var(--cyan);color:var(--cyan);box-shadow:0 0 15px rgba(0,255,255,0.2),inset 0 0 15px rgba(0,255,255,0.05)}
+    .hbtn-cyan:hover{background:rgba(0,255,255,0.1);box-shadow:0 0 30px rgba(0,255,255,0.4),inset 0 0 20px rgba(0,255,255,0.1)}
+    .hbtn-pink{border:1px solid var(--pink);color:var(--pink);box-shadow:0 0 15px rgba(255,0,170,0.2),inset 0 0 15px rgba(255,0,170,0.05)}
+    .hbtn-pink:hover{background:rgba(255,0,170,0.1);box-shadow:0 0 30px rgba(255,0,170,0.4),inset 0 0 20px rgba(255,0,170,0.1)}
+    .hbtn svg{width:16px;height:16px}
+    .hero-stats{display:flex;gap:40px;flex-wrap:wrap}
+    .hs{display:flex;flex-direction:column}
+    .hs-num{font-family:var(--font-head);font-size:1.8rem;font-weight:900;color:var(--yellow);text-shadow:0 0 20px var(--yellow);letter-spacing:0.05em}
+    .hs-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,255,255,0.4);margin-top:2px}
+
+    /* SUN */
+    .sun-wrap{position:absolute;bottom:42%;left:50%;transform:translateX(-50%);z-index:1}
+    .sun{width:180px;height:90px;border-radius:90px 90px 0 0;overflow:hidden;position:relative}
+    .sun-inner{width:100%;height:200%;background:linear-gradient(180deg,#FFE600,#FF6B00,#FF00AA);position:relative}
+    .sun-lines{position:absolute;top:60%;left:0;right:0;display:flex;flex-direction:column;gap:4px;padding:0 4px}
+    .sun-line{height:3px;background:var(--bg);opacity:0.6}
+    .sun-line:nth-child(1){margin:0 0}
+    .sun-line:nth-child(2){margin:0 8px}
+    .sun-line:nth-child(3){margin:0 14px}
+    .sun-line:nth-child(4){margin:0 18px}
+    .sun-glow{position:absolute;inset:-30px;background:radial-gradient(ellipse,rgba(255,230,0,0.25),transparent 70%);border-radius:50%}
+
+    /* FEATURES */
+    .features{padding:80px 0;position:relative;z-index:2}
+    .features .container{border:1px solid rgba(0,255,255,0.1)}
+    .feat-header{padding:32px;border-bottom:1px solid rgba(0,255,255,0.1);display:flex;justify-content:space-between;align-items:center}
+    .feat-header h2{font-family:var(--font-head);font-size:1.5rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan);text-shadow:0 0 20px var(--cyan)}
+    .feat-header span{font-size:0.65rem;letter-spacing:0.15em;color:rgba(0,255,255,0.4);text-transform:uppercase}
+    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+    .feat-card{padding:28px;border-right:1px solid rgba(0,255,255,0.08);border-bottom:1px solid rgba(0,255,255,0.08);transition:background 0.2s}
+    .feat-card:hover{background:rgba(0,255,255,0.03)}
+    .feat-card:nth-child(3n){border-right:none}
+    .feat-card:nth-child(n+4){border-bottom:none}
+    .fc-id{font-size:0.6rem;letter-spacing:0.2em;color:var(--pink);margin-bottom:12px;text-shadow:0 0 8px var(--pink)}
+    .fc-title{font-family:var(--font-head);font-size:0.8rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;color:var(--cyan)}
+    .fc-desc{font-size:0.75rem;color:rgba(0,255,255,0.45);line-height:1.8}
+
+    /* HOW IT WORKS */
+    .how{padding:80px 0;position:relative;z-index:2}
+    .how-inner{border:1px solid rgba(255,0,170,0.2);padding:48px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
+    .how-step{padding:0 32px;position:relative}
+    .how-step+.how-step{border-left:1px solid rgba(255,0,170,0.15)}
+    .how-num{font-family:var(--font-head);font-size:3rem;font-weight:900;color:var(--pink);text-shadow:0 0 20px var(--pink);letter-spacing:0.05em;line-height:1;margin-bottom:16px}
+    .how-title{font-family:var(--font-head);font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;color:var(--cyan)}
+    .how-desc{font-size:0.75rem;color:rgba(0,255,255,0.45);line-height:1.8}
+
+    /* QUOTE */
+    .quote{padding:80px 0;position:relative;z-index:2}
+    .quote-box{border:1px solid rgba(255,230,0,0.2);padding:48px;position:relative;overflow:hidden}
+    .quote-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--yellow),transparent)}
+    .quote-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--yellow),transparent)}
+    .q-mark{font-family:var(--font-head);font-size:4rem;color:var(--yellow);text-shadow:0 0 20px var(--yellow);line-height:1;margin-bottom:16px}
+    .q-text{font-family:var(--font-head);font-size:clamp(1rem,2.5vw,1.6rem);font-weight:700;letter-spacing:0.04em;color:var(--yellow);text-shadow:0 0 20px rgba(255,230,0,0.4);line-height:1.4;margin-bottom:24px}
+    .q-author{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,230,0,0.45)}
+
+    /* CTA */
+    .cta{padding:80px 0;position:relative;z-index:2}
+    .cta-box{text-align:center;padding:64px;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(0,255,255,0.03),rgba(255,0,170,0.03));border:1px solid rgba(0,255,255,0.15)}
+    .cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(0,255,255,0.06),transparent 70%);pointer-events:none}
+    .cta h2{font-family:var(--font-head);font-size:clamp(1.5rem,5vw,3.5rem);font-weight:900;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;position:relative}
+    .cta h2 .c1{color:var(--cyan);text-shadow:0 0 30px var(--cyan)}
+    .cta h2 .c2{color:var(--pink);text-shadow:0 0 30px var(--pink)}
+    .cta p{font-size:0.78rem;color:rgba(0,255,255,0.4);margin-bottom:36px;letter-spacing:0.1em;text-transform:uppercase;position:relative}
+    .cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative}
+
+    /* FOOTER */
+    footer{border-top:1px solid rgba(0,255,255,0.1);padding:40px 0;position:relative;z-index:2}
+    .footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+    .f-logo{font-family:var(--font-head);font-size:1rem;font-weight:900;letter-spacing:0.12em;color:var(--cyan);text-shadow:0 0 15px var(--cyan);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .f-logo img{width:22px;height:22px;filter:drop-shadow(0 0 6px #00FFFF)}
+    .f-sub{font-size:0.68rem;color:rgba(0,255,255,0.3);letter-spacing:0.06em;line-height:1.7}
+    .f-col h4{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,0,170,0.5);margin-bottom:14px;text-shadow:0 0 8px rgba(255,0,170,0.3)}
+    .f-col li{margin-bottom:8px}
+    .f-col a{font-size:0.75rem;color:rgba(0,255,255,0.35);transition:all 0.2s;letter-spacing:0.05em}
+    .f-col a:hover{color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
+    .footer-bottom{margin-top:32px;padding-top:24px;border-top:1px solid rgba(0,255,255,0.06);font-size:0.62rem;color:rgba(0,255,255,0.2);letter-spacing:0.1em;text-transform:uppercase;text-align:center}
+
+    @media(max-width:768px){
+      .feat-grid{grid-template-columns:1fr 1fr}
+      .feat-card:nth-child(3n){border-right:1px solid rgba(0,255,255,0.08)}
+      .feat-card:nth-child(2n){border-right:none}
+      .how-inner{grid-template-columns:1fr}
+      .how-step+.how-step{border-left:none;border-top:1px solid rgba(255,0,170,0.15);padding-top:32px;margin-top:32px}
+      .footer-inner{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><img src="../../assets/logo.svg" alt="">InTown</div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">Process</a>
+    <a href="#download" class="nav-dl">Download</a>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-container">
+    <div class="hero-tag">Transmission Incoming</div>
+    <h1>
+      <span class="line1">Know When</span>
+      <span class="line2">Friends</span>
+      <span class="line3">Are In Town</span>
+    </h1>
+    <p class="hero-sub">See who's nearby. Plan events together. Never miss a chance to connect with the people who matter most. Real proximity. Real connections.</p>
+    <div class="hero-btns">
+      <a href="#download" class="hbtn hbtn-cyan">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        iOS Download
+      </a>
+      <a href="#download" class="hbtn hbtn-pink">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
+        Android Download
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-num">10K+</div><div class="hs-label">Active Users</div></div>
+      <div class="hs"><div class="hs-num">50K+</div><div class="hs-label">Events Created</div></div>
+      <div class="hs"><div class="hs-num">100+</div><div class="hs-label">Cities</div></div>
+    </div>
+  </div>
+  <div class="grid-floor"><div class="grid-plane"></div><div class="grid-fade"></div></div>
+  <div class="sun-wrap"><div class="sun"><div class="sun-inner"></div><div class="sun-lines"><div class="sun-line"></div><div class="sun-line"></div><div class="sun-line"></div><div class="sun-line"></div></div></div><div class="sun-glow"></div></div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <div class="feat-header">
+      <h2>// Use Cases</h2>
+      <span>System v2.4.1 — Initializing Scenarios</span>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="fc-id">CASE_001</div><div class="fc-title">College Reunion</div><div class="fc-desc">Radius detection fires automatically. Notified before they even text you.</div></div>
+      <div class="feat-card"><div class="fc-id">CASE_002</div><div class="fc-title">Friday Night</div><div class="fc-desc">Three friends within a mile. One tap. Night saved. No coordination needed.</div></div>
+      <div class="feat-card"><div class="fc-id">CASE_003</div><div class="fc-title">Festival Rescue</div><div class="fc-desc">Live map shows friends within 500 ft. Better than 20 texts in weak signal.</div></div>
+      <div class="feat-card"><div class="fc-id">CASE_004</div><div class="fc-title">Conference Net</div><div class="fc-desc">Mutual connections in the same building. Warm outreach, no awkwardness.</div></div>
+      <div class="feat-card"><div class="fc-id">CASE_005</div><div class="fc-title">Road Convoy</div><div class="fc-desc">Live map replaces 50 "where are you?" messages across three states.</div></div>
+      <div class="feat-card"><div class="fc-id">CASE_006</div><div class="fc-title">City Discovery</div><div class="fc-desc">Friends who are locals or also visiting. Every trip is an opportunity.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-inner">
+      <div class="how-step"><div class="how-num">01</div><div class="how-title">Download &amp; Boot</div><div class="how-desc">Get InTown from App Store or Google Play. Profile setup in under 60 seconds.</div></div>
+      <div class="how-step"><div class="how-num">02</div><div class="how-title">Link Your Network</div><div class="how-desc">Invite friends from contacts or share your invite link. Build your InTown grid.</div></div>
+      <div class="how-step"><div class="how-num">03</div><div class="how-title">Go Live</div><div class="how-desc">Open the map, set your radius, see which friends are in range. Initiate meetup.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="container">
+    <div class="quote-box">
+      <div class="q-mark">"</div>
+      <div class="q-text">InTown completely changed how I hang out with friends. I used to miss people visiting my city. Now I never miss a chance to meet up.</div>
+      <div class="q-author">// Transmission from: Happy InTown User · Chapel Hill, NC · Signal Strong</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="download">
+  <div class="container">
+    <div class="cta-box">
+      <div class="cta-glow"></div>
+      <h2><span class="c1">Ready</span> to <span class="c2">Connect?</span></h2>
+      <p>// Initialize InTown — Free Download Available Now</p>
+      <div class="cta-btns">
+        <a href="#" class="hbtn hbtn-cyan" style="font-size:0.72rem;padding:14px 28px">iOS Download →</a>
+        <a href="#" class="hbtn hbtn-pink" style="font-size:0.72rem;padding:14px 28px">Android Download →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="f-logo"><img src="../../assets/logo.svg" alt="">InTown</div>
+        <p class="f-sub">A Sangforth Technologies, LLC app<br>Know when your friends are nearby.<br>© 2026 Sangforth Technologies LLC</p>
+      </div>
+      <div class="f-col"><h4>// Product</h4><ul><li><a href="#features">Use Cases</a></li><li><a href="#how">How It Works</a></li><li><a href="#download">Download</a></li></ul></div>
+      <div class="f-col"><h4>// Company</h4><ul><li><a href="#">About</a></li><li><a href="../../privacy.html">Privacy</a></li><li><a href="../../terms.html">Terms</a></li></ul></div>
+      <div class="f-col"><h4>// Links</h4><ul><li><a href="../../blog/">Blog</a></li><li><a href="#">Instagram</a></li><li><a href="#">Twitter</a></li><li><a href="../../contact.html">Contact</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">© 2026 Sangforth Technologies LLC · All rights reserved · System Online</div>
+  </div>
+</footer>
+
+</body>
+</html>
