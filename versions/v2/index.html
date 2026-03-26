@@ -3,198 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InTown — See who's nearby, right now.</title>
+  <title>InTown — Stop wondering who's nearby.</title>
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:      #060E1A;
-      --bg2:     #0B1A2E;
-      --bg3:     #0F2440;
-      --bg4:     #152D4A;
+      --bg:      #F9F7F4;
+      --bg2:     #F0EDE7;
+      --navy:    #0B1A2E;
+      --navy2:   #0F2440;
       --blue:    #4A90D9;
-      --blue-lt: #7BB3E8;
       --white:   #FFFFFF;
-      --gray:    #8899AA;
-      --gray-lt: #B8CAD8;
-      --border:  rgba(74,144,217,0.15);
+      --muted:   #718096;
+      --border:  #DDD9D1;
     }
 
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
     body {
       font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
-      color: var(--white);
+      color: var(--navy);
       overflow-x: hidden;
     }
 
-    /* NAV */
+    /* NAV — minimal: just logo and one CTA */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 0 60px;
-      height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(6,14,26,0.9);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      padding: 0 64px;
+      height: 68px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(249,247,244,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      text-decoration: none;
-    }
+    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
     .logo img { width: 26px; }
-    .logo span { font-size: 17px; font-weight: 700; color: var(--white); }
+    .logo-name { font-size: 17px; font-weight: 800; color: var(--navy); letter-spacing: -0.3px; }
 
-    .nav-mid {
-      display: flex;
-      gap: 8px;
-      list-style: none;
-    }
-    .nav-mid a {
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-right a:first-child {
       text-decoration: none;
-      color: var(--gray);
       font-size: 14px;
       font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 6px;
-      transition: color 0.2s, background 0.2s;
+      color: var(--muted);
+      transition: color 0.15s;
     }
-    .nav-mid a:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+    .nav-right a:first-child:hover { color: var(--navy); }
 
-    .nav-right { display: flex; align-items: center; gap: 12px; }
-
-    .btn-outline {
+    .nav-cta {
       text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
       color: var(--white);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 8px 18px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      transition: border-color 0.2s;
-    }
-    .btn-outline:hover { border-color: var(--blue); }
-
-    .btn-solid {
-      text-decoration: none;
-      color: var(--white);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 8px 18px;
       background: var(--blue);
+      padding: 9px 22px;
       border-radius: 8px;
-      transition: background 0.2s, transform 0.1s;
+      transition: filter 0.15s, transform 0.1s;
     }
-    .btn-solid:hover { background: #5A9FE6; transform: translateY(-1px); }
+    .nav-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-    /* HERO */
+    /* HERO — centered, large phone as centerpiece */
     .hero {
-      padding: 140px 60px 100px;
-      min-height: 100vh;
+      padding: 120px 64px 0;
+      text-align: center;
       position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
     }
 
-    /* Gradient background */
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 60% 40%, rgba(74,144,217,0.11) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 50% at 15% 70%, rgba(74,144,217,0.06) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    /* Subtle dot grid */
-    .hero-dots {
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(rgba(74,144,217,0.18) 1px, transparent 1px);
-      background-size: 32px 32px;
-      opacity: 0.4;
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      align-items: center;
-      gap: 60px;
-      position: relative;
-      z-index: 1;
-      width: 100%;
-    }
-
-    .hero-tag {
+    .hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--blue-lt);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
       margin-bottom: 24px;
     }
 
-    .hero-tag::before {
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
       content: '';
       display: block;
-      width: 20px;
-      height: 2px;
+      width: 28px;
+      height: 1.5px;
       background: var(--blue);
-      border-radius: 2px;
+      opacity: 0.5;
     }
 
     h1 {
-      font-size: clamp(44px, 5.5vw, 72px);
+      font-size: clamp(50px, 7vw, 92px);
       font-weight: 900;
-      letter-spacing: -2px;
-      line-height: 1.05;
-      margin-bottom: 24px;
-      color: var(--white);
+      letter-spacing: -3px;
+      line-height: 1.02;
+      color: var(--navy);
+      margin-bottom: 22px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    h1 .hl {
-      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-lt) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-p {
+    .hero-sub {
       font-size: 19px;
-      color: var(--gray-lt);
-      line-height: 1.7;
-      margin-bottom: 44px;
-      font-weight: 400;
-      max-width: 460px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .hero-actions {
       display: flex;
-      align-items: center;
-      gap: 16px;
+      justify-content: center;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 56px;
+      margin-bottom: 64px;
     }
 
-    .dl-apple, .dl-android {
+    .btn-dl {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -202,190 +136,184 @@
       padding: 13px 22px;
       border-radius: 12px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 15px;
       transition: transform 0.15s, box-shadow 0.15s;
     }
 
-    .dl-apple {
+    .btn-ios {
+      background: var(--navy);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(11,26,46,0.2);
+    }
+
+    .btn-and {
       background: var(--white);
-      color: #000;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      color: var(--navy);
+      border: 1.5px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
-    .dl-android {
-      background: var(--bg3);
-      color: var(--white);
-      border: 1px solid var(--border);
-    }
+    .btn-dl:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .btn-dl svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .btn-dl-t { display: flex; flex-direction: column; text-align: left; }
+    .btn-dl-t .s { font-size: 10px; font-weight: 400; opacity: 0.6; }
+    .btn-dl-t .b { font-size: 15px; font-weight: 800; }
 
-    .dl-apple:hover, .dl-android:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-    }
-
-    .dl-apple svg, .dl-android svg { width: 20px; height: 20px; flex-shrink: 0; }
-
-    .dl-text { display: flex; flex-direction: column; }
-    .dl-text .t1 { font-size: 10px; font-weight: 500; opacity: 0.65; line-height: 1; }
-    .dl-text .t2 { font-size: 15px; font-weight: 700; line-height: 1.25; }
-
-    .hero-proof {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .proof-avatars {
-      display: flex;
-    }
-
-    .proof-av {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      border: 2px solid var(--bg);
-      margin-left: -8px;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--white);
-    }
-
-    .proof-av:first-child { margin-left: 0; }
-
-    .proof-text { font-size: 13px; color: var(--gray-lt); font-weight: 500; }
-    .proof-text strong { color: var(--white); }
-
-    /* PHONES VISUAL */
-    .hero-phones {
+    /* PHONE SHOWCASE — centered, floating */
+    .phone-showcase {
       position: relative;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 580px;
+      padding-bottom: 0;
     }
 
-    /* Main phone */
-    .ph-main {
-      position: absolute;
-      width: 255px;
-      height: 530px;
-      background: #08162A;
-      border-radius: 40px;
-      border: 1.5px solid rgba(74,144,217,0.35);
+    .showcase-phone {
+      width: 300px;
+      height: 620px;
+      background: var(--navy);
+      border-radius: 52px;
+      border: 2px solid rgba(11,26,46,0.12);
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.04),
-        0 40px 80px rgba(0,0,0,0.7),
-        0 0 80px rgba(74,144,217,0.1);
+        0 60px 120px rgba(11,26,46,0.2),
+        0 20px 40px rgba(11,26,46,0.1),
+        inset 0 0 0 1px rgba(255,255,255,0.03);
       overflow: hidden;
+      position: relative;
       z-index: 2;
-      left: 50%;
-      top: 50%;
-      transform: translate(-40%, -50%) rotate(-3deg);
-      animation: floatMain 5s ease-in-out infinite;
+      animation: gently-float 6s ease-in-out infinite;
     }
 
-    @keyframes floatMain {
-      0%, 100% { transform: translate(-40%, -50%) rotate(-3deg) translateY(0); }
-      50% { transform: translate(-40%, -50%) rotate(-3deg) translateY(-14px); }
+    @keyframes gently-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
     }
 
-    /* Second phone (behind) */
-    .ph-back {
+    /* Subtle shadow beneath phone */
+    .phone-shadow {
       position: absolute;
-      width: 220px;
-      height: 460px;
-      background: #0B1A2E;
-      border-radius: 36px;
-      border: 1px solid rgba(74,144,217,0.15);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-      overflow: hidden;
+      bottom: -20px;
+      width: 200px;
+      height: 30px;
+      background: rgba(11,26,46,0.15);
+      border-radius: 50%;
+      filter: blur(16px);
       z-index: 1;
-      left: 50%;
-      top: 50%;
-      transform: translate(-5%, -47%) rotate(6deg);
-      animation: floatBack 5s ease-in-out infinite;
-      animation-delay: 0.5s;
+      animation: shadow-pulse 6s ease-in-out infinite;
     }
 
-    @keyframes floatBack {
-      0%, 100% { transform: translate(-5%, -47%) rotate(6deg) translateY(0); }
-      50% { transform: translate(-5%, -47%) rotate(6deg) translateY(-10px); }
+    @keyframes shadow-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.15; }
+      50% { transform: scale(0.85); opacity: 0.08; }
     }
+
+    /* Side floating cards */
+    .side-card {
+      position: absolute;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 3;
+    }
+
+    .card-left {
+      left: calc(50% - 320px);
+      top: 120px;
+      animation: float-l 5s ease-in-out infinite;
+    }
+
+    .card-right {
+      right: calc(50% - 320px);
+      top: 260px;
+      animation: float-r 5s ease-in-out infinite;
+      animation-delay: 0.8s;
+    }
+
+    @keyframes float-l {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes float-r {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .sc-icon { font-size: 22px; flex-shrink: 0; }
+    .sc-title { font-size: 13px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+    .sc-sub { font-size: 11px; color: var(--muted); white-space: nowrap; }
 
     /* Phone internals */
-    .ph-notch {
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 90px; height: 26px;
+    .sp-notch {
+      width: 100px; height: 30px;
       background: #000;
-      border-radius: 0 0 18px 18px;
-      z-index: 10;
+      border-radius: 0 0 20px 20px;
+      margin: 0 auto;
     }
 
-    .ph-status {
+    .sp-status {
       display: flex;
       justify-content: space-between;
-      padding: 8px 18px 4px;
-      margin-top: 26px;
-      font-size: 11px;
+      padding: 8px 20px 4px;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--white);
+      color: #fff;
     }
 
-    .ph-header {
+    .sp-hdr {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 14px 10px;
+      padding: 6px 16px 10px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    .ph-app-name { font-size: 15px; font-weight: 700; color: var(--white); }
-    .ph-icon { font-size: 16px; }
+    .sp-title { font-size: 17px; font-weight: 700; color: #fff; }
+    .sp-sub-txt { font-size: 11px; color: #8899AA; margin-top: 1px; }
+    .sp-hdr-ic { font-size: 18px; }
 
-    .ph-map {
-      height: 180px;
+    .sp-map {
+      height: 220px;
       background: #0D1F35;
       position: relative;
       overflow: hidden;
     }
 
-    .ph-map::before {
+    .sp-map::before {
       content: '';
       position: absolute;
       inset: 0;
       background-image:
         linear-gradient(rgba(74,144,217,0.06) 1px, transparent 1px),
         linear-gradient(90deg, rgba(74,144,217,0.06) 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-size: 28px 28px;
     }
 
-    .ph-map::after {
+    .sp-map::after {
       content: '';
       position: absolute;
       inset: 0;
       background-image:
         linear-gradient(rgba(74,144,217,0.14) 2px, transparent 2px),
         linear-gradient(90deg, rgba(74,144,217,0.14) 2px, transparent 2px);
-      background-size: 72px 72px;
+      background-size: 84px 84px;
     }
 
-    .ph-you {
+    .sp-you {
       position: absolute;
-      width: 14px; height: 14px;
-      background: var(--blue);
+      width: 16px; height: 16px;
+      background: #4A90D9;
       border-radius: 50%;
-      border: 2.5px solid var(--white);
-      box-shadow: 0 0 0 5px rgba(74,144,217,0.2);
-      top: 90px; left: 110px;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 6px rgba(74,144,217,0.2);
+      top: 105px; left: 130px;
       z-index: 5;
     }
 
-    .ph-pin {
+    .sp-pin {
       position: absolute;
       display: flex;
       flex-direction: column;
@@ -394,389 +322,230 @@
       z-index: 5;
     }
 
-    .ph-av {
-      width: 30px; height: 30px;
+    .sp-av {
+      width: 32px; height: 32px;
       border-radius: 50%;
-      border: 2px solid var(--white);
+      border: 2.5px solid #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
-      color: var(--white);
+      color: #fff;
     }
 
-    .ph-tri {
-      width: 0; height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      margin-top: -2px;
-    }
+    .sp-tri { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; margin-top: -2px; }
 
-    .ph-lbl {
-      background: rgba(6,14,26,0.9);
-      border-radius: 3px;
-      padding: 1px 5px;
-      font-size: 8px;
-      font-weight: 600;
-      color: var(--white);
+    .sp-lbl {
+      background: rgba(6,14,26,0.92);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
       white-space: nowrap;
     }
 
-    .ph-notif {
-      margin: 8px 10px;
-      background: linear-gradient(135deg, rgba(74,144,217,0.18), rgba(74,144,217,0.06));
-      border: 1px solid rgba(74,144,217,0.3);
-      border-radius: 10px;
-      padding: 8px 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .ph-notif-icon {
-      width: 28px; height: 28px;
-      background: var(--blue);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
-
-    .ph-notif-t { font-size: 10px; font-weight: 600; color: var(--white); }
-    .ph-notif-s { font-size: 9px; color: var(--blue-lt); margin-top: 1px; }
-
-    .ph-list { padding: 8px 0; }
-    .ph-list-h {
-      font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
-      text-transform: uppercase; color: var(--gray);
-      padding: 0 14px 6px;
-    }
-
-    .ph-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-    }
-
-    .ph-row-av {
-      width: 30px; height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--white);
-      flex-shrink: 0;
-    }
-
-    .ph-row-name { font-size: 11px; font-weight: 600; color: var(--white); }
-    .ph-row-dist { font-size: 10px; color: var(--gray); }
-    .ph-row-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #4CAF50;
-      margin-left: auto;
-      flex-shrink: 0;
-    }
-
-    /* Back phone content */
-    .ph-back-content {
-      padding: 28px 14px 14px;
-    }
-
-    .ph-back-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 10px;
-    }
-
-    .ph-back-card {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-
-    .ph-back-card-top {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .ph-back-av {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--white);
-    }
-
-    .ph-back-name { font-size: 11px; font-weight: 600; color: var(--white); }
-    .ph-back-time { font-size: 9px; color: var(--gray); margin-left: auto; }
-
-    .ph-back-msg { font-size: 10px; color: var(--gray-lt); line-height: 1.4; }
-
-    /* Floating notification card */
-    .float-notif {
-      position: absolute;
-      background: var(--bg2);
-      border: 1px solid rgba(74,144,217,0.3);
-      border-radius: 14px;
-      padding: 12px 16px;
+    .sp-alert {
+      margin: 9px 12px;
+      background: rgba(74,144,217,0.12);
+      border: 1px solid rgba(74,144,217,0.28);
+      border-radius: 12px;
+      padding: 9px 12px;
       display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 10;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
-      bottom: 60px;
-      left: -20px;
-      white-space: nowrap;
-      animation: floatCard 4s ease-in-out infinite;
-      animation-delay: 1s;
     }
 
-    @keyframes floatCard {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+    .sp-alert-ic { width: 30px; height: 30px; background: #4A90D9; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .sp-alert-t { font-size: 11px; font-weight: 600; color: #fff; }
+    .sp-alert-s { font-size: 10px; color: #7BB3E8; margin-top: 1px; }
+
+    .sp-list { padding: 6px 0; }
+    .sp-list-h { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #8899AA; padding: 0 16px 6px; }
+
+    .sp-row { display: flex; align-items: center; gap: 10px; padding: 7px 16px; }
+    .sp-row-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .sp-row-n { font-size: 13px; font-weight: 600; color: #fff; flex: 1; }
+    .sp-row-d { font-size: 11px; color: #8899AA; }
+    .sp-row-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    /* STATS ROW */
+    .stats-row {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 64px;
     }
 
-    .fn-icon { font-size: 20px; }
-    .fn-text {}
-    .fn-t1 { font-size: 12px; font-weight: 700; color: var(--white); }
-    .fn-t2 { font-size: 11px; color: var(--blue-lt); }
+    .stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
 
-    /* FEATURES */
-    .features { padding: 100px 60px; background: var(--bg); }
-
-    .features-inner { max-width: 1160px; margin: 0 auto; }
-
-    .features-header {
+    .stat-cell {
       text-align: center;
-      margin-bottom: 72px;
+      padding: 0 24px;
+      border-right: 1px solid var(--border);
     }
 
-    .sec-label {
-      display: inline-block;
+    .stat-cell:last-child { border-right: none; }
+
+    .stat-big { font-size: 40px; font-weight: 900; color: var(--navy); letter-spacing: -1.5px; }
+    .stat-lbl { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+
+    /* FEATURE SECTIONS — alternating full-width, not cards */
+    .feature-block {
+      padding: 100px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-block.flip { direction: rtl; }
+    .feature-block.flip > * { direction: ltr; }
+
+    .fb-img {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Feature illustration in each block */
+    .fb-illustration {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .fb-text {}
+    .fb-label {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--blue);
-      margin-bottom: 16px;
-    }
-
-    .sec-title {
-      font-size: clamp(32px, 4vw, 50px);
-      font-weight: 800;
-      letter-spacing: -1.2px;
-      line-height: 1.1;
-      margin-bottom: 18px;
-    }
-
-    .sec-sub {
-      font-size: 17px;
-      color: var(--gray-lt);
-      max-width: 480px;
-      margin: 0 auto;
-      line-height: 1.65;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      background: var(--border);
-      border-radius: 24px;
-      overflow: hidden;
-    }
-
-    .feat-cell {
-      background: var(--bg2);
-      padding: 44px 40px;
-      transition: background 0.25s;
-    }
-
-    .feat-cell:hover { background: var(--bg3); }
-
-    .feat-num {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: var(--blue);
       margin-bottom: 14px;
     }
 
-    .feat-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: -0.5px;
-      margin-bottom: 10px;
-      line-height: 1.2;
+    .fb-title {
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 900;
+      letter-spacing: -1.2px;
+      line-height: 1.1;
+      color: var(--navy);
+      margin-bottom: 16px;
     }
 
-    .feat-desc {
-      font-size: 15px;
-      color: var(--gray);
-      line-height: 1.65;
-    }
-
-    /* SOCIAL PROOF */
-    .proof-section { padding: 100px 60px; background: var(--bg2); }
-
-    .proof-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 20px;
-    }
-
-    .proof-card {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 32px;
-    }
-
-    .proof-stars { font-size: 14px; margin-bottom: 16px; color: #F59E0B; }
-
-    .proof-quote {
-      font-size: 15px;
-      color: var(--gray-lt);
+    .fb-desc {
+      font-size: 16px;
+      color: var(--muted);
       line-height: 1.7;
       margin-bottom: 24px;
-      font-style: italic;
     }
 
-    .proof-author {
+    .fb-check { display: flex; flex-direction: column; gap: 10px; }
+    .fb-chk-item {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--navy);
+      font-weight: 500;
     }
 
-    .proof-author-av {
-      width: 36px; height: 36px;
+    .chk-dot {
+      width: 20px; height: 20px;
+      background: rgba(74,144,217,0.12);
+      border: 1.5px solid rgba(74,144,217,0.3);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--white);
+      flex-shrink: 0;
+      font-size: 10px;
     }
 
-    .proof-author-name { font-size: 14px; font-weight: 600; color: var(--white); }
-    .proof-author-handle { font-size: 12px; color: var(--gray); }
+    /* Quote section */
+    .quote-section {
+      background: var(--navy);
+      padding: 100px 64px;
+      text-align: center;
+    }
 
-    /* PRIVACY BANNER */
-    .priv-banner {
-      padding: 80px 60px;
+    .quote-mark {
+      font-size: 80px;
+      font-weight: 900;
+      color: var(--blue);
+      line-height: 0.8;
+      margin-bottom: 32px;
+      font-family: Georgia, serif;
+    }
+
+    .quote-text {
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.4;
+      letter-spacing: -0.5px;
+      max-width: 700px;
+      margin: 0 auto 32px;
+    }
+
+    .quote-author { font-size: 14px; color: rgba(255,255,255,0.4); font-weight: 500; }
+
+    /* CTA */
+    .cta-section {
+      padding: 120px 64px;
+      text-align: center;
       background: var(--bg);
     }
 
-    .priv-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 56px 60px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 40px;
-      align-items: start;
-    }
-
-    .priv-main {}
-    .priv-main .sec-label { margin-bottom: 10px; }
-    .priv-main h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 12px; }
-    .priv-main p { font-size: 15px; color: var(--gray); line-height: 1.65; }
-
-    .priv-point { display: flex; flex-direction: column; gap: 10px; }
-
-    .priv-p-item { display: flex; align-items: flex-start; gap: 12px; }
-    .priv-p-icon {
-      width: 36px; height: 36px;
-      background: rgba(74,144,217,0.12);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-    .priv-p-t { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
-    .priv-p-d { font-size: 13px; color: var(--gray); line-height: 1.5; }
-
-    /* CTA */
-    .cta {
-      padding: 120px 60px;
-      text-align: center;
-      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta::before {
-      content: '';
-      position: absolute;
-      top: -100px; left: 50%;
-      transform: translateX(-50%);
-      width: 800px; height: 400px;
-      background: radial-gradient(ellipse, rgba(74,144,217,0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .cta h2 {
-      font-size: clamp(40px, 5vw, 64px);
+    .cta-section h2 {
+      font-size: clamp(44px, 6vw, 80px);
       font-weight: 900;
-      letter-spacing: -2px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
+      letter-spacing: -3px;
+      line-height: 1.0;
+      color: var(--navy);
+      margin-bottom: 18px;
     }
 
-    .cta p {
+    .cta-section p {
       font-size: 18px;
-      color: var(--gray-lt);
-      max-width: 440px;
-      margin: 0 auto 44px;
-      line-height: 1.65;
-      position: relative;
-      z-index: 1;
+      color: var(--muted);
+      margin-bottom: 44px;
+      line-height: 1.6;
     }
 
-    .cta-btns {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
-    }
+    .cta-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
     /* FOOTER */
     footer {
       border-top: 1px solid var(--border);
-      padding: 40px 60px;
-      background: var(--bg);
+      padding: 44px 64px;
+      background: var(--bg2);
     }
 
     .footer-inner {
-      max-width: 1160px;
+      max-width: 1100px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -787,35 +556,28 @@
 
     .f-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
     .f-logo img { width: 22px; }
-    .f-logo span { font-size: 14px; font-weight: 700; color: var(--white); }
+    .f-logo span { font-size: 15px; font-weight: 700; color: var(--navy); }
 
     .f-links { display: flex; gap: 24px; }
-    .f-links a {
-      text-decoration: none;
-      font-size: 13px;
-      color: var(--gray);
-      transition: color 0.2s;
-    }
-    .f-links a:hover { color: var(--white); }
+    .f-links a { text-decoration: none; font-size: 13px; color: var(--muted); transition: color 0.15s; }
+    .f-links a:hover { color: var(--navy); }
 
-    .f-copy { font-size: 12px; color: var(--gray); }
+    .f-copy { font-size: 12px; color: var(--muted); }
 
     @media (max-width: 960px) {
       nav { padding: 0 24px; }
-      .nav-mid { display: none; }
-      .hero { padding: 100px 24px 60px; }
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-phones { height: 420px; }
-      .ph-main { width: 200px; height: 420px; }
-      .ph-back { display: none; }
-      .float-notif { display: none; }
-      .features { padding: 70px 24px; }
-      .features-grid { grid-template-columns: 1fr; }
-      .proof-section { padding: 70px 24px; }
-      .proof-inner { grid-template-columns: 1fr; }
-      .priv-banner { padding: 60px 24px; }
-      .priv-inner { grid-template-columns: 1fr; padding: 32px; }
-      .cta { padding: 80px 24px; }
+      .nav-right a:first-child { display: none; }
+      .hero { padding: 100px 24px 0; }
+      .phone-showcase { padding-bottom: 40px; }
+      .showcase-phone { width: 240px; height: 490px; }
+      .card-left, .card-right { display: none; }
+      .stats-row { padding: 40px 24px; }
+      .stats-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .stat-cell { border-right: none; }
+      .feature-block { grid-template-columns: 1fr; padding: 70px 24px; }
+      .feature-block.flip { direction: ltr; }
+      .quote-section { padding: 70px 24px; }
+      .cta-section { padding: 80px 24px; }
       footer { padding: 32px 24px; }
       .footer-inner { flex-direction: column; align-items: flex-start; }
     }
@@ -826,325 +588,249 @@
 <nav>
   <a href="../../" class="logo">
     <img src="../../assets/logo.svg" alt="InTown">
-    <span>InTown</span>
+    <span class="logo-name">InTown</span>
   </a>
-  <ul class="nav-mid">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#proof">Reviews</a></li>
-    <li><a href="#privacy">Privacy</a></li>
-  </ul>
   <div class="nav-right">
-    <a href="../../blog/" class="btn-outline">Blog</a>
-    <a href="#cta" class="btn-solid">Get the App</a>
+    <a href="../../blog/">Blog</a>
+    <a href="#cta" class="nav-cta">Download Free</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero" id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-dots"></div>
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-tag">Friend location sharing</div>
-      <h1>See who's nearby,<br><span class="hl">right now.</span></h1>
-      <p class="hero-p">Stop wondering if your friends are out. InTown shows you who's close — so you can go from "anyone around?" to actually hanging out.</p>
+<section class="hero">
+  <div class="hero-eyebrow">Friend Location App</div>
+  <h1>Stop wondering.<br>Start hanging out.</h1>
+  <p class="hero-sub">InTown shows you which friends are nearby right now — so you can go from "anyone around?" to actually doing something.</p>
 
-      <div class="hero-actions">
-        <a href="#cta" class="dl-apple">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-          </svg>
-          <div class="dl-text">
-            <span class="t1">Download on the</span>
-            <span class="t2">App Store</span>
-          </div>
-        </a>
-        <a href="#cta" class="dl-android">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
-          </svg>
-          <div class="dl-text">
-            <span class="t1">Get it on</span>
-            <span class="t2">Google Play</span>
-          </div>
-        </a>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-dl btn-ios">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      <div class="btn-dl-t">
+        <span class="s">Download on the</span>
+        <span class="b">App Store</span>
       </div>
+    </a>
+    <a href="#cta" class="btn-dl btn-and">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
+      </svg>
+      <div class="btn-dl-t">
+        <span class="s">Get it on</span>
+        <span class="b">Google Play</span>
+      </div>
+    </a>
+  </div>
 
-      <div class="hero-proof">
-        <div class="proof-avatars">
-          <div class="proof-av" style="background:#2563EB;">J</div>
-          <div class="proof-av" style="background:#7C3AED;">M</div>
-          <div class="proof-av" style="background:#059669;">S</div>
-          <div class="proof-av" style="background:#D97706;">A</div>
-          <div class="proof-av" style="background:#DC2626;">R</div>
-        </div>
-        <p class="proof-text"><strong>10,000+</strong> people finding each other nearby</p>
+  <!-- Phone showcase -->
+  <div class="phone-showcase">
+    <!-- Floating side cards -->
+    <div class="side-card card-left">
+      <span class="sc-icon">📍</span>
+      <div>
+        <div class="sc-title">Jake is nearby!</div>
+        <div class="sc-sub">0.3 miles away</div>
       </div>
     </div>
 
-    <div class="hero-phones">
-      <!-- Back phone -->
-      <div class="ph-back">
-        <div class="ph-notch"></div>
-        <div class="ph-back-content">
-          <div class="ph-back-title">Recent Activity</div>
-          <div class="ph-back-card">
-            <div class="ph-back-card-top">
-              <div class="ph-back-av" style="background:#2563EB;">J</div>
-              <div class="ph-back-name">Jake</div>
-              <div class="ph-back-time">2m ago</div>
-            </div>
-            <div class="ph-back-msg">"Bro I'm literally right around the corner from you"</div>
-          </div>
-          <div class="ph-back-card">
-            <div class="ph-back-card-top">
-              <div class="ph-back-av" style="background:#7C3AED;">M</div>
-              <div class="ph-back-name">Maya</div>
-              <div class="ph-back-time">15m ago</div>
-            </div>
-            <div class="ph-back-msg">"Spotted you on the map, wanna grab food?"</div>
-          </div>
+    <div class="side-card card-right">
+      <span class="sc-icon">🎉</span>
+      <div>
+        <div class="sc-title">3 friends in range</div>
+        <div class="sc-sub">Best Friday ever</div>
+      </div>
+    </div>
+
+    <div class="showcase-phone">
+      <div class="sp-notch"></div>
+      <div class="sp-status"><span>9:41</span><span>●●● 🔋</span></div>
+      <div class="sp-hdr">
+        <div>
+          <div class="sp-title">InTown</div>
+          <div class="sp-sub-txt">4 friends nearby</div>
+        </div>
+        <span class="sp-hdr-ic">🔔</span>
+      </div>
+      <div class="sp-map">
+        <div class="sp-you"></div>
+        <div class="sp-pin" style="top:22px;left:36px;">
+          <div class="sp-av" style="background:#2563EB;">J</div>
+          <div class="sp-tri" style="border-top:7px solid #2563EB;border-left:5px solid transparent;border-right:5px solid transparent;"></div>
+          <div class="sp-lbl">Jake · 0.3mi</div>
+        </div>
+        <div class="sp-pin" style="top:50px;right:22px;">
+          <div class="sp-av" style="background:#7C3AED;">M</div>
+          <div class="sp-tri" style="border-top:7px solid #7C3AED;border-left:5px solid transparent;border-right:5px solid transparent;"></div>
+          <div class="sp-lbl">Maya · 0.8mi</div>
+        </div>
+        <div class="sp-pin" style="bottom:18px;left:62px;">
+          <div class="sp-av" style="background:#059669;">S</div>
+          <div class="sp-tri" style="border-top:7px solid #059669;border-left:5px solid transparent;border-right:5px solid transparent;"></div>
+          <div class="sp-lbl">Sam · 1.2mi</div>
         </div>
       </div>
-
-      <!-- Main phone -->
-      <div class="ph-main">
-        <div class="ph-notch"></div>
-        <div class="ph-status">
-          <span>9:41</span>
-          <span>●●● ◀ 🔋</span>
-        </div>
-        <div class="ph-header">
-          <span class="ph-app-name">InTown</span>
-          <span class="ph-icon">🔔</span>
-        </div>
-        <div class="ph-map">
-          <div class="ph-you"></div>
-          <div class="ph-pin" style="top:20px; left:36px;">
-            <div class="ph-av" style="background:#2563EB;">J</div>
-            <div class="ph-tri" style="border-top: 7px solid #2563EB; border-left: 5px solid transparent; border-right: 5px solid transparent; height:0; width:0; margin-top:-2px;"></div>
-            <div class="ph-lbl">Jake · 0.3mi</div>
-          </div>
-          <div class="ph-pin" style="top:50px; right:20px;">
-            <div class="ph-av" style="background:#7C3AED;">M</div>
-            <div class="ph-tri" style="border-top: 7px solid #7C3AED; border-left: 5px solid transparent; border-right: 5px solid transparent; height:0; width:0; margin-top:-2px;"></div>
-            <div class="ph-lbl">Maya · 0.8mi</div>
-          </div>
-          <div class="ph-pin" style="bottom:12px; left:50px;">
-            <div class="ph-av" style="background:#059669;">S</div>
-            <div class="ph-tri" style="border-top: 7px solid #059669; border-left: 5px solid transparent; border-right: 5px solid transparent; height:0; width:0; margin-top:-2px;"></div>
-            <div class="ph-lbl">Sam · 1.1mi</div>
-          </div>
-        </div>
-        <div class="ph-notif">
-          <div class="ph-notif-icon">📍</div>
-          <div>
-            <div class="ph-notif-t">Jake is nearby!</div>
-            <div class="ph-notif-s">0.3 miles away · Tap to say hey</div>
-          </div>
-        </div>
-        <div class="ph-list">
-          <div class="ph-list-h">Nearby Right Now</div>
-          <div class="ph-row">
-            <div class="ph-row-av" style="background:#2563EB;">J</div>
-            <div>
-              <div class="ph-row-name">Jake</div>
-              <div class="ph-row-dist">0.3 miles away</div>
-            </div>
-            <div class="ph-row-dot"></div>
-          </div>
-          <div class="ph-row">
-            <div class="ph-row-av" style="background:#7C3AED;">M</div>
-            <div>
-              <div class="ph-row-name">Maya</div>
-              <div class="ph-row-dist">0.8 miles away</div>
-            </div>
-            <div class="ph-row-dot"></div>
-          </div>
-          <div class="ph-row">
-            <div class="ph-row-av" style="background:#059669;">S</div>
-            <div>
-              <div class="ph-row-name">Sam</div>
-              <div class="ph-row-dist">1.1 miles away</div>
-            </div>
-            <div class="ph-row-dot" style="background:#F59E0B;"></div>
-          </div>
-          <div class="ph-row">
-            <div class="ph-row-av" style="background:#D97706;">A</div>
-            <div>
-              <div class="ph-row-name">Alex</div>
-              <div class="ph-row-dist">2.4 miles away</div>
-            </div>
-            <div class="ph-row-dot" style="background:#6B7280;"></div>
-          </div>
+      <div class="sp-alert">
+        <div class="sp-alert-ic">📍</div>
+        <div>
+          <div class="sp-alert-t">Jake is nearby!</div>
+          <div class="sp-alert-s">0.3 miles away · Tap to say hey</div>
         </div>
       </div>
-
-      <!-- Floating card -->
-      <div class="float-notif">
-        <div class="fn-icon">🎉</div>
-        <div class="fn-text">
-          <div class="fn-t1">3 friends nearby</div>
-          <div class="fn-t2">Best Friday ever</div>
+      <div class="sp-list">
+        <div class="sp-list-h">Nearby Right Now</div>
+        <div class="sp-row">
+          <div class="sp-row-av" style="background:#2563EB;">J</div>
+          <span class="sp-row-n">Jake</span>
+          <span class="sp-row-d">0.3 mi</span>
+          <div class="sp-row-dot" style="background:#4CAF50;"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-row-av" style="background:#7C3AED;">M</div>
+          <span class="sp-row-n">Maya</span>
+          <span class="sp-row-d">0.8 mi</span>
+          <div class="sp-row-dot" style="background:#4CAF50;"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-row-av" style="background:#059669;">S</div>
+          <span class="sp-row-n">Sam</span>
+          <span class="sp-row-d">1.2 mi</span>
+          <div class="sp-row-dot" style="background:#F59E0B;"></div>
         </div>
       </div>
     </div>
+    <div class="phone-shadow"></div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="features-inner">
-    <div class="features-header">
-      <span class="sec-label">Features</span>
-      <h2 class="sec-title">Everything proximity<br>should be.</h2>
-      <p class="sec-sub">Designed to bring people together with as little friction as possible.</p>
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stats-inner">
+    <div class="stat-cell">
+      <div class="stat-big">10K+</div>
+      <div class="stat-lbl">Active users</div>
     </div>
-
-    <div class="features-grid">
-      <div class="feat-cell">
-        <div class="feat-num">01</div>
-        <div class="feat-title">Real-time friend map</div>
-        <div class="feat-desc">See which friends are nearby on a live map. Not "recently seen" — actually right now, in real time.</div>
-      </div>
-      <div class="feat-cell">
-        <div class="feat-num">02</div>
-        <div class="feat-title">Instant nearby alerts</div>
-        <div class="feat-desc">Get a notification the moment a friend enters your radius. No manual checking. It just works.</div>
-      </div>
-      <div class="feat-cell">
-        <div class="feat-num">03</div>
-        <div class="feat-title">You choose your radius</div>
-        <div class="feat-desc">Set sharing to half a mile, 2 miles, or anything in between. Control exactly how close "nearby" means.</div>
-      </div>
-      <div class="feat-cell">
-        <div class="feat-num">04</div>
-        <div class="feat-title">One-tap ghost mode</div>
-        <div class="feat-desc">Need some alone time? Disappear from everyone's map instantly. No notification sent, no awkward explanations.</div>
-      </div>
+    <div class="stat-cell">
+      <div class="stat-big">100+</div>
+      <div class="stat-lbl">Cities</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-big">4.8★</div>
+      <div class="stat-lbl">App rating</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-big">Free</div>
+      <div class="stat-lbl">Always</div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- SOCIAL PROOF -->
-<section class="proof-section" id="proof">
-  <div class="proof-inner">
-    <div class="proof-card">
-      <div class="proof-stars">★★★★★</div>
-      <p class="proof-quote">"This app changed how we hang out. We used to spend 20 minutes coordinating who's going where. Now I just open InTown."</p>
-      <div class="proof-author">
-        <div class="proof-author-av" style="background:#2563EB;">J</div>
+<!-- FEATURE BLOCKS — alternating, not cards -->
+<div class="feature-block">
+  <div class="fb-img">
+    <div class="fb-illustration">
+      <!-- Notification illustration -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 18px;width:100%;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,0.07);">
+        <div style="width:40px;height:40px;background:#4A90D9;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📍</div>
         <div>
-          <div class="proof-author-name">Jake M.</div>
-          <div class="proof-author-handle">UNC Chapel Hill</div>
+          <div style="font-size:14px;font-weight:700;color:var(--navy);">Jake is nearby!</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">0.3 miles away · Tap to say hey</div>
         </div>
       </div>
-    </div>
-    <div class="proof-card">
-      <div class="proof-stars">★★★★★</div>
-      <p class="proof-quote">"Found out my three best friends were all at the same coffee shop without knowing it. That would never have happened without InTown."</p>
-      <div class="proof-author">
-        <div class="proof-author-av" style="background:#7C3AED;">S</div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 18px;width:100%;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,0.07);opacity:0.6;">
+        <div style="width:40px;height:40px;background:#7C3AED;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📍</div>
         <div>
-          <div class="proof-author-name">Sofia R.</div>
-          <div class="proof-author-handle">NYC</div>
+          <div style="font-size:14px;font-weight:700;color:var(--navy);">Maya is nearby!</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">0.8 miles away</div>
         </div>
       </div>
-    </div>
-    <div class="proof-card">
-      <div class="proof-stars">★★★★★</div>
-      <p class="proof-quote">"Best app for festival season. My whole group uses it now — way better than the 'where are you' text chain."</p>
-      <div class="proof-author">
-        <div class="proof-author-av" style="background:#059669;">A</div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 18px;width:100%;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,0.07);opacity:0.35;">
+        <div style="width:40px;height:40px;background:#059669;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📍</div>
         <div>
-          <div class="proof-author-name">Alex T.</div>
-          <div class="proof-author-handle">Austin, TX</div>
+          <div style="font-size:14px;font-weight:700;color:var(--navy);">Sam is nearby!</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">1.2 miles away</div>
         </div>
       </div>
     </div>
   </div>
-</section>
+  <div class="fb-text">
+    <div class="fb-label">Real-time alerts</div>
+    <h3 class="fb-title">You'll know the<br>moment they're close.</h3>
+    <p class="fb-desc">No opening the app every hour. InTown runs quietly in the background and taps you when a friend gets within your range. The way it should work.</p>
+    <div class="fb-check">
+      <div class="fb-chk-item"><div class="chk-dot">✓</div> Instant push notification</div>
+      <div class="fb-chk-item"><div class="chk-dot">✓</div> Works while app is closed</div>
+      <div class="fb-chk-item"><div class="chk-dot">✓</div> One tap to connect</div>
+    </div>
+  </div>
+</div>
 
-<!-- PRIVACY -->
-<section class="priv-banner" id="privacy">
-  <div class="priv-inner">
-    <div class="priv-main">
-      <span class="sec-label">Privacy First</span>
-      <h2>Your location.<br>Your rules.</h2>
-      <p>InTown is built so that you're always in control. We don't store your location history, and we never share your data with third parties.</p>
-    </div>
-    <div class="priv-point">
-      <div class="priv-p-item">
-        <div class="priv-p-icon">🎯</div>
-        <div>
-          <div class="priv-p-t">Approximate only</div>
-          <div class="priv-p-d">Friends see a radius, not your address.</div>
-        </div>
-      </div>
-      <div class="priv-p-item">
-        <div class="priv-p-icon">🔒</div>
-        <div>
-          <div class="priv-p-t">No history stored</div>
-          <div class="priv-p-d">We don't log where you've been.</div>
-        </div>
-      </div>
-      <div class="priv-p-item">
-        <div class="priv-p-icon">👁️</div>
-        <div>
-          <div class="priv-p-t">Mutual friends only</div>
-          <div class="priv-p-d">Strangers can never see you.</div>
-        </div>
-      </div>
-    </div>
-    <div class="priv-point">
-      <div class="priv-p-item">
-        <div class="priv-p-icon">⚡</div>
-        <div>
-          <div class="priv-p-t">Pause anytime</div>
-          <div class="priv-p-d">One tap to go invisible, no notification sent.</div>
-        </div>
-      </div>
-      <div class="priv-p-item">
-        <div class="priv-p-icon">🛡️</div>
-        <div>
-          <div class="priv-p-t">No third-party sharing</div>
-          <div class="priv-p-d">We don't sell your data. Ever.</div>
-        </div>
-      </div>
-      <div class="priv-p-item">
-        <div class="priv-p-icon">📏</div>
-        <div>
-          <div class="priv-p-t">Custom radius</div>
-          <div class="priv-p-d">Choose exactly how close is "nearby."</div>
+<div class="feature-block flip" style="border-top:1px solid var(--border);padding-top:80px;">
+  <div class="fb-img">
+    <div class="fb-illustration">
+      <!-- Privacy controls illustration -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;width:100%;box-shadow:0 4px 16px rgba(0,0,0,0.07);">
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px;">Location Controls</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:13px;color:var(--navy);font-weight:500;">📍 Share my location</span>
+            <div style="width:40px;height:22px;background:#4A90D9;border-radius:11px;position:relative;cursor:pointer;"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:13px;color:var(--navy);font-weight:500;">🔔 Nearby alerts</span>
+            <div style="width:40px;height:22px;background:#4A90D9;border-radius:11px;position:relative;cursor:pointer;"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:13px;color:var(--navy);font-weight:500;">👻 Ghost mode</span>
+            <div style="width:40px;height:22px;background:#E5E7EB;border-radius:11px;position:relative;cursor:pointer;"><div style="position:absolute;left:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;"></div></div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:12px;">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Sharing radius</div>
+            <div style="height:4px;background:var(--bg2);border-radius:2px;position:relative;">
+              <div style="width:45%;height:100%;background:#4A90D9;border-radius:2px;"></div>
+              <div style="position:absolute;left:45%;top:-4px;width:12px;height:12px;background:#4A90D9;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);transform:translateX(-50%);"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px;"><span>0.5mi</span><span>1 mile</span><span>5mi</span></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="fb-text">
+    <div class="fb-label">Privacy</div>
+    <h3 class="fb-title">You set the rules.<br>Every time.</h3>
+    <p class="fb-desc">Choose your radius. Go ghost anytime — no notification sent to anyone. Friends only ever see an approximate area, never your exact location.</p>
+    <div class="fb-check">
+      <div class="fb-chk-item"><div class="chk-dot">✓</div> Approximate location only</div>
+      <div class="fb-chk-item"><div class="chk-dot">✓</div> One-tap ghost mode</div>
+      <div class="fb-chk-item"><div class="chk-dot">✓</div> No location history stored</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <div class="quote-mark">"</div>
+  <p class="quote-text">I found out three of my best friends were all at the same coffee shop without knowing it. That would never have happened without InTown.</p>
+  <p class="quote-author">Sofia R. — New York City</p>
 </section>
 
 <!-- CTA -->
-<section class="cta" id="cta">
-  <h2>Stop texting<br>"where are you."</h2>
-  <p>Download InTown and see which friends are nearby right now — for free.</p>
-
+<section class="cta-section" id="cta">
+  <h2>Go find<br>your people.</h2>
+  <p>Free on iOS and Android. No subscription, no catch.</p>
   <div class="cta-btns">
-    <a href="#" class="dl-apple">
+    <a href="#" class="btn-dl btn-ios">
       <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;">
         <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
       </svg>
-      <div class="dl-text">
-        <span class="t1">Download on the</span>
-        <span class="t2">App Store</span>
-      </div>
+      <div class="btn-dl-t"><span class="s">Download on the</span><span class="b">App Store</span></div>
     </a>
-    <a href="#" class="dl-android">
+    <a href="#" class="btn-dl btn-and">
       <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;">
         <path d="M3.18 23.76c.35.19.76.2 1.12.04l12.56-7.17-2.88-2.88-10.8 10zM.54 1.36C.21 1.7 0 2.22 0 2.9v18.2c0 .68.21 1.2.54 1.54l.08.08 10.2-10.2v-.24L.62 1.28l-.08.08zM19.32 9.97l-2.66-1.52-3.2 3.2 3.2 3.2 2.67-1.52c.76-.43.76-1.13 0-1.56l-.01.2zM4.3.24L16.86 7.4l-2.88 2.88L3.18.28C3.54.12 3.95.13 4.3.24z"/>
       </svg>
-      <div class="dl-text">
-        <span class="t1">Get it on</span>
-        <span class="t2">Google Play</span>
-      </div>
+      <div class="btn-dl-t"><span class="s">Get it on</span><span class="b">Google Play</span></div>
     </a>
   </div>
 </section>
@@ -1156,8 +842,8 @@
       <span>InTown</span>
     </a>
     <div class="f-links">
-      <a href="../../privacy.html">Privacy</a>
-      <a href="../../terms.html">Terms</a>
+      <a href="../../privacy.html">Privacy Policy</a>
+      <a href="../../terms.html">Terms of Service</a>
       <a href="../../blog/">Blog</a>
       <a href="../../contact.html">Contact</a>
     </div>
