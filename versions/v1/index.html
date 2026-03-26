@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InTown — Know When Your Friends Are Nearby</title>
+  <meta name="description" content="See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.">
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #050B14;
+      --bg2: #080F1C;
+      --blue: #4F8EF7;
+      --purple: #8B5CF6;
+      --cyan: #38BDF8;
+      --white: #FFFFFF;
+      --muted: #8899BB;
+      --card-bg: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+      --glow-blue: rgba(79,142,247,0.25);
+      --glow-purple: rgba(139,92,246,0.2);
+      --font: 'Inter', -apple-system, sans-serif;
+      --ease: cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--white); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+
+    /* Ambient orbs */
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+    .orb-1 { width: 600px; height: 600px; background: var(--glow-blue); top: -200px; right: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: var(--glow-purple); top: 200px; left: -150px; }
+    .orb-3 { width: 500px; height: 500px; background: var(--glow-blue); bottom: -100px; right: 100px; opacity: 0.5; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 0; transition: all 0.3s var(--ease); }
+    nav.scrolled { background: rgba(5,11,20,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--card-border); padding: 14px 0; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+    .nav-logo img { width: 28px; height: 28px; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { background: var(--blue); color: var(--white) !important; padding: 9px 20px; border-radius: 8px; font-weight: 600 !important; transition: opacity 0.2s !important; }
+    .nav-cta:hover { opacity: 0.85; }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
+    .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; }
+
+    /* HERO */
+    .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.25); color: var(--blue); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 24px; }
+    .hero-tag span { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+    .hero h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
+    .grad { background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 480px; margin-bottom: 36px; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: var(--white); padding: 13px 24px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 30px rgba(79,142,247,0.35); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(79,142,247,0.45); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--white); padding: 13px 24px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; transition: border-color 0.2s, background 0.2s; backdrop-filter: blur(10px); }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); }
+    .btn-icon { width: 18px; height: 18px; }
+    .stats { display: flex; gap: 32px; }
+    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+    .stat-lbl { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+    .stat-div { width: 1px; background: var(--card-border); }
+
+    /* PHONE MOCKUP */
+    .phone-wrap { display: flex; justify-content: center; position: relative; }
+    .phone { width: 270px; background: #0D1526; border-radius: 40px; border: 1px solid rgba(79,142,247,0.25); box-shadow: 0 0 80px rgba(79,142,247,0.2), 0 40px 80px rgba(0,0,0,0.6); overflow: hidden; position: relative; }
+    .phone::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 90px; height: 28px; background: #0D1526; border-radius: 0 0 18px 18px; z-index: 10; }
+    .phone-status { display: flex; justify-content: space-between; padding: 36px 18px 10px; font-size: 0.7rem; color: var(--muted); }
+    .phone-map { height: 220px; background: linear-gradient(135deg, #0A2040, #0F2D54, #112848); position: relative; overflow: hidden; }
+    .map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(79,142,247,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(79,142,247,0.06) 1px, transparent 1px); background-size: 30px 30px; }
+    .map-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 130px; height: 130px; border: 1.5px solid rgba(79,142,247,0.4); border-radius: 50%; box-shadow: inset 0 0 40px rgba(79,142,247,0.08); }
+    .map-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 12px; height: 12px; background: var(--blue); border-radius: 50%; box-shadow: 0 0 16px var(--blue); }
+    .map-pin { position: absolute; background: var(--purple); color: var(--white); font-size: 0.55rem; font-weight: 700; padding: 3px 7px; border-radius: 10px; white-space: nowrap; }
+    .map-pin::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border: 4px solid transparent; border-top-color: var(--purple); }
+    .pin-1 { top: 28%; left: 22%; }
+    .pin-2 { top: 40%; right: 18%; }
+    .pin-3 { bottom: 25%; left: 40%; }
+    .phone-sheet { background: #0D1526; padding: 16px; border-top: 1px solid var(--card-border); }
+    .sheet-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .sheet-title span { color: var(--blue); font-size: 0.75rem; font-weight: 600; }
+    .friend-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .friend-row:last-child { border-bottom: none; }
+    .friend-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; }
+    .av-blue { background: linear-gradient(135deg, #4F8EF7, #38BDF8); }
+    .av-purple { background: linear-gradient(135deg, #8B5CF6, #C084FC); }
+    .friend-info { flex: 1; }
+    .friend-name { font-size: 0.75rem; font-weight: 600; }
+    .friend-dist { font-size: 0.65rem; color: var(--muted); }
+    .phone-nav { display: flex; justify-content: space-around; padding: 10px 16px 14px; border-top: 1px solid var(--card-border); }
+    .pnav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.55rem; color: var(--muted); }
+    .pnav-item.active { color: var(--blue); }
+    .pnav-icon { width: 18px; height: 18px; }
+
+    /* SECTION COMMON */
+    section { padding: 96px 0; position: relative; }
+    .section-tag { display: inline-block; background: rgba(79,142,247,0.1); color: var(--blue); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; margin-bottom: 14px; }
+    .section-title { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; }
+    .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 580px; }
+    .section-header { margin-bottom: 56px; }
+
+    /* FEATURES */
+    .features { background: var(--bg2); }
+    .features::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(79,142,247,0.06), transparent); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .feat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; transition: border-color 0.3s, transform 0.3s; backdrop-filter: blur(10px); }
+    .feat-card:hover { border-color: rgba(79,142,247,0.3); transform: translateY(-4px); }
+    .feat-icon { width: 44px; height: 44px; background: rgba(79,142,247,0.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--blue); }
+    .feat-icon svg { width: 22px; height: 22px; }
+    .feat-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .feat-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+    .feat-why { font-size: 0.78rem; color: rgba(79,142,247,0.8); }
+    .feat-why strong { color: var(--blue); }
+
+    /* STEPS */
+    .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; }
+    .steps-row::before { content: ''; position: absolute; top: 36px; left: 16.6%; right: 16.6%; height: 1px; background: linear-gradient(90deg, transparent, var(--blue), var(--purple), transparent); }
+    .step { text-align: center; padding: 0 24px; position: relative; }
+    .step-num { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; margin: 0 auto 20px; box-shadow: 0 0 30px rgba(79,142,247,0.35); }
+    .step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .step-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+    /* TESTIMONIAL */
+    .testimonial { background: var(--bg2); }
+    .testimonial-inner { max-width: 720px; margin: 0 auto; text-align: center; }
+    .quote-mark { font-size: 5rem; line-height: 0.5; color: var(--blue); opacity: 0.3; font-family: Georgia, serif; display: block; margin-bottom: 24px; }
+    .quote-text { font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 500; line-height: 1.7; color: var(--white); margin-bottom: 28px; }
+    .quote-author { display: flex; align-items: center; justify-content: center; gap: 14px; }
+    .author-av { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); }
+    .author-name { font-weight: 700; font-size: 0.9rem; }
+    .author-loc { font-size: 0.8rem; color: var(--muted); }
+
+    /* DOWNLOAD CTA */
+    .download { overflow: hidden; }
+    .download-inner { background: linear-gradient(135deg, rgba(79,142,247,0.12), rgba(139,92,246,0.1)); border: 1px solid rgba(79,142,247,0.2); border-radius: 24px; padding: 72px 48px; text-align: center; position: relative; overflow: hidden; }
+    .download-inner::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(79,142,247,0.15), transparent 70%); }
+    .download-inner h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; letter-spacing: -0.03em; margin-bottom: 14px; position: relative; }
+    .download-inner p { color: var(--muted); font-size: 1.05rem; margin-bottom: 36px; position: relative; }
+    .download-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--card-border); padding: 56px 0 32px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 10px; }
+    .footer-logo img { width: 26px; height: 26px; }
+    .footer-fine { font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
+    .footer-tagline { font-size: 0.85rem; color: var(--muted); }
+    .footer-col h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { font-size: 0.875rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid var(--card-border); padding-top: 24px; font-size: 0.8rem; color: var(--muted); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero p { margin: 0 auto 36px; }
+      .hero-btns { justify-content: center; }
+      .stats { justify-content: center; }
+      .phone-wrap { order: -1; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-row { grid-template-columns: 1fr; gap: 32px; }
+      .steps-row::before { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .features-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .download-inner { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="../../assets/logo.svg" alt="InTown">
+      <span>InTown</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Use Cases</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#" >Blog</a></li>
+      <li><a href="#download" class="nav-cta">Download</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-tag"><span></span> Live • Location Aware</div>
+      <h1>Know When Your <span class="grad">Friends</span> Are In Town</h1>
+      <p>See who's nearby, plan events together, and never miss a chance to connect with the people who matter most.</p>
+      <div class="hero-btns">
+        <a href="#download" class="btn-primary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+          App Store
+        </a>
+        <a href="#download" class="btn-secondary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
+          Google Play
+        </a>
+      </div>
+      <div class="stats">
+        <div><div class="stat-num">10K+</div><div class="stat-lbl">Active Users</div></div>
+        <div class="stat-div"></div>
+        <div><div class="stat-num">50K+</div><div class="stat-lbl">Events Created</div></div>
+        <div class="stat-div"></div>
+        <div><div class="stat-num">100+</div><div class="stat-lbl">Cities</div></div>
+      </div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-status"><span>9:41</span><span>●●●</span></div>
+        <div class="phone-map">
+          <div class="map-grid"></div>
+          <div class="map-circle"></div>
+          <div class="map-center"></div>
+          <div class="map-pin pin-1">Jake</div>
+          <div class="map-pin pin-2">Maya</div>
+          <div class="map-pin pin-3">Sam</div>
+        </div>
+        <div class="phone-sheet">
+          <div class="sheet-title">InTown (3) <span>All Friends</span></div>
+          <div class="friend-row">
+            <div class="friend-avatar av-blue">JK</div>
+            <div class="friend-info"><div class="friend-name">Jake</div><div class="friend-dist">0.3 miles away</div></div>
+          </div>
+          <div class="friend-row">
+            <div class="friend-avatar av-purple">MY</div>
+            <div class="friend-info"><div class="friend-name">Maya</div><div class="friend-dist">1.2 miles away</div></div>
+          </div>
+          <div class="friend-row">
+            <div class="friend-avatar" style="background:linear-gradient(135deg,#38BDF8,#4F8EF7)">SM</div>
+            <div class="friend-info"><div class="friend-name">Sam</div><div class="friend-dist">2.1 miles away</div></div>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="pnav-item active"><svg class="pnav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span>Map</span></div>
+          <div class="pnav-item"><svg class="pnav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg><span>Calendar</span></div>
+          <div class="pnav-item"><svg class="pnav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg><span>Inbox</span></div>
+          <div class="pnav-item"><svg class="pnav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Profile</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Use Cases</div>
+      <h2 class="section-title">Real Moments, <span class="grad">Real Connections</span></h2>
+      <p class="section-sub">InTown shines in the moments that matter — when a friend is closer than you think and all you need is a nudge.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="feat-title">College Reunion, Zero Planning</div>
+        <div class="feat-desc">Your college roommate's flight just landed. InTown notifies you the moment they enter your radius — before they even text.</div>
+        <div class="feat-why"><strong>Why it works:</strong> Radius detection fires automatically, no coordination needed.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="feat-title">Spontaneous Friday Night</div>
+        <div class="feat-desc">Plans fell through. InTown shows three friends within a mile right now. One tap and the night is saved.</div>
+        <div class="feat-why"><strong>Why it works:</strong> Knowing who's close turns "maybe later" into "meet me in 10."</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+        <div class="feat-title">Lost at a Festival</div>
+        <div class="feat-desc">You split up at a music festival. Instead of frantic calls, open the map and see exactly which friends are within 500 feet.</div>
+        <div class="feat-why"><strong>Why it works:</strong> A shared live map beats 20 texts when the signal's weak.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="feat-title">Conference Networking</div>
+        <div class="feat-desc">At a multi-day conference, see which mutual connections are in the same building. Turn a badge swap into a real coffee chat.</div>
+        <div class="feat-why"><strong>Why it works:</strong> Proximity makes warm outreach feel natural, not forced.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="feat-title">Road Trip Convoy</div>
+        <div class="feat-desc">Your friend caravan is crossing three states. InTown's live map keeps every car in the convoy without a single group-text update.</div>
+        <div class="feat-why"><strong>Why it works:</strong> One glance replaces 50 "where are you?" messages.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="feat-title">New City, Hidden Connections</div>
+        <div class="feat-desc">Visiting a city for the first time? InTown shows which of your friends are locals — or also visiting — and ready to be your guide.</div>
+        <div class="feat-why"><strong>Why it works:</strong> Turns any trip into a social opportunity hidden in plain sight.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="section-header" style="text-align:center">
+      <div class="section-tag">Simple</div>
+      <h2 class="section-title">Get Started in <span class="grad">3 Steps</span></h2>
+      <p class="section-sub" style="margin:0 auto">Start connecting with friends in your area in minutes.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Download &amp; Sign Up</div>
+        <p class="step-desc">Get InTown from the App Store or Google Play. Create your profile in under a minute.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Add Your Friends</div>
+        <p class="step-desc">Invite friends from your contacts or share your invite link. Build your InTown circle.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">See Who's Nearby</div>
+        <p class="step-desc">Open the map, set your radius, and instantly see which friends are in town. Plan a hangout!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+  <div class="container">
+    <div class="testimonial-inner">
+      <span class="quote-mark">"</span>
+      <p class="quote-text">InTown completely changed how I hang out with friends. I used to miss people visiting my city all the time. Now I never miss a chance to meet up.</p>
+      <div class="quote-author">
+        <div class="author-av"></div>
+        <div><div class="author-name">Happy InTown User</div><div class="author-loc">Chapel Hill, NC</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="download" id="download">
+  <div class="container">
+    <div class="download-inner">
+      <div class="orb orb-3"></div>
+      <h2>Ready to See Who's <span class="grad">InTown</span>?</h2>
+      <p>Download the app for free and start connecting with your friends today.</p>
+      <div class="download-btns">
+        <a href="#" class="btn-primary" style="font-size:1rem;padding:15px 28px">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+          Download for iOS
+        </a>
+        <a href="#" class="btn-secondary" style="font-size:1rem;padding:15px 28px">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm.503-.386l11.27 6.518L12.98 10.35 4.113 1.428zM16.4 8.94l2.84 1.64a1 1 0 0 1 0 1.74l-2.84 1.64L13.79 12l2.61-3.06zM4.113 22.572l8.867-8.922 2.403 2.404-11.27 6.518z"/></svg>
+          Download for Android
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#" class="footer-logo"><img src="../../assets/logo.svg" alt="InTown"><span>InTown</span></a>
+        <p class="footer-fine">A Sangforth Technologies, LLC app</p>
+        <p class="footer-tagline">Know when your friends are nearby.</p>
+      </div>
+      <div class="footer-col"><h4>Product</h4><ul><li><a href="#features">Use Cases</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#download">Download</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="../../privacy.html">Privacy Policy</a></li><li><a href="../../terms.html">Terms of Service</a></li></ul></div>
+      <div class="footer-col"><h4>Resources</h4><ul><li><a href="../../blog/">Blog</a></li><li><a href="#">Instagram</a></li><li><a href="#">Twitter</a></li><li><a href="../../contact.html">Contact Us</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 Sangforth Technologies LLC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+</script>
+</body>
+</html>
