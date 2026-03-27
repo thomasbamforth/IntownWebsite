@@ -224,24 +224,15 @@
       top: 9px; left: 9px; right: 9px; bottom: 9px;
       border-radius: 48px;
       overflow: hidden;
-      background: #000;
+      background: #fff;
     }
 
     .sp-screenshot {
       width: 100%;
-      height: 100%;
+      height: calc(100% - 5px);
       object-fit: cover;
       object-position: top center;
       display: block;
-    }
-
-    .sp-screen::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 60px;
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.85));
-      pointer-events: none;
     }
 
     @keyframes gently-float {
