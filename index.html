@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InTown — Stop wondering who's nearby.</title>
+  <title>InTown · Stop wondering who's nearby.</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,7 @@
       overflow-x: hidden;
     }
 
-    /* NAV — minimal: just logo and one CTA */
+    /* NAV */
     nav {
       display: flex;
       align-items: center;
@@ -45,9 +45,9 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
-    .logo img { width: 26px; }
-    .logo-name { font-size: 17px; font-weight: 800; color: var(--navy); letter-spacing: -0.3px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo img { width: 34px; }
+    .logo-name { font-size: 21px; font-weight: 800; color: var(--navy); letter-spacing: -0.4px; }
 
     .nav-right { display: flex; align-items: center; gap: 24px; }
     .nav-right a:first-child {
@@ -71,7 +71,7 @@
     }
     .nav-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-    /* HERO — centered, large phone as centerpiece */
+    /* HERO */
     .hero {
       padding: 120px 64px 0;
       text-align: center;
@@ -159,7 +159,7 @@
     .btn-dl-t .s { font-size: 10px; font-weight: 400; opacity: 0.6; }
     .btn-dl-t .b { font-size: 15px; font-weight: 800; }
 
-    /* PHONE SHOWCASE — centered, floating */
+    /* PHONE SHOWCASE */
     .phone-showcase {
       position: relative;
       display: flex;
@@ -167,22 +167,72 @@
       padding-bottom: 0;
     }
 
+    /* Realistic iPhone frame */
     .showcase-phone {
-      width: 300px;
-      height: 620px;
-      background: #FFFFFF;
-      border-radius: 52px;
-      border: 2px solid rgba(0,0,0,0.14);
-      box-shadow:
-        0 60px 120px rgba(11,26,46,0.2),
-        0 20px 40px rgba(11,26,46,0.1),
-        inset 0 0 0 1px rgba(255,255,255,0.5);
-      overflow: hidden;
+      width: 316px;
+      height: 648px;
+      background: linear-gradient(160deg, #3C3C3E 0%, #1C1C1E 40%, #2C2C2E 100%);
+      border-radius: 56px;
       position: relative;
+      overflow: visible;
       z-index: 2;
-      display: flex;
-      flex-direction: column;
       animation: gently-float 6s ease-in-out infinite;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.16),
+        0 0 0 1px rgba(0,0,0,0.7),
+        0 50px 100px rgba(0,0,0,0.45),
+        0 24px 48px rgba(0,0,0,0.25);
+    }
+
+    /* Physical side buttons */
+    .sp-btn-mute {
+      position: absolute;
+      left: -3.5px; top: 118px;
+      width: 4px; height: 28px;
+      background: linear-gradient(to right, #111, #2C2C2E);
+      border-radius: 2px 0 0 2px;
+      box-shadow: -1px 0 3px rgba(0,0,0,0.6);
+    }
+    .sp-btn-vol-up {
+      position: absolute;
+      left: -3.5px; top: 162px;
+      width: 4px; height: 56px;
+      background: linear-gradient(to right, #111, #2C2C2E);
+      border-radius: 2px 0 0 2px;
+      box-shadow: -1px 0 3px rgba(0,0,0,0.6);
+    }
+    .sp-btn-vol-dn {
+      position: absolute;
+      left: -3.5px; top: 228px;
+      width: 4px; height: 56px;
+      background: linear-gradient(to right, #111, #2C2C2E);
+      border-radius: 2px 0 0 2px;
+      box-shadow: -1px 0 3px rgba(0,0,0,0.6);
+    }
+    .sp-btn-power {
+      position: absolute;
+      right: -3.5px; top: 178px;
+      width: 4px; height: 72px;
+      background: linear-gradient(to left, #111, #2C2C2E);
+      border-radius: 0 2px 2px 0;
+      box-shadow: 1px 0 3px rgba(0,0,0,0.6);
+    }
+
+    /* Inner screen (clips screenshot to rounded rect) */
+    .sp-screen {
+      position: absolute;
+      top: 9px; left: 9px; right: 9px; bottom: 9px;
+      border-radius: 48px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .sp-screenshot {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
     }
 
     @keyframes gently-float {
@@ -248,189 +298,6 @@
     .sc-title { font-size: 13px; font-weight: 700; color: var(--navy); white-space: nowrap; }
     .sc-sub { font-size: 11px; color: var(--muted); white-space: nowrap; }
 
-    /* Phone internals — light mode, matches real app */
-    .sp-island {
-      width: 90px; height: 26px;
-      background: #000;
-      border-radius: 20px;
-      margin: 10px auto 0;
-      flex-shrink: 0;
-    }
-
-    .sp-statusbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 4px 18px 0;
-      font-size: 12px;
-      font-weight: 600;
-      color: #111;
-      flex-shrink: 0;
-    }
-
-    .sp-map {
-      flex: 1;
-      background: #C8DCA8;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Map terrain variation */
-    .sp-map::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 120px 80px at 20% 30%, rgba(150,190,110,0.5) 0%, transparent 70%),
-        radial-gradient(ellipse 80px 60px at 80% 70%, rgba(150,190,110,0.4) 0%, transparent 70%),
-        radial-gradient(ellipse 60px 50px at 70% 20%, rgba(160,200,120,0.4) 0%, transparent 70%);
-    }
-
-    /* Roads */
-    .sp-road {
-      position: absolute;
-      background: rgba(255,255,255,0.82);
-    }
-
-    /* Radius ring */
-    .sp-radius {
-      position: absolute;
-      width: 230px; height: 230px;
-      border-radius: 50%;
-      border: 2px solid rgba(52,120,210,0.55);
-      background: rgba(52,120,210,0.07);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    /* User dot */
-    .sp-you {
-      position: absolute;
-      width: 14px; height: 14px;
-      background: #3478F6;
-      border-radius: 50%;
-      border: 2.5px solid #fff;
-      box-shadow: 0 0 0 5px rgba(52,120,246,0.22);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 5;
-    }
-
-    /* City label */
-    .sp-city-lbl {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-15%, 14px);
-      font-size: 15px;
-      font-weight: 700;
-      color: rgba(0,0,0,0.22);
-      pointer-events: none;
-      letter-spacing: -0.3px;
-      white-space: nowrap;
-    }
-
-    /* Map controls (right side) */
-    .sp-map-btns {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .sp-mbtn {
-      width: 34px; height: 34px;
-      background: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      font-size: 10px;
-      font-weight: 700;
-      color: #333;
-      line-height: 1.1;
-      text-align: center;
-    }
-
-    /* Bottom sheet */
-    .sp-sheet {
-      background: #fff;
-      border-radius: 20px 20px 0 0;
-      padding: 10px 0 0;
-      flex-shrink: 0;
-    }
-
-    .sp-sheet-handle {
-      width: 34px; height: 4px;
-      background: #DDD9D1;
-      border-radius: 2px;
-      margin: 0 auto 10px;
-    }
-
-    .sp-sheet-hdr {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 16px 10px;
-      border-bottom: 1px solid #F0EDE7;
-    }
-
-    .sp-intown-count { font-size: 18px; font-weight: 800; color: #000; letter-spacing: -0.3px; }
-    .sp-all-friends { font-size: 13px; font-weight: 600; color: #4A90D9; }
-
-    .sp-friend-row {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      gap: 12px;
-    }
-
-    .sp-friend-row + .sp-friend-row { border-top: 1px solid #F5F3F0; }
-
-    .sp-fav {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 700; color: #fff;
-      flex-shrink: 0;
-    }
-
-    .sp-finfo { flex: 1; min-width: 0; }
-    .sp-fname { font-size: 13px; font-weight: 700; color: #000; }
-    .sp-fdist { font-size: 11px; color: #888; margin-top: 2px; }
-
-    .sp-factions { display: flex; gap: 8px; }
-
-    .sp-fact {
-      width: 32px; height: 32px;
-      border: 1.5px solid #DDD;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      color: #555;
-    }
-
-    /* Tab bar */
-    .sp-tabbar {
-      display: flex;
-      border-top: 1px solid #E8E5E0;
-      background: #fff;
-      padding: 8px 0 14px;
-      flex-shrink: 0;
-    }
-
-    .sp-tab {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      color: #9CA3AF;
-    }
-
-    .sp-tab-active { color: #0B1A2E; }
-    .sp-tab-label { font-size: 9px; font-weight: 500; }
 
     /* STATS ROW */
     .stats-row {
@@ -459,7 +326,7 @@
     .stat-big { font-size: 40px; font-weight: 900; color: var(--navy); letter-spacing: -1.5px; }
     .stat-lbl { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 4px; }
 
-    /* FEATURE SECTIONS — alternating full-width, not cards */
+    /* FEATURE SECTIONS */
     .feature-block {
       padding: 100px 64px;
       display: grid;
@@ -662,7 +529,7 @@
 <section class="hero">
   <div class="hero-eyebrow">Friend Location App</div>
   <h1>Stop wondering.<br>Start hanging out.</h1>
-  <p class="hero-sub">InTown shows you which friends are nearby right now — so you can go from "anyone around?" to actually doing something.</p>
+  <p class="hero-sub">InTown shows you which friends are nearby right now, so you can go from "anyone around?" to actually doing something.</p>
 
   <div class="hero-actions">
     <a href="https://apps.apple.com/us/app/intown-social/id6756504466" class="btn-dl btn-ios" target="_blank" rel="noopener">
@@ -705,109 +572,14 @@
     </div>
 
     <div class="showcase-phone">
-      <!-- Dynamic Island -->
-      <div class="sp-island"></div>
-
-      <!-- Status bar -->
-      <div class="sp-statusbar">
-        <span>5:26</span>
-        <div style="display:flex;align-items:center;gap:5px;">
-          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor">
-            <rect x="0" y="5" width="3" height="6" rx="0.5" opacity="0.4"/>
-            <rect x="4.5" y="3.5" width="3" height="7.5" rx="0.5" opacity="0.6"/>
-            <rect x="9" y="1.5" width="3" height="9.5" rx="0.5" opacity="0.8"/>
-            <rect x="13.5" y="0" width="2.5" height="11" rx="0.5"/>
-          </svg>
-          <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
-            <path d="M7.5 9a1.2 1.2 0 100 2.4A1.2 1.2 0 007.5 9z" fill="currentColor"/>
-            <path d="M2.8 5.8C4.2 4.4 5.8 3.6 7.5 3.6s3.3.8 4.7 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-            <path d="M0.4 3C2.4 1 4.8 0 7.5 0s5.1 1 7.1 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-          </svg>
-          <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
-            <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="currentColor" stroke-width="1" fill="none" opacity="0.35"/>
-            <rect x="22" y="3.5" width="2.5" height="5" rx="1.2" fill="currentColor" opacity="0.4"/>
-            <rect x="2" y="2" width="16" height="8" rx="1.5" fill="currentColor"/>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Map -->
-      <div class="sp-map">
-        <!-- Road network -->
-        <div class="sp-road" style="height:4px;width:100%;top:37%;"></div>
-        <div class="sp-road" style="height:2.5px;width:100%;top:60%;opacity:0.7;"></div>
-        <div class="sp-road" style="height:2px;width:65%;top:20%;right:0;opacity:0.65;"></div>
-        <div class="sp-road" style="width:3.5px;height:100%;left:35%;top:0;"></div>
-        <div class="sp-road" style="width:2px;height:100%;left:62%;top:0;opacity:0.7;"></div>
-        <div class="sp-road" style="width:2px;height:90px;left:18%;top:5%;transform:rotate(38deg);opacity:0.55;"></div>
-        <div class="sp-road" style="width:2px;height:80px;right:12%;bottom:10%;transform:rotate(28deg);opacity:0.5;"></div>
-        <!-- Radius circle -->
-        <div class="sp-radius"></div>
-        <!-- User dot -->
-        <div class="sp-you"></div>
-        <!-- City label -->
-        <div class="sp-city-lbl">Washington</div>
-        <!-- Map controls -->
-        <div class="sp-map-btns">
-          <div class="sp-mbtn" style="font-size:9px;font-weight:800;">25<br>mi</div>
-          <div class="sp-mbtn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
-          </div>
-          <div class="sp-mbtn">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom sheet -->
-      <div class="sp-sheet">
-        <div class="sp-sheet-handle"></div>
-        <div class="sp-sheet-hdr">
-          <span class="sp-intown-count">InTown (2)</span>
-          <span class="sp-all-friends">All Friends</span>
-        </div>
-        <div class="sp-friend-row">
-          <div class="sp-fav" style="background:#7C6FBE;">JD</div>
-          <div class="sp-finfo">
-            <div class="sp-fname">John Doe</div>
-            <div class="sp-fdist">7 miles away</div>
-          </div>
-          <div class="sp-factions">
-            <div class="sp-fact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-            <div class="sp-fact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-          </div>
-        </div>
-        <div class="sp-friend-row">
-          <div class="sp-fav" style="background:#C96B6B;">JD</div>
-          <div class="sp-finfo">
-            <div class="sp-fname">Jane Doe</div>
-            <div class="sp-fdist">7 miles away</div>
-          </div>
-          <div class="sp-factions">
-            <div class="sp-fact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-            <div class="sp-fact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab bar -->
-      <div class="sp-tabbar">
-        <div class="sp-tab sp-tab-active">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-          <span class="sp-tab-label">Map</span>
-        </div>
-        <div class="sp-tab">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <span class="sp-tab-label">Calendar</span>
-        </div>
-        <div class="sp-tab">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-          <span class="sp-tab-label">Inbox</span>
-        </div>
-        <div class="sp-tab">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span class="sp-tab-label">Profile</span>
-        </div>
+      <!-- Physical side buttons -->
+      <div class="sp-btn-mute"></div>
+      <div class="sp-btn-vol-up"></div>
+      <div class="sp-btn-vol-dn"></div>
+      <div class="sp-btn-power"></div>
+      <!-- Screen with actual app screenshot -->
+      <div class="sp-screen">
+        <img src="assets/app-screenshot.png" alt="InTown app" class="sp-screenshot">
       </div>
     </div>
     <div class="phone-shadow"></div>
@@ -836,7 +608,7 @@
   </div>
 </div>
 
-<!-- FEATURE BLOCKS — alternating, not cards -->
+<!-- FEATURE BLOCKS -->
 <div class="feature-block">
   <div class="fb-img">
     <div class="fb-illustration">
@@ -910,7 +682,7 @@
   <div class="fb-text">
     <div class="fb-label">Privacy</div>
     <h3 class="fb-title">You set the rules.<br>Every time.</h3>
-    <p class="fb-desc">Choose your radius. Go ghost anytime — no notification sent to anyone. Friends only ever see an approximate area, never your exact location.</p>
+    <p class="fb-desc">Choose your radius. Go ghost anytime with no notification sent to anyone. Friends only ever see an approximate area, never your exact location.</p>
     <div class="fb-check">
       <div class="fb-chk-item"><div class="chk-dot">✓</div> Approximate location only</div>
       <div class="fb-chk-item"><div class="chk-dot">✓</div> One-tap ghost mode</div>
@@ -923,7 +695,7 @@
 <section class="quote-section">
   <div class="quote-mark">"</div>
   <p class="quote-text">I found out three of my best friends were all at the same coffee shop without knowing it. That would never have happened without InTown.</p>
-  <p class="quote-author">Sofia R. — New York City</p>
+  <p class="quote-author">Sofia R., New York City</p>
 </section>
 
 <!-- CTA -->
