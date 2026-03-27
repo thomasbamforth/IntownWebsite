@@ -170,16 +170,18 @@
     .showcase-phone {
       width: 300px;
       height: 620px;
-      background: var(--navy);
+      background: #FFFFFF;
       border-radius: 52px;
-      border: 2px solid rgba(11,26,46,0.12);
+      border: 2px solid rgba(0,0,0,0.14);
       box-shadow:
         0 60px 120px rgba(11,26,46,0.2),
         0 20px 40px rgba(11,26,46,0.1),
-        inset 0 0 0 1px rgba(255,255,255,0.03);
+        inset 0 0 0 1px rgba(255,255,255,0.5);
       overflow: hidden;
       position: relative;
       z-index: 2;
+      display: flex;
+      flex-direction: column;
       animation: gently-float 6s ease-in-out infinite;
     }
 
@@ -246,129 +248,189 @@
     .sc-title { font-size: 13px; font-weight: 700; color: var(--navy); white-space: nowrap; }
     .sc-sub { font-size: 11px; color: var(--muted); white-space: nowrap; }
 
-    /* Phone internals */
-    .sp-notch {
-      width: 100px; height: 30px;
+    /* Phone internals — light mode, matches real app */
+    .sp-island {
+      width: 90px; height: 26px;
       background: #000;
-      border-radius: 0 0 20px 20px;
-      margin: 0 auto;
+      border-radius: 20px;
+      margin: 10px auto 0;
+      flex-shrink: 0;
     }
 
-    .sp-status {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 20px 4px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #fff;
-    }
-
-    .sp-hdr {
+    .sp-statusbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 16px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 4px 18px 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #111;
+      flex-shrink: 0;
     }
 
-    .sp-title { font-size: 17px; font-weight: 700; color: #fff; }
-    .sp-sub-txt { font-size: 11px; color: #8899AA; margin-top: 1px; }
-    .sp-hdr-ic { font-size: 18px; }
-
     .sp-map {
-      height: 220px;
-      background: #0D1F35;
+      flex: 1;
+      background: #C8DCA8;
       position: relative;
       overflow: hidden;
     }
 
+    /* Map terrain variation */
     .sp-map::before {
       content: '';
       position: absolute;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(74,144,217,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(74,144,217,0.06) 1px, transparent 1px);
-      background-size: 28px 28px;
+      background:
+        radial-gradient(ellipse 120px 80px at 20% 30%, rgba(150,190,110,0.5) 0%, transparent 70%),
+        radial-gradient(ellipse 80px 60px at 80% 70%, rgba(150,190,110,0.4) 0%, transparent 70%),
+        radial-gradient(ellipse 60px 50px at 70% 20%, rgba(160,200,120,0.4) 0%, transparent 70%);
     }
 
-    .sp-map::after {
-      content: '';
+    /* Roads */
+    .sp-road {
       position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(74,144,217,0.14) 2px, transparent 2px),
-        linear-gradient(90deg, rgba(74,144,217,0.14) 2px, transparent 2px);
-      background-size: 84px 84px;
+      background: rgba(255,255,255,0.82);
     }
 
+    /* Radius ring */
+    .sp-radius {
+      position: absolute;
+      width: 230px; height: 230px;
+      border-radius: 50%;
+      border: 2px solid rgba(52,120,210,0.55);
+      background: rgba(52,120,210,0.07);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* User dot */
     .sp-you {
       position: absolute;
-      width: 16px; height: 16px;
-      background: #4A90D9;
-      border-radius: 50%;
-      border: 3px solid #fff;
-      box-shadow: 0 0 0 6px rgba(74,144,217,0.2);
-      top: 105px; left: 130px;
-      z-index: 5;
-    }
-
-    .sp-pin {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      z-index: 5;
-    }
-
-    .sp-av {
-      width: 32px; height: 32px;
+      width: 14px; height: 14px;
+      background: #3478F6;
       border-radius: 50%;
       border: 2.5px solid #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: #fff;
+      box-shadow: 0 0 0 5px rgba(52,120,246,0.22);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
     }
 
-    .sp-tri { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; margin-top: -2px; }
-
-    .sp-lbl {
-      background: rgba(6,14,26,0.92);
-      border-radius: 4px;
-      padding: 2px 6px;
-      font-size: 9px;
+    /* City label */
+    .sp-city-lbl {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-15%, 14px);
+      font-size: 15px;
       font-weight: 700;
-      color: #fff;
+      color: rgba(0,0,0,0.22);
+      pointer-events: none;
+      letter-spacing: -0.3px;
       white-space: nowrap;
     }
 
-    .sp-alert {
-      margin: 9px 12px;
-      background: rgba(74,144,217,0.12);
-      border: 1px solid rgba(74,144,217,0.28);
-      border-radius: 12px;
-      padding: 9px 12px;
+    /* Map controls (right side) */
+    .sp-map-btns {
+      position: absolute;
+      right: 10px;
+      top: 10px;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .sp-alert-ic { width: 30px; height: 30px; background: #4A90D9; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-    .sp-alert-t { font-size: 11px; font-weight: 600; color: #fff; }
-    .sp-alert-s { font-size: 10px; color: #7BB3E8; margin-top: 1px; }
+    .sp-mbtn {
+      width: 34px; height: 34px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      font-size: 10px;
+      font-weight: 700;
+      color: #333;
+      line-height: 1.1;
+      text-align: center;
+    }
 
-    .sp-list { padding: 6px 0; }
-    .sp-list-h { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #8899AA; padding: 0 16px 6px; }
+    /* Bottom sheet */
+    .sp-sheet {
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      padding: 10px 0 0;
+      flex-shrink: 0;
+    }
 
-    .sp-row { display: flex; align-items: center; gap: 10px; padding: 7px 16px; }
-    .sp-row-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
-    .sp-row-n { font-size: 13px; font-weight: 600; color: #fff; flex: 1; }
-    .sp-row-d { font-size: 11px; color: #8899AA; }
-    .sp-row-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .sp-sheet-handle {
+      width: 34px; height: 4px;
+      background: #DDD9D1;
+      border-radius: 2px;
+      margin: 0 auto 10px;
+    }
+
+    .sp-sheet-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px 10px;
+      border-bottom: 1px solid #F0EDE7;
+    }
+
+    .sp-intown-count { font-size: 18px; font-weight: 800; color: #000; letter-spacing: -0.3px; }
+    .sp-all-friends { font-size: 13px; font-weight: 600; color: #4A90D9; }
+
+    .sp-friend-row {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      gap: 12px;
+    }
+
+    .sp-friend-row + .sp-friend-row { border-top: 1px solid #F5F3F0; }
+
+    .sp-fav {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+
+    .sp-finfo { flex: 1; min-width: 0; }
+    .sp-fname { font-size: 13px; font-weight: 700; color: #000; }
+    .sp-fdist { font-size: 11px; color: #888; margin-top: 2px; }
+
+    .sp-factions { display: flex; gap: 8px; }
+
+    .sp-fact {
+      width: 32px; height: 32px;
+      border: 1.5px solid #DDD;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #555;
+    }
+
+    /* Tab bar */
+    .sp-tabbar {
+      display: flex;
+      border-top: 1px solid #E8E5E0;
+      background: #fff;
+      padding: 8px 0 14px;
+      flex-shrink: 0;
+    }
+
+    .sp-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: #9CA3AF;
+    }
+
+    .sp-tab-active { color: #0B1A2E; }
+    .sp-tab-label { font-size: 9px; font-weight: 500; }
 
     /* STATS ROW */
     .stats-row {
@@ -587,7 +649,7 @@
 
 <nav>
   <a href="/" class="logo">
-    <img src="assets/logo.svg" alt="InTown">
+    <img src="assets/favicon.svg" alt="InTown">
     <span class="logo-name">InTown</span>
   </a>
   <div class="nav-right">
@@ -643,59 +705,108 @@
     </div>
 
     <div class="showcase-phone">
-      <div class="sp-notch"></div>
-      <div class="sp-status"><span>9:41</span><span>●●● 🔋</span></div>
-      <div class="sp-hdr">
-        <div>
-          <div class="sp-title">InTown</div>
-          <div class="sp-sub-txt">4 friends nearby</div>
+      <!-- Dynamic Island -->
+      <div class="sp-island"></div>
+
+      <!-- Status bar -->
+      <div class="sp-statusbar">
+        <span>5:26</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor">
+            <rect x="0" y="5" width="3" height="6" rx="0.5" opacity="0.4"/>
+            <rect x="4.5" y="3.5" width="3" height="7.5" rx="0.5" opacity="0.6"/>
+            <rect x="9" y="1.5" width="3" height="9.5" rx="0.5" opacity="0.8"/>
+            <rect x="13.5" y="0" width="2.5" height="11" rx="0.5"/>
+          </svg>
+          <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
+            <path d="M7.5 9a1.2 1.2 0 100 2.4A1.2 1.2 0 007.5 9z" fill="currentColor"/>
+            <path d="M2.8 5.8C4.2 4.4 5.8 3.6 7.5 3.6s3.3.8 4.7 2.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            <path d="M0.4 3C2.4 1 4.8 0 7.5 0s5.1 1 7.1 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="currentColor" stroke-width="1" fill="none" opacity="0.35"/>
+            <rect x="22" y="3.5" width="2.5" height="5" rx="1.2" fill="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="16" height="8" rx="1.5" fill="currentColor"/>
+          </svg>
         </div>
-        <span class="sp-hdr-ic">🔔</span>
       </div>
+
+      <!-- Map -->
       <div class="sp-map">
+        <!-- Road network -->
+        <div class="sp-road" style="height:4px;width:100%;top:37%;"></div>
+        <div class="sp-road" style="height:2.5px;width:100%;top:60%;opacity:0.7;"></div>
+        <div class="sp-road" style="height:2px;width:65%;top:20%;right:0;opacity:0.65;"></div>
+        <div class="sp-road" style="width:3.5px;height:100%;left:35%;top:0;"></div>
+        <div class="sp-road" style="width:2px;height:100%;left:62%;top:0;opacity:0.7;"></div>
+        <div class="sp-road" style="width:2px;height:90px;left:18%;top:5%;transform:rotate(38deg);opacity:0.55;"></div>
+        <div class="sp-road" style="width:2px;height:80px;right:12%;bottom:10%;transform:rotate(28deg);opacity:0.5;"></div>
+        <!-- Radius circle -->
+        <div class="sp-radius"></div>
+        <!-- User dot -->
         <div class="sp-you"></div>
-        <div class="sp-pin" style="top:22px;left:36px;">
-          <div class="sp-av" style="background:#2563EB;">J</div>
-          <div class="sp-tri" style="border-top:7px solid #2563EB;border-left:5px solid transparent;border-right:5px solid transparent;"></div>
-          <div class="sp-lbl">Jake · 0.3mi</div>
-        </div>
-        <div class="sp-pin" style="top:50px;right:22px;">
-          <div class="sp-av" style="background:#7C3AED;">M</div>
-          <div class="sp-tri" style="border-top:7px solid #7C3AED;border-left:5px solid transparent;border-right:5px solid transparent;"></div>
-          <div class="sp-lbl">Maya · 0.8mi</div>
-        </div>
-        <div class="sp-pin" style="bottom:18px;left:62px;">
-          <div class="sp-av" style="background:#059669;">S</div>
-          <div class="sp-tri" style="border-top:7px solid #059669;border-left:5px solid transparent;border-right:5px solid transparent;"></div>
-          <div class="sp-lbl">Sam · 1.2mi</div>
+        <!-- City label -->
+        <div class="sp-city-lbl">Washington</div>
+        <!-- Map controls -->
+        <div class="sp-map-btns">
+          <div class="sp-mbtn" style="font-size:9px;font-weight:800;">25<br>mi</div>
+          <div class="sp-mbtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+          </div>
+          <div class="sp-mbtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </div>
         </div>
       </div>
-      <div class="sp-alert">
-        <div class="sp-alert-ic">📍</div>
-        <div>
-          <div class="sp-alert-t">Jake is nearby!</div>
-          <div class="sp-alert-s">0.3 miles away · Tap to say hey</div>
+
+      <!-- Bottom sheet -->
+      <div class="sp-sheet">
+        <div class="sp-sheet-handle"></div>
+        <div class="sp-sheet-hdr">
+          <span class="sp-intown-count">InTown (2)</span>
+          <span class="sp-all-friends">All Friends</span>
+        </div>
+        <div class="sp-friend-row">
+          <div class="sp-fav" style="background:#7C6FBE;">JD</div>
+          <div class="sp-finfo">
+            <div class="sp-fname">John Doe</div>
+            <div class="sp-fdist">7 miles away</div>
+          </div>
+          <div class="sp-factions">
+            <div class="sp-fact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="sp-fact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          </div>
+        </div>
+        <div class="sp-friend-row">
+          <div class="sp-fav" style="background:#C96B6B;">JD</div>
+          <div class="sp-finfo">
+            <div class="sp-fname">Jane Doe</div>
+            <div class="sp-fdist">7 miles away</div>
+          </div>
+          <div class="sp-factions">
+            <div class="sp-fact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="sp-fact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          </div>
         </div>
       </div>
-      <div class="sp-list">
-        <div class="sp-list-h">Nearby Right Now</div>
-        <div class="sp-row">
-          <div class="sp-row-av" style="background:#2563EB;">J</div>
-          <span class="sp-row-n">Jake</span>
-          <span class="sp-row-d">0.3 mi</span>
-          <div class="sp-row-dot" style="background:#4CAF50;"></div>
+
+      <!-- Tab bar -->
+      <div class="sp-tabbar">
+        <div class="sp-tab sp-tab-active">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          <span class="sp-tab-label">Map</span>
         </div>
-        <div class="sp-row">
-          <div class="sp-row-av" style="background:#7C3AED;">M</div>
-          <span class="sp-row-n">Maya</span>
-          <span class="sp-row-d">0.8 mi</span>
-          <div class="sp-row-dot" style="background:#4CAF50;"></div>
+        <div class="sp-tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="sp-tab-label">Calendar</span>
         </div>
-        <div class="sp-row">
-          <div class="sp-row-av" style="background:#059669;">S</div>
-          <span class="sp-row-n">Sam</span>
-          <span class="sp-row-d">1.2 mi</span>
-          <div class="sp-row-dot" style="background:#F59E0B;"></div>
+        <div class="sp-tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span class="sp-tab-label">Inbox</span>
+        </div>
+        <div class="sp-tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="sp-tab-label">Profile</span>
         </div>
       </div>
     </div>
@@ -838,7 +949,7 @@
 <footer>
   <div class="footer-inner">
     <a href="/" class="f-logo">
-      <img src="assets/logo.svg" alt="InTown">
+      <img src="assets/favicon.svg" alt="InTown">
       <span>InTown</span>
     </a>
     <div class="f-links">
