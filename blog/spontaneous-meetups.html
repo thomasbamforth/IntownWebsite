@@ -3,179 +3,189 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Why Spontaneous Meetups Are Better Than Planned Ones - InTown Blog</title>
-  <meta name="description" content="Science backs it up: unplanned hangouts produce stronger memories and deeper bonds. We explore why - and how InTown makes them actually happen.">
-  <meta name="keywords" content="spontaneous meetups, unplanned hangouts, social connection, InTown app, friend proximity">
-  <meta name="author" content="InTown Team">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Why Spontaneous Meetups Are Better Than Planned Ones">
-  <meta property="og:description" content="Science backs it up: unplanned hangouts produce stronger memories and deeper bonds. We explore why - and how InTown makes them actually happen.">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://intownsocial.com/blog/spontaneous-meetups.html">
-  <meta property="article:published_time" content="2026-02-03">
-
-  <!-- Canonical -->
+  <title>Why Spontaneous Meetups Are Better Than Planned Ones — InTown Blog</title>
+  <meta name="description" content="Science backs it up: unplanned hangouts produce stronger memories and deeper bonds. We explore why — and how InTown makes them actually happen.">
   <link rel="canonical" href="https://intownsocial.com/blog/spontaneous-meetups.html">
-
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-02-03">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
-  <link rel="stylesheet" href="../css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #F9F7F4; --bg2: #F0EDE7;
+      --navy: #0B1A2E; --blue: #4A90D9;
+      --white: #FFFFFF; --muted: #718096; --border: #DDD9D1;
+    }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--navy); }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 64px; height: 68px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(249,247,244,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .logo img { width: 26px; }
+    .logo span { font-size: 17px; font-weight: 800; color: var(--navy); }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-right a { text-decoration: none; font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
+    .nav-right a:hover { color: var(--navy); }
+    .nav-cta { color: var(--white) !important; background: var(--blue); padding: 9px 20px; border-radius: 8px; font-weight: 700 !important; transition: filter .15s !important; }
+    .nav-cta:hover { filter: brightness(1.1); }
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Why Spontaneous Meetups Are Better Than Planned Ones",
-    "datePublished": "2026-02-03",
-    "author": { "@type": "Organization", "name": "InTown Team" },
-    "publisher": {
-      "@type": "Organization",
-      "name": "InTown Social",
-      "url": "https://intownsocial.com"
-    },
-    "description": "Science backs it up: unplanned hangouts produce stronger memories and deeper bonds. We explore why - and how InTown makes them actually happen.",
-    "mainEntityOfPage": "https://intownsocial.com/blog/spontaneous-meetups.html"
-  }
-  </script>
+    .post-header { padding: 110px 64px 56px; border-bottom: 1px solid var(--border); }
+    .post-header-inner { max-width: 760px; margin: 0 auto; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 20px; transition: color .15s; }
+    .back-link:hover { color: var(--navy); }
+    .back-link svg { width: 14px; height: 14px; }
+    .post-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .post-date { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .post-tag { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--blue); background: rgba(74,144,217,0.1); padding: 3px 9px; border-radius: 100px; }
+    .post-title { font-size: clamp(28px, 4vw, 46px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; color: var(--navy); margin-bottom: 14px; }
+    .post-excerpt { font-size: 18px; color: var(--muted); line-height: 1.65; }
+
+    .post-body { padding: 56px 64px 100px; }
+    .post-body-inner { max-width: 760px; margin: 0 auto; }
+
+    .post-body-inner p { font-size: 17px; color: #3D4E5F; line-height: 1.85; margin-bottom: 22px; }
+    .post-body-inner h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: var(--navy); margin: 48px 0 16px; }
+    .post-body-inner ul { margin: 12px 0 22px 24px; }
+    .post-body-inner li { font-size: 17px; color: #3D4E5F; line-height: 1.8; margin-bottom: 8px; }
+    .post-body-inner em { font-style: italic; }
+    .post-body-inner strong { font-weight: 700; color: var(--navy); }
+
+    .post-cta {
+      margin-top: 56px; padding: 40px;
+      background: var(--navy); border-radius: 20px;
+    }
+    .post-cta h3 { font-size: 20px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+    .post-cta p { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 20px; line-height: 1.6; }
+    .post-cta a {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; font-size: 14px; font-weight: 700;
+      color: var(--navy); background: var(--white);
+      padding: 11px 22px; border-radius: 8px;
+      transition: opacity .15s;
+    }
+    .post-cta a:hover { opacity: 0.9; }
+
+    footer { border-top: 1px solid var(--border); padding: 40px 64px; background: var(--bg2); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .f-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .f-logo img { width: 22px; }
+    .f-logo span { font-size: 15px; font-weight: 700; color: var(--navy); }
+    .f-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .f-links a { text-decoration: none; font-size: 13px; color: var(--muted); transition: color .15s; }
+    .f-links a:hover { color: var(--navy); }
+    .f-copy { font-size: 12px; color: var(--muted); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-right a:not(.nav-cta) { display: none; }
+      .post-header { padding: 96px 24px 40px; }
+      .post-body { padding: 40px 24px 80px; }
+      footer { padding: 32px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar scrolled" id="navbar">
-    <div class="container nav-container">
-      <a href="../" class="nav-logo">
-        <img src="../assets/logo.svg?v=2" alt="InTown Logo" class="nav-logo-img">
-        <span class="nav-logo-text">InTown</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="../#use-cases">Use Cases</a></li>
-        <li><a href="../#how-it-works">How It Works</a></li>
-        <li><a href="./index.html">Blog</a></li>
-        <li><a href="../#download" class="nav-cta">Download</a></li>
-      </ul>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+<nav>
+  <a href="/" class="logo">
+    <img src="../assets/logo.svg" alt="InTown">
+    <span>InTown</span>
+  </a>
+  <div class="nav-right">
+    <a href="./">Blog</a>
+    <a href="https://apps.apple.com/us/app/intown-social/id6756504466" class="nav-cta" target="_blank" rel="noopener">Download Free</a>
+  </div>
+</nav>
+
+<div class="post-header">
+  <div class="post-header-inner">
+    <a href="./" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Blog
+    </a>
+    <div class="post-meta">
+      <span class="post-date">February 3, 2026</span>
+      <span class="post-tag">Meetups</span>
     </div>
-  </nav>
+    <h1 class="post-title">Why Spontaneous Meetups Are Better Than Planned Ones</h1>
+    <p class="post-excerpt">Science backs it up: unplanned hangouts produce stronger memories and deeper bonds. We explore why — and how InTown makes them actually happen.</p>
+  </div>
+</div>
 
-  <!-- Post Hero -->
-  <header class="blog-post-hero">
-    <div class="container">
-      <a href="./index.html" class="blog-back-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        Back to Blog
-      </a>
-      <div class="blog-post-meta">
-        <span class="blog-card-date">February 3, 2026</span>
-        <span class="blog-card-tag">Meetups</span>
-      </div>
-      <h1 class="blog-post-title">Why Spontaneous Meetups Are Better Than Planned Ones</h1>
-      <p class="blog-post-excerpt">Science backs it up: unplanned hangouts produce stronger memories and deeper bonds. We explore why - and how InTown makes them actually happen.</p>
+<div class="post-body">
+  <div class="post-body-inner">
+
+    <p>There's a well-worn ritual in modern friendship maintenance: the over-scheduled hangout. Calendars are consulted. A Thursday three weeks from now is identified as the least-bad option. Someone suggests a restaurant. Someone else is mildly allergic to the cuisine. A Doodle poll is created. Then, about 18 hours before the event, someone cancels.</p>
+
+    <p>We've built an elaborate infrastructure for social connection that frequently produces less of it. Meanwhile, some of the most memorable moments with friends happen in the spaces between — a chance encounter on a walk, running into someone at a coffee shop, an impromptu Tuesday dinner that runs until midnight.</p>
+
+    <p>This isn't just anecdote. There's solid psychology behind why the spontaneous hangout outperforms its scheduled counterpart.</p>
+
+    <h2>The Effort Paradox</h2>
+
+    <p>Planning a social event requires coordination, which requires effort, which creates pre-event anxiety. When you've scheduled something weeks out, both parties have time to second-guess, tire, or simply let life crowd it out. The effort required to <em>cancel</em> is lower than the effort required to follow through, which is why over-scheduled social calendars tend to bleed.</p>
+
+    <p>A spontaneous hangout sidesteps this entirely. The decision window is short. There's no time to talk yourself out of it. You're already nearby — the marginal cost of saying yes is almost zero.</p>
+
+    <h2>Novelty and Memory Formation</h2>
+
+    <p>Memory researchers have found that novel experiences — ones that deviate from our expected routines — are encoded more richly than routine events. A planned dinner at a restaurant you both know, on a date you've had in your calendar for weeks, is by definition a routine event. An unexpected Tuesday drink because you both happened to be in the same neighborhood? That's a story.</p>
+
+    <p>The spontaneous hangout is inherently novel. It wasn't supposed to happen. That unexpectedness is what makes it stick.</p>
+
+    <h2>Low-Stakes Presence vs. High-Stakes "Catching Up"</h2>
+
+    <p>When you haven't seen someone in a while and finally schedule time with them, there's an implicit pressure to make it count. To fill each other in. To cover months of life in two hours. That pressure can make the hangout feel like work — more catch-up session than genuine time together.</p>
+
+    <p>Spontaneous meetups carry none of that weight. You're just two people in the same place, doing something simple. The conversation is lower-stakes and, paradoxically, often more genuine. You're not catching up — you're just together.</p>
+
+    <h2>Why Spontaneity Is Broken (And How to Fix It)</h2>
+
+    <p>The reason we default to scheduling is simple: we can't see each other. Without visibility into who's nearby right now, spontaneous connection is pure luck. You'd have to text every person in your network to find out who's available and close — which immediately makes it feel like coordination, not spontaneity.</p>
+
+    <p>InTown restores the visibility layer that makes true spontaneity possible. When you open the app and see that three friends are within a mile, you don't have to organize anything. You just have to reach out to the one whose energy matches yours right now. The logistics are already solved.</p>
+
+    <h2>The Right Ratio</h2>
+
+    <p>We're not arguing for the abolition of planned events. Some things — birthday dinners, weekend trips, multi-person gatherings — require coordination. But for the day-to-day connective tissue of friendship, spontaneous presence beats scheduled obligation almost every time.</p>
+
+    <p>The goal is a social life that feels alive between the calendar events, not just at them. InTown is built for exactly that gap.</p>
+
+    <div class="post-cta">
+      <h3>Stop waiting for the perfect plan</h3>
+      <p>Download InTown and discover who's nearby right now. The best hangouts aren't scheduled.</p>
+      <a href="https://apps.apple.com/us/app/intown-social/id6756504466" target="_blank" rel="noopener">Download the App →</a>
     </div>
-  </header>
 
-  <!-- Post Body -->
-  <main class="blog-post-body" id="main-content">
-    <div class="container">
-      <article class="blog-post-content">
+  </div>
+</div>
 
-        <p>There's a well-worn ritual in modern friendship maintenance: the over-scheduled hangout. Calendars are consulted. A Thursday three weeks from now is identified as the least-bad option. Someone suggests a restaurant. Someone else is mildly allergic to the cuisine. A Doodle poll is created. Then, about 18 hours before the event, someone cancels.</p>
-
-        <p>We've built an elaborate infrastructure for social connection that frequently produces less of it. Meanwhile, some of the most memorable moments with friends happen in the spaces between - a chance encounter on a walk, running into someone at a coffee shop, an impromptu Tuesday dinner that runs until midnight.</p>
-
-        <p>This isn't just anecdote. There's solid psychology behind why the spontaneous hangout outperforms its scheduled counterpart.</p>
-
-        <h2>The Effort Paradox</h2>
-
-        <p>Planning a social event requires coordination, which requires effort, which creates pre-event anxiety. When you've scheduled something weeks out, both parties have time to second-guess, tire, or simply let life crowd it out. The effort required to <em>cancel</em> is lower than the effort required to follow through, which is why over-scheduled social calendars tend to bleed.</p>
-
-        <p>A spontaneous hangout sidesteps this entirely. The decision window is short. There's no time to talk yourself out of it. You're already nearby - the marginal cost of saying yes is almost zero.</p>
-
-        <h2>Novelty and Memory Formation</h2>
-
-        <p>Memory researchers have found that novel experiences - ones that deviate from our expected routines - are encoded more richly than routine events. A planned dinner at a restaurant you both know, on a date you've had in your calendar for weeks, is by definition a routine event. An unexpected Tuesday drink because you both happened to be in the same neighborhood? That's a story.</p>
-
-        <p>The spontaneous hangout is inherently novel. It wasn't supposed to happen. That unexpectedness is what makes it stick.</p>
-
-        <h2>Low-Stakes Presence vs. High-Stakes "Catching Up"</h2>
-
-        <p>When you haven't seen someone in a while and finally schedule time with them, there's an implicit pressure to make it count. To fill each other in. To cover months of life in two hours. That pressure can make the hangout feel like work - more catch-up session than genuine time together.</p>
-
-        <p>Spontaneous meetups carry none of that weight. You're just two people in the same place, doing something simple. The conversation is lower-stakes and, paradoxically, often more genuine. You're not catching up - you're just together.</p>
-
-        <h2>Why Spontaneity Is Broken (And How to Fix It)</h2>
-
-        <p>The reason we default to scheduling is simple: we can't see each other. Without visibility into who's nearby right now, spontaneous connection is pure luck. You'd have to text every person in your network to find out who's available and close - which immediately makes it feel like coordination, not spontaneity.</p>
-
-        <p>InTown restores the visibility layer that makes true spontaneity possible. When you open the app and see that three friends are within a mile, you don't have to organize anything. You just have to reach out to the one whose energy matches yours right now. The logistics are already solved.</p>
-
-        <h2>The Right Ratio</h2>
-
-        <p>We're not arguing for the abolition of planned events. Some things - birthday dinners, weekend trips, multi-person gatherings - require coordination. But for the day-to-day connective tissue of friendship, spontaneous presence beats scheduled obligation almost every time.</p>
-
-        <p>The goal is a social life that feels alive between the calendar events, not just at them. InTown is built for exactly that gap.</p>
-
-        <div class="blog-cta-box">
-          <h3>Stop waiting for the perfect plan</h3>
-          <p>Download InTown and discover who's nearby right now. The best hangouts aren't scheduled.</p>
-          <a href="../#download" class="btn btn-primary">Download the App</a>
-        </div>
-
-      </article>
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="f-logo">
+      <img src="../assets/logo.svg" alt="InTown">
+      <span>InTown</span>
+    </a>
+    <div class="f-links">
+      <a href="../privacy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="./">Blog</a>
+      <a href="../contact.html">Contact</a>
+      <a href="#">Instagram</a>
+      <a href="#">Twitter</a>
     </div>
-  </main>
+    <p class="f-copy">© 2026 InTown · A Sangforth Technologies, LLC app</p>
+  </div>
+</footer>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="../" class="nav-logo">
-            <img src="../assets/logo.svg?v=2" alt="InTown Logo" class="nav-logo-img">
-            <span class="nav-logo-text">InTown</span>
-          </a>
-          <p class="footer-fine-print">A Sangforth Technologies, LLC app</p>
-          <p class="footer-tagline">Know when your friends are nearby.</p>
-        </div>
-        <div class="footer-links">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="../#use-cases">Use Cases</a></li>
-            <li><a href="../#how-it-works">How It Works</a></li>
-            <li><a href="../#download">Download</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#">About</a></li>
-            <li><a href="../privacy.html">Privacy Policy</a></li>
-            <li><a href="../terms.html">Terms of Service</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Resources</h4>
-          <ul>
-            <li><a href="./index.html">Blog</a></li>
-            <li><a href="#">Instagram</a></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="mailto:intown@intownsocial.com">Contact Us</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 Sangforth Technologies LLC. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="../js/main.js"></script>
 </body>
 </html>
